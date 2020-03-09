@@ -6,13 +6,9 @@ namespace sp.iot.server
     {
         public Guid Id { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public string Name { get; set; }
 
-        public DateTime FinishDate { get; set; }
-
-        public double Consumption { get; set; }
-
-        public bool IsActive => FinishDate != null;
+        public TankType Type { get; set; }
 
     }
 }

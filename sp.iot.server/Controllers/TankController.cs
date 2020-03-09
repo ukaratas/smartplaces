@@ -26,9 +26,8 @@ namespace sp.iot.server.Controllers
             return Enumerable.Range(1, 5).Select(index => new Tank
             {
                 Id = Guid.NewGuid(),
-                StartDate = DateTime.Now.AddDays(-index),
-                FinishDate = DateTime.Now,
-                Consumption = 55.5,
+                Name = "Temiz 1",
+                Type = TankType.CleanWater,
             })
             .ToArray();
         }
