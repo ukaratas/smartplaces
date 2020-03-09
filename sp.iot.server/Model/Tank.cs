@@ -8,7 +8,7 @@ namespace sp.iot.server
 
         public string Name { get; set; }
 
-        public TankType Type { get; set; }
+        public TankType Type { get; set; } 
 
     }
 }
