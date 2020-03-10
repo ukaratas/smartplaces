@@ -20,7 +20,7 @@ namespace sp.iot.server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Tank> Get()
+        public IEnumerable<Tank> GetTanks()
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new Tank
@@ -28,6 +28,20 @@ namespace sp.iot.server.Controllers
                 Id = Guid.NewGuid(),
                 Name = "Temiz 1",
                 Type = TankType.CleanWater,
+            })
+            .ToArray();
+        }
+
+        [HttpGet("Monitoring")]
+        public IEnumerable<TankMonitoring> GetMonitoring()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new TankMonitoring
+            {
+                Id = Guid.NewGuid(),
+                StartDate = DateTime.Now.AddDays(-index),
+                FinishDate = DateTime.Now.AddDays(+index),
+                Consumption = index * 11.5,
             })
             .ToArray();
         }
