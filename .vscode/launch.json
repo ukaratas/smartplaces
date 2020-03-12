@@ -9,10 +9,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/sp.iot.server/sp.iot.server/bin/Debug/netcoreapp3.1/sp.iot.server.dll",
+            "program": "${workspaceFolder}/sp.iot.server/bin/Debug/netcoreapp3.1/sp.iot.server.dll",
                         
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/sp.iot.server",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
