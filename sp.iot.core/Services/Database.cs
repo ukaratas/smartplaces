@@ -16,12 +16,15 @@ namespace sp.iot.core
 
         public SqliteConnection GetConnection()
         {
-
             var conn = new SqliteConnectionStringBuilder();
             conn.DataSource = _config.GetValue<string>("Database:File");
 
             return new SqliteConnection(conn.ConnectionString);
+        }
 
+        public SqliteDataReader ExecuteReader(SqliteCommand command)
+        {
+            return null;
         }
     }
 }

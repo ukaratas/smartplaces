@@ -29,7 +29,9 @@ namespace sp.iot.server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IDatabase, Database>();
+            //services.AddScoped<IDatabase, Database>();
+
+            services.AddCoreServices();
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
