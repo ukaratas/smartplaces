@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sp.iot.server", "sp.iot.server\sp.iot.server.csproj", "{85D241A2-11FC-4432-87D8-C8B6416A54F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sp.iot.core", "sp.iot.core\sp.iot.core.csproj", "{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{85D241A2-11FC-4432-87D8-C8B6416A54F1}.Release|x64.Build.0 = Release|Any CPU
 		{85D241A2-11FC-4432-87D8-C8B6416A54F1}.Release|x86.ActiveCfg = Release|Any CPU
 		{85D241A2-11FC-4432-87D8-C8B6416A54F1}.Release|x86.Build.0 = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|x64.Build.0 = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Debug|x86.Build.0 = Debug|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|x64.ActiveCfg = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|x64.Build.0 = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|x86.ActiveCfg = Release|Any CPU
+		{32E0EAEF-5B97-44E2-BB52-30A29EE3D188}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

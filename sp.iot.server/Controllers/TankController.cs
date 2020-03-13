@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using sp.iot.core;
 
 namespace sp.iot.server.Controllers
 {
@@ -18,21 +19,26 @@ namespace sp.iot.server.Controllers
         private readonly ILogger<TankController> _logger;
         private readonly IConfiguration _config;
 
-        public TankController(ILogger<TankController> logger, IConfiguration config)
+        private readonly IDatabase _database;
+
+        public TankController(ILogger<TankController> logger, IConfiguration config, IDatabase database)
         {
             _logger = logger;
             _config = config;
+            _database = database;
         }
 
-        [HttpGet]
-        public IEnumerable<Tank> GetTanks()
+        [HttpGet()]
+        [ProducesErrorResponseType(typeof(void))]
+        [ProducesResponseType(typeof(Tank[]), 200)]
+        public IEnumerable<Tank> GetTanks([FromQuery(Name = "type")] TankType type)
         {
             List<Tank> returnValue = new List<Tank>();
 
             var conn = new SqliteConnectionStringBuilder();
             conn.DataSource = _config.GetValue<string>("Database:File");
 
-            using (var connection = new SqliteConnection(conn.ConnectionString))
+            using (var connection = _database.GetConnection())
             {
                 connection.Open();
 
@@ -51,9 +57,9 @@ namespace sp.iot.server.Controllers
                             Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
                             Type = (TankType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
                             LevelAsPercentage = (double)reader.GetValue(reader.GetOrdinal("Percentage")),
-                            IsLevelMonitored = !string.IsNullOrEmpty( reader.GetValue(reader.GetOrdinal("LevelSensor")).ToString()),
-                            IsConsumptionMonitored = !string.IsNullOrEmpty( reader.GetValue(reader.GetOrdinal("FlowSensor")).ToString()),
-                            CanEmpty = !string.IsNullOrEmpty( reader.GetValue(reader.GetOrdinal("EmptyValve")).ToString()),
+                            IsLevelMonitored = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("LevelSensor")).ToString()),
+                            IsConsumptionMonitored = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("FlowSensor")).ToString()),
+                            CanEmpty = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("EmptyValve")).ToString()),
                         };
                         returnValue.Add(item);
                     }

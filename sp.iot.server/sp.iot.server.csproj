@@ -13,4 +13,8 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\sp.iot.core\sp.iot.core.csproj" />
+  </ItemGroup>
+
 </Project>

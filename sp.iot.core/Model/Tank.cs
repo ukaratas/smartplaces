@@ -1,6 +1,6 @@
 using System;
 
-namespace sp.iot.server
+namespace sp.iot.core
 {
     public class Tank
     {
