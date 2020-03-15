@@ -45,7 +45,6 @@ namespace sp.iot.server.Controllers
             }
             else
             {
-
                 StatusCode(204);
                 return null;
             }
