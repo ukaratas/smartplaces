@@ -7,11 +7,13 @@ namespace sp.iot.core
 {
     public interface ITankService
     {
-        List<Tank> GetTanks(TankType? type);
+        List<Tank> Get(TankType? type);
 
         
-        Tank GetTank(Guid tankId);
+        Tank Get(Guid tankId);
 
-        Tank SaveTank(TankSaveRequest request);
+        SaveResponse<Tank> Save(TankSaveRequest request);
+
+        
     }
 }

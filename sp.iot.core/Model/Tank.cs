@@ -2,10 +2,8 @@ using System;
 
 namespace sp.iot.core
 {
-    public class Tank
+    public class Tank : BaseItem
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         public TankType Type { get; set; }
