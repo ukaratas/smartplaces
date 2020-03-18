@@ -14,6 +14,10 @@ namespace sp.iot.core
         SqliteDataReader ExecuteReader(string commandText);
 
         SqliteDataReader ExecuteReader(string commandText, List<SqliteParameter> parameters);
+
+        T ExecuteScalar<T>(string commandText);
+
+        T ExecuteScalar<T>(string commandText, List<SqliteParameter> parameters);
     }
 
 }

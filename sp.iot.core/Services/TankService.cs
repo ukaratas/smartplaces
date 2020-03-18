@@ -21,8 +21,7 @@ namespace sp.iot.core
         {
             Tank returnValue = null;
 
-            SqliteDataReader reader;
-            reader = _database.ExecuteReader(
+            SqliteDataReader reader = _database.ExecuteReader(
                 "select Tanks.*, LevelSensors.Percentage from Tanks left join LevelSensors on Tanks.LevelSensor = LevelSensors.ID where Tanks.ID = @TankId",
                 new List<SqliteParameter>() { new SqliteParameter("TankId", tankId.ToString()) }
                 );
@@ -31,7 +30,10 @@ namespace sp.iot.core
             {
                 returnValue = _bindReaderData(reader);
             }
+
+            reader.Close();
             _database.Close();
+
             return returnValue;
         }
 
@@ -57,7 +59,7 @@ namespace sp.iot.core
                 returnValue.Add(_bindReaderData(reader));
             }
             _database.Close();
-            
+
             return returnValue;
         }
 
@@ -65,78 +67,162 @@ namespace sp.iot.core
         {
             SaveResponse<Tank> returnItem = new SaveResponse<Tank>();
 
-            returnItem.AddAction("Save progress requested");
+            returnItem.AddAction("Save progress started.");
 
-            using (var connection = _database.GetConnection())
-            {
-                connection.Open();
+            _saveGadget(
+                request.LevelSensorId,
+                request.LevelSensorType,
+                request.LevelSensorName,
+                request.LevelSensorConnectionPort,
+                (log) => { returnItem.AddAction("Level Sensor : " + log); }
+                );
 
-                SqliteCommand command = connection.CreateCommand();
-                command.CommandText = "select Tanks.*, LevelSensors.Percentage from Tanks left join LevelSensors on Tanks.LevelSensor = LevelSensors.ID where Tanks.ID = @TankId";
-                command.Parameters.Add(new SqliteParameter("TankId", request.Id.ToString()));
+            _saveGadget(
+                request.FlowSensorId,
+                request.FlowSensorType,
+                request.FlowSensorName,
+                request.FlowSensorConnectionPort,
+                (log) => { returnItem.AddAction("Flow Sensor : " + log); }
+                );
 
-                using (SqliteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        var Tank = _bindReaderData(reader);
-                        returnItem.AddAction("Tank is exists. It will be updated");
-                    }
-                    else
-                    {
-                        returnItem.AddAction("Tank is not exists. It will be created as a new Tank");
-
-                        if (request.LevelSensorId != null)
-                        {
-                            returnItem.AddAction("Level Sensor Id is suplied. If exists it is going to linked else is created.");
-
-                            var command2 = connection.CreateCommand();
-                            command2.CommandText = "select * from LevelSensors where ID = @Id";
-                            command2.Parameters.Add(new SqliteParameter("@Id", request.LevelSensorId.ToString()));
-
-                            using (SqliteDataReader reader2 = command2.ExecuteReader())
-                            {
-                                if (reader2.Read())
-                                {
-                                    returnItem.AddAction("Level Sensor is exists.");
-                                }
-                                else
-                                {
-                                    returnItem.AddAction("Level Sensor is NOT exists.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            returnItem.AddAction("Level Sensor Id is not suplied. It is going to created.");
-                        }
+            _saveGadget(
+                request.ValveId,
+                request.ValveType,
+                request.ValveName,
+                request.ValveConnectionPort,
+                (log) => { returnItem.AddAction("Valve : " + log); }
+                );
 
 
-                        if (request.FlowSensorId != null)
-                        {
-                            returnItem.AddAction("Flow Sensor Id is suplied. If exists it is going to linked else is created.");
-                        }
-                        else
-                        {
-                            returnItem.AddAction("Flow Sensor Id is not suplied. It is going to created.");
-                        }
+            _saveTank(
+                request.Id,
+                request.Type,
+                request.Name,
+                request.LevelSensorId,
+                request.FlowSensorId,
+                request.ValveId,
+                request.PercentageRatio,
+                request.Unit,
+                (log) => { returnItem.AddAction(log); }
+             );
 
-
-                        if (request.ValveSensorId != null)
-                        {
-                            returnItem.AddAction("Valve Sensor Id is suplied. If exists it is going to linked else is created.");
-                        }
-                        else
-                        {
-                            returnItem.AddAction("Valve Sensor Id is not suplied. It is going to created.");
-                        }
-
-                    }
-                }
-            }
+            _database.Close();
             return returnItem;
         }
 
+
+        private void _saveTank(Guid? id, TankType? tankType, string name, Guid? levelSensor, Guid? flowSensor, Guid? valve, double ratio, UnitType? unitType, Action<string> actionLogCallback)
+        {
+
+            if (unitType != null && !Enum.IsDefined(typeof(UnitType), unitType)) unitType = null;
+            if (tankType != null && !Enum.IsDefined(typeof(TankType), tankType)) tankType = null;
+
+            if (id == null) id = Guid.NewGuid();
+
+            SqliteDataReader reader = _database.ExecuteReader(
+                "select * from Tanks where Id = @Id",
+                new List<SqliteParameter>() { new SqliteParameter("Id", id.ToString()) });
+
+            if (reader.Read())
+            {
+                actionLogCallback("Tank is exists");
+
+                if (tankType != (TankType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")) ||
+                    levelSensor.ToString() != reader.GetValue(reader.GetOrdinal("LevelSensor")).ToString() ||
+                    flowSensor.ToString() != reader.GetValue(reader.GetOrdinal("FlowSensor")).ToString() ||
+                    valve.ToString() != reader.GetValue(reader.GetOrdinal("EmptyValve")).ToString() ||
+                    ratio != (double)reader.GetValue(reader.GetOrdinal("PercentToUnitRatio")) ||
+                    unitType != (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("PercentToUnitType")) ||
+                    name != reader.GetValue(reader.GetOrdinal("Name")).ToString())
+                {
+                    actionLogCallback("Need to update tank.");
+
+                    _database.ExecuteScalar<int>(
+                            "UPDATE Tanks SET Name = @Name, Type = @Type, LevelSensor = @LevelSensor, FlowSensor = @FlowSensor, EmptyValve = @Valve, PercentToUnitRatio = @PercentToUnitRatio, PercentToUnitType = @PercentToUnitType WHERE Id = @Id",
+                            new List<SqliteParameter>() {
+                                    new SqliteParameter("Id", id.ToString()),
+                                    new SqliteParameter("Name", String.IsNullOrEmpty(name) ? reader.GetValue(reader.GetOrdinal("Name")).ToString() : name),
+                                    new SqliteParameter("Type", tankType.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("Type")))),
+                                    new SqliteParameter("LevelSensor", levelSensor.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("LevelSensor")))),
+                                    new SqliteParameter("FlowSensor", flowSensor.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("FlowSensor")))),
+                                    new SqliteParameter("Valve", valve.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("EmptyValve")))),
+                                    new SqliteParameter("PercentToUnitRatio", ratio > 0 ? ratio : reader.GetValue(reader.GetOrdinal("PercentToUnitRatio"))),
+                                    new SqliteParameter("PercentToUnitType", unitType.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("PercentToUnitType")))),
+                            });
+                    actionLogCallback("Tank is updated.");
+                }
+            }
+            else
+            {
+                actionLogCallback("Tank is NOT exists.");
+                _database.ExecuteScalar<int>(
+                "INSERT INTO Tanks (Id, Name, Type, LevelSensor, FlowSensor, EmptyValve, PercentToUnitRatio, PercentToUnitType) VALUES ( @Id, @Name, @Type, @LevelSensor, @FlowSensor, @Valve, @PercentToUnitRatio, @PercentToUnitType)",
+                new List<SqliteParameter>() {
+                                new SqliteParameter("Id", id.ToString()),
+                                new SqliteParameter("Name", String.IsNullOrEmpty(name) ? "-" :  name),
+                                new SqliteParameter("Type", tankType),
+                                new SqliteParameter("LevelSensor", levelSensor.ToDBString() ),
+                                new SqliteParameter("FlowSensor", flowSensor.ToDBString() ),
+                                new SqliteParameter("Valve", valve.ToDBString()),
+                                new SqliteParameter("PercentToUnitRatio", ratio),
+                                new SqliteParameter("PercentToUnitType", unitType),
+                    });
+                actionLogCallback("Tank is created.");
+            }
+        }
+
+        private void _saveGadget(Guid? id, GadgetType? type, string name, string port, Action<string> actionLogCallback)
+        {
+            if ((!String.IsNullOrEmpty(port) && type != null))
+            {
+                if (id == null) id = Guid.NewGuid();
+
+                SqliteDataReader reader = _database.ExecuteReader(
+                    "select * from Gadgets where Id = @Id",
+                    new List<SqliteParameter>() { new SqliteParameter("Id", id.ToString()) });
+
+                if (reader.Read())
+                {
+                    actionLogCallback("Gadget is exists");
+
+                    if (type != (GadgetType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")) ||
+                        port != reader.GetValue(reader.GetOrdinal("ConnectionPort")).ToString() ||
+                        name != reader.GetValue(reader.GetOrdinal("Name")).ToString())
+                    {
+                        actionLogCallback("Need to update sensor.");
+                        _database.ExecuteScalar<int>(
+                            "UPDATE Gadgets SET Name = @Name, Type = @Type, ConnectionPort = @ConnectionPort, Status = 1, Value = 0 WHERE Id = @Id",
+                            new List<SqliteParameter>() {
+                                    new SqliteParameter("Id", id.ToString()),
+                                    new SqliteParameter("Name", String.IsNullOrEmpty(name) ?"-" : name),
+                                    new SqliteParameter("Type", type),
+                                    new SqliteParameter("ConnectionPort", port),
+                    });
+                        actionLogCallback("Sensor is updated.");
+                    }
+
+                }
+                else
+                {
+                    actionLogCallback("Sensor is NOT exists.");
+                    _database.ExecuteScalar<int>(
+                    "INSERT INTO Gadgets (ID, Name, Type, ConnectionPort, Value, Status) VALUES ( @Id, @Name, @Type, @ConnectionPort, 0, 1 )",
+                    new List<SqliteParameter>() {
+                            new SqliteParameter("Id", id.ToString()),
+                            new SqliteParameter("Name", String.IsNullOrEmpty(name) ?"-" : name),
+                            new SqliteParameter("Type", type),
+                            new SqliteParameter("ConnectionPort", port),
+                        });
+                    actionLogCallback("Sensor is created.");
+                }
+            }
+            else
+            {
+                if ((port == null && type == null)) actionLogCallback("Sensor info is not suplied.");
+                if ((port != null && type == null)) actionLogCallback("Sensor info is ignored. Type is not suplied");
+                if ((port == null && type != null)) actionLogCallback("Sensor info is ignored. Port is not suplied");
+            }
+        }
         private Tank _bindReaderData(SqliteDataReader reader)
         {
             Tank returnValue = new Tank
