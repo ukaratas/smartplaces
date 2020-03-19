@@ -22,8 +22,8 @@ namespace sp.iot.core
             Tank returnValue = null;
 
             SqliteDataReader reader = _database.ExecuteReader(
-                "select Tanks.*, LevelSensors.Percentage from Tanks left join LevelSensors on Tanks.LevelSensor = LevelSensors.ID where Tanks.ID = @TankId",
-                new List<SqliteParameter>() { new SqliteParameter("TankId", tankId.ToString()) }
+                ConstantStrings.SqlQueries.Tank.Get.IdParam,
+                new List<SqliteParameter>() { new SqliteParameter("Id", tankId.ToString()) }
                 );
 
             if (reader.Read())
@@ -45,12 +45,12 @@ namespace sp.iot.core
 
             if (type == null)
             {
-                reader = _database.ExecuteReader("select Tanks.*, LevelSensors.Percentage from Tanks left join LevelSensors on Tanks.LevelSensor = LevelSensors.ID");
+                reader = _database.ExecuteReader(ConstantStrings.SqlQueries.Tank.Get.NoParam);
             }
             else
             {
                 reader = _database.ExecuteReader(
-                    "select Tanks.*, LevelSensors.Percentage from Tanks left join LevelSensors on Tanks.LevelSensor = LevelSensors.ID where Tanks.Type = @Type",
+                    ConstantStrings.SqlQueries.Tank.Get.TypeParam,
                     new List<SqliteParameter>() { new SqliteParameter("Type", type) }
                     );
             }
@@ -69,52 +69,213 @@ namespace sp.iot.core
 
             returnItem.AddAction("Save progress started.");
 
-            _saveGadget(
+            _saveItem(
                 request.LevelSensorId,
-                request.LevelSensorType,
-                request.LevelSensorName,
-                request.LevelSensorConnectionPort,
+                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
+                ConstantStrings.SqlQueries.Gadget.Save.Insert,
+                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
+                new List<SaveItemProperty> {
+                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
+                    new SaveItemProperty { Name= "Type", Value = request.LevelSensorType, IsRequired = true },
+                    new SaveItemProperty { Name= "ConnectionPort", Value = request.LevelSensorConnectionPort, IsRequired = false },
+                    new SaveItemProperty { Name= "Value", Value = 0.0 },
+                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
+                },
                 (log) => { returnItem.AddAction("Level Sensor : " + log); }
-                );
+            );
 
-            _saveGadget(
+            _saveItem(
                 request.FlowSensorId,
-                request.FlowSensorType,
-                request.FlowSensorName,
-                request.FlowSensorConnectionPort,
+                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
+                ConstantStrings.SqlQueries.Gadget.Save.Insert,
+                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
+                new List<SaveItemProperty> {
+                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
+                    new SaveItemProperty { Name= "Type", Value = request.FlowSensorType, IsRequired = true },
+                    new SaveItemProperty { Name= "ConnectionPort", Value = request.FlowSensorConnectionPort, IsRequired = false },
+                    new SaveItemProperty { Name= "Value", Value = 0.0 },
+                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
+                },
                 (log) => { returnItem.AddAction("Flow Sensor : " + log); }
-                );
+            );
 
-            _saveGadget(
+            _saveItem(
                 request.ValveId,
-                request.ValveType,
-                request.ValveName,
-                request.ValveConnectionPort,
+                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
+                ConstantStrings.SqlQueries.Gadget.Save.Insert,
+                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
+                new List<SaveItemProperty> {
+                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
+                    new SaveItemProperty { Name= "Type", Value = request.ValveType, IsRequired = true },
+                    new SaveItemProperty { Name= "ConnectionPort", Value = request.ValveConnectionPort, IsRequired = false },
+                    new SaveItemProperty { Name= "Value", Value = 0.0 },
+                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
+                },
                 (log) => { returnItem.AddAction("Valve : " + log); }
-                );
+            );
 
 
-            _saveTank(
+            _saveItem(
                 request.Id,
-                request.Type,
-                request.Name,
-                request.LevelSensorId,
-                request.FlowSensorId,
-                request.ValveId,
-                request.PercentageRatio,
-                request.Unit,
-                (log) => { returnItem.AddAction(log); }
-             );
+                ConstantStrings.SqlQueries.Tank.Get.IdParam,
+                ConstantStrings.SqlQueries.Tank.Save.Insert,
+                ConstantStrings.SqlQueries.Tank.Save.UpdateWithId,
+                new List<SaveItemProperty> {
+                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
+                    new SaveItemProperty { Name= "Type", Value = request.Type, IsRequired = true },
+                    new SaveItemProperty { Name= "LevelSensor", Value = request.LevelSensorId },
+                    new SaveItemProperty { Name= "FlowSensor", Value = request.FlowSensorId },
+                    new SaveItemProperty { Name= "EmptyValve", Value = request.ValveId },
+                    new SaveItemProperty { Name= "PercentToUnitRatio", Value = request.PercentageRatio },
+                    new SaveItemProperty { Name= "PercentToUnitType", Value = request.Unit },
+                },
+                (log) => { returnItem.AddAction("Tank : " + log); }
+            );
 
             _database.Close();
             return returnItem;
         }
 
+        private void _saveItem(
+            Guid? id,
+            string getQuery,
+            string insertQuery,
+            string updateQuery,
+            List<SaveItemProperty> properties,
+            Action<string> logCallback
+            )
+        {
+            bool isRequiredValuesSuplied = true;
 
-        private void _saveTank(Guid? id, TankType? tankType, string name, Guid? levelSensor, Guid? flowSensor, Guid? valve, double ratio, UnitType? unitType, Action<string> actionLogCallback)
+            properties.ForEach(item =>
+            {
+                if (item.IsRequired && item.Value == null)
+                {
+                    isRequiredValuesSuplied = false;
+                    logCallback(string.Format("Property '{0}' is required but not suplied.", item.Name));
+                }
+            });
+
+            if (!isRequiredValuesSuplied) return;
+
+            if (id == null) id = Guid.NewGuid();
+
+            SqliteDataReader reader = _database.ExecuteReader(
+                    getQuery,
+                    new List<SqliteParameter>() { new SqliteParameter("Id", id.ToString()) });
+
+            var saveParameters = new List<SqliteParameter>();
+            saveParameters.Add(new SqliteParameter("Id", id.ToDBString()));
+
+            if (reader.Read())
+            {
+                logCallback("Items is exists");
+                var hasChange = _buildSaveParameters(properties, reader, saveParameters, logCallback);
+                if (hasChange)
+                {
+                    _database.ExecuteScalar<int>(updateQuery, saveParameters);
+                    logCallback("Item is updated.");
+                }
+            }
+            else
+            {
+                logCallback("Items is NOT exists");
+                _buildSaveParameters(properties, null, saveParameters, logCallback);
+                _database.ExecuteScalar<int>(insertQuery, saveParameters);
+                logCallback("Items is created.");
+            }
+
+
+        }
+
+
+        private bool _buildSaveParameters(List<SaveItemProperty> properties, SqliteDataReader oldRecordReader, List<SqliteParameter> updateParameters, Action<string> logCallback)
+        {
+            var hasChange = false;
+
+            properties.ForEach(item =>
+                  {
+                      object oldValue = DBNull.Value;
+                      if (oldRecordReader != null) oldValue = oldRecordReader.GetValue(oldRecordReader.GetOrdinal(item.Name));
+
+                      switch (item.Value)
+                      {
+                          case null:
+                              updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              break;
+                          case string stringValue:
+                              if (stringValue != oldValue.ToString())
+                              {
+                                  hasChange = true;
+                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                                  updateParameters.Add(new SqliteParameter(item.Name, stringValue));
+                              }
+                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+
+                              break;
+                          case Guid guidValue:
+                              if (oldValue != DBNull.Value && guidValue != Guid.Parse(oldValue.ToString()))
+                              {
+                                  hasChange = true;
+                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                                  updateParameters.Add(new SqliteParameter(item.Name, guidValue));
+                              }
+                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              break;
+                          case double doubleValue:
+                              if (oldValue == DBNull.Value || doubleValue != (double)oldValue)
+                              {
+                                  hasChange = true;
+                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                                  updateParameters.Add(new SqliteParameter(item.Name, doubleValue));
+                              }
+                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              break;
+                          case int intValue:
+                              if (oldValue != DBNull.Value && intValue != (int)oldValue)
+                              {
+                                  hasChange = true;
+                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                                  updateParameters.Add(new SqliteParameter(item.Name, intValue));
+                              }
+                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              break;
+                          default:
+                              var baseType = item.Value.GetType().BaseType;
+                              if (baseType.FullName == "System.Enum")
+                              {
+                                  if (oldValue != DBNull.Value && (int)(long)oldValue != (int)item.Value)
+                                  {
+                                      hasChange = true;
+                                      if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                                  }
+
+                                  if ((int)item.Value == 0)
+                                      updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                                  else
+                                      updateParameters.Add(new SqliteParameter(item.Name, item.Value));
+                              }
+                              break;
+                      }
+                  });
+
+            return hasChange;
+        }
+
+        public class SaveItemProperty
+        {
+            public string Name { get; set; }
+
+            public object Value { get; set; }
+
+            public bool IsRequired { get; set; }
+        }
+
+/*
+        private void _saveTank(Guid? id, TankType? tankType, string name, Guid? levelSensor, Guid? flowSensor, Guid? valve, double ratio, LiquidUnitType? unitType, Action<string> actionLogCallback)
         {
 
-            if (unitType != null && !Enum.IsDefined(typeof(UnitType), unitType)) unitType = null;
+            if (unitType != null && !Enum.IsDefined(typeof(LiquidUnitType), unitType)) unitType = null;
             if (tankType != null && !Enum.IsDefined(typeof(TankType), tankType)) tankType = null;
 
             if (id == null) id = Guid.NewGuid();
@@ -132,7 +293,7 @@ namespace sp.iot.core
                     flowSensor.ToString() != reader.GetValue(reader.GetOrdinal("FlowSensor")).ToString() ||
                     valve.ToString() != reader.GetValue(reader.GetOrdinal("EmptyValve")).ToString() ||
                     ratio != (double)reader.GetValue(reader.GetOrdinal("PercentToUnitRatio")) ||
-                    unitType != (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("PercentToUnitType")) ||
+                    unitType != (LiquidUnitType)(int)(long)reader.GetValue(reader.GetOrdinal("PercentToUnitType")) ||
                     name != reader.GetValue(reader.GetOrdinal("Name")).ToString())
                 {
                     actionLogCallback("Need to update tank.");
@@ -194,13 +355,12 @@ namespace sp.iot.core
                             "UPDATE Gadgets SET Name = @Name, Type = @Type, ConnectionPort = @ConnectionPort, Status = 1, Value = 0 WHERE Id = @Id",
                             new List<SqliteParameter>() {
                                     new SqliteParameter("Id", id.ToString()),
-                                    new SqliteParameter("Name", String.IsNullOrEmpty(name) ?"-" : name),
-                                    new SqliteParameter("Type", type),
-                                    new SqliteParameter("ConnectionPort", port),
+                                    new SqliteParameter("Name", String.IsNullOrEmpty(name) ? reader.GetValue(reader.GetOrdinal("Name")).ToString() : name),
+                                    new SqliteParameter("Type", type.GetDBChangeValue(reader.GetValue(reader.GetOrdinal("Type")))),
+                                    new SqliteParameter("ConnectionPort", String.IsNullOrEmpty(port) ? reader.GetValue(reader.GetOrdinal("ConnectionPort")).ToString() : port),
                     });
                         actionLogCallback("Sensor is updated.");
                     }
-
                 }
                 else
                 {
@@ -223,17 +383,20 @@ namespace sp.iot.core
                 if ((port == null && type != null)) actionLogCallback("Sensor info is ignored. Port is not suplied");
             }
         }
+*/
         private Tank _bindReaderData(SqliteDataReader reader)
         {
             Tank returnValue = new Tank
             {
-                Id = Guid.Parse(reader.GetValue(reader.GetOrdinal("ID")).ToString()),
+                Id = reader.GetValueAsGuid("Id").Value,
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
                 Type = (TankType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
-                LevelAsPercentage = (double)reader.GetValue(reader.GetOrdinal("Percentage")),
-                IsLevelMonitored = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("LevelSensor")).ToString()),
-                IsConsumptionMonitored = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("FlowSensor")).ToString()),
-                CanEmpty = !string.IsNullOrEmpty(reader.GetValue(reader.GetOrdinal("EmptyValve")).ToString()),
+                Unit = (LiquidUnitType)(int)(long)reader.GetValue(reader.GetOrdinal("PercentToUnitType")),
+                LevelAsPercentage = reader.GetValueAsDouble("LevelSensorValue"),
+                PercentToUnitRatio = reader.GetValueAsDouble("PercentToUnitRatio"),
+                LevelSensorId = reader.GetValueAsGuid("LevelSensor"),
+                FlowSensorId = reader.GetValueAsGuid("FlowSensor"),
+                EmptyValveId = reader.GetValueAsGuid("FlowSensor"),
             };
             return returnValue;
         }

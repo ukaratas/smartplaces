@@ -34,7 +34,7 @@ namespace sp.iot.core
 
         public void Close()
         {
-            Connection.Close();
+            if (Connection != null) Connection.Close();
         }
 
         public SqliteConnection GetConnection()

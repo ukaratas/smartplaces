@@ -2,7 +2,7 @@ using System;
 
 namespace sp.iot.core
 {
-    public enum UnitType
+    public enum LiquidUnitType
     {
         Liter = 10,
         Gallon = 20,
