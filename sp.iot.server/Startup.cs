@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,18 +31,20 @@ namespace sp.iot.server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddScoped<IDatabase, Database>();
-
             services.AddCoreServices();
-            
-            services.AddControllers();
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
             services.AddSwaggerGen(c =>
               {
                   c.SwaggerDoc("v1", new OpenApiInfo
                   {
                       Title = "Smart Places",
                       Version = "v1",
-                      Description = "Boat, Motorhome, Camper Automation Solution",
+                      Description = "Smart Home, Boat, Motorhome, Camper etc. Automation Solution",
 
                       License = new OpenApiLicense
                       {

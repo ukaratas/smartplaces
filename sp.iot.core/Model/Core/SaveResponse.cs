@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace sp.iot.core
 {
-    public class SaveResponse<T> where T : BaseItem
+    public class SaveResponse<T>
     {
         public SaveResponse()
         {
