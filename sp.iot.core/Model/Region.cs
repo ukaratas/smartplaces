@@ -6,6 +6,12 @@ namespace sp.iot.core
 {
     public class Region : BaseItem
     {
+
+        public Region()
+        {
+            Sections = new List<Section>();
+        }
+
         [JsonPropertyName("name")]
         public string Name { get; set; }
 

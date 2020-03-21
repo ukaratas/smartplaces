@@ -9,7 +9,7 @@ namespace sp.iot.core
         public string Name { get; set; }
 
         [JsonPropertyName("type")]
-        public GadgetType? Type { get; set; }
+        public GadgetType Type { get; set; }
 
         [JsonPropertyName("port")]
         public string Port { get; set; }
@@ -34,7 +34,7 @@ namespace sp.iot.core
 
 
         [JsonPropertyName("position-in-section")]
-        public PositionType PositionInSection { get; set; }
+        public PositionType SectionPosition { get; set; }
 
         [JsonPropertyName("attached-to")]
         public Guid AttachedTo { get; set; }

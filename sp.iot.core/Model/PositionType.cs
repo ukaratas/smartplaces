@@ -5,15 +5,16 @@ namespace sp.iot.core
 {
     public enum PositionType
     {
+        NotSet = 0,
         Free = 1,
-        TopRight = 101,
-        TopCenter = 102,
-        TopLeft = 103,
-        MiddleRight = 201,
-        MiddleCenter = 202,
-        MiddleLeft = 203,
-        BottomRight = 301,
-        BottomCenter = 302,
-        BottomLeft = 303
+        TopRight = 1001,
+        TopCenter = 1002,
+        TopLeft = 1003,
+        MiddleRight = 2001,
+        MiddleCenter = 2002,
+        MiddleLeft = 2003,
+        BottomRight = 3001,
+        BottomCenter = 3002,
+        BottomLeft = 3003
     }
 }

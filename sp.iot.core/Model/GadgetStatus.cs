@@ -4,7 +4,8 @@ namespace sp.iot.core
 {
     public enum GadgetStatus
     {
-        Passive = 0,
-        Active = 1,
+        NotSet = 0,
+        Passive = 1001,
+        Active = 2001,
     }
 }

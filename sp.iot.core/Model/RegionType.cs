@@ -4,7 +4,8 @@ namespace sp.iot.core
 {
     public enum RegionType
     {
-        Floor = 10,
-        Tank = 20,
+        NotSet = 0,
+        Floor = 1001,
+        Tank = 2001,
     }
 }

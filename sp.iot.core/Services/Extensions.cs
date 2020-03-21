@@ -56,18 +56,20 @@ namespace sp.iot.core
             }
 
         }
-
-        public static Guid? GetValueAsGuid(this SqliteDataReader reader, string fieldName)
+*/
+        public static Guid GetValueAsGuid(this SqliteDataReader reader, string fieldName)
         {
             var value = reader.GetValue(reader.GetOrdinal(fieldName));
 
             if (value == null || value == DBNull.Value)
-                return null;
+                return Guid.Empty;
             else
             {
                 return Guid.Parse(value.ToString());
             }
         }
+
+        /*
 
          public static double GetValueAsDouble(this SqliteDataReader reader, string fieldName)
         {

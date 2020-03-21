@@ -19,52 +19,36 @@ namespace sp.iot.core
 
         public Settings Get()
         {
-            return new Settings();
-            /*
-            Tank returnValue = null;
+            var settings = new Settings();
 
-            SqliteDataReader reader = _database.ExecuteReader(
-                ConstantStrings.SqlQueries.Tank.Get.IdParam,
-                new List<SqliteParameter>() { new SqliteParameter("Id", tankId.ToString()) }
-                );
+            SqliteDataReader regionReader = _database.ExecuteReader(ConstantStrings.SqlQueries.Region.Get.All);
 
-            if (reader.Read())
+            while (regionReader.Read())
             {
-                returnValue = _bindReaderData(reader);
+                var region = _bindRegionData(regionReader);
+                settings.Regions.Add(region);
+
+                SqliteDataReader sectionReader = _database.ExecuteReader(
+                    ConstantStrings.SqlQueries.Section.Get.FilterByRegion,
+                    new List<SqliteParameter> { new SqliteParameter("Region", region.Id) });
+
+                while (sectionReader.Read())
+                {
+                    var section = _bindSectionData(sectionReader);
+                    region.Sections.Add(section);
+
+                    SqliteDataReader gadgetReader = _database.ExecuteReader(
+                        ConstantStrings.SqlQueries.Gadget.Get.FilterBySection,
+                        new List<SqliteParameter> { new SqliteParameter("Section", section.Id) });
+
+                    while (gadgetReader.Read())
+                    {
+                        var gadget = _bindGadgetData(gadgetReader);
+                        section.Gadgets.Add(gadget);
+                    }
+                }
             }
-
-            reader.Close();
-            _database.Close();
-
-            return returnValue;
-
-        }
-
-        List<Tank> ITankService.Get(TankType? type)
-        {
-            List<Tank> returnValue = new List<Tank>();
-
-            SqliteDataReader reader;
-
-            if (type == null)
-            {
-                reader = _database.ExecuteReader(ConstantStrings.SqlQueries.Tank.Get.NoParam);
-            }
-            else
-            {
-                reader = _database.ExecuteReader(
-                    ConstantStrings.SqlQueries.Tank.Get.TypeParam,
-                    new List<SqliteParameter>() { new SqliteParameter("Type", type) }
-                    );
-            }
-            while (reader.Read())
-            {
-                returnValue.Add(_bindReaderData(reader));
-            }
-            _database.Close();
-
-            return returnValue;
-            */
+            return settings;
         }
 
         public SaveResponse<Settings> Save(Settings request)
@@ -93,7 +77,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "ValueToTargetRatio", Value = gadget.ValueToTargetRatio },
                                                     new SaveItemProperty { Name= "ValueToTargetUnit", Value = gadget.ValueToTargetUnit },
                                                     new SaveItemProperty { Name= "Section", Value = section.Id },
-                                                    new SaveItemProperty { Name= "SectionPosition", Value = gadget.PositionInSection },
+                                                    new SaveItemProperty { Name= "SectionPosition", Value = gadget.SectionPosition },
                                                     new SaveItemProperty { Name= "ComplexValue", Value = gadget.ComplexValue},
                                                     new SaveItemProperty { Name= "AttachedTo", Value = gadget.AttachedTo},
                                                     new SaveItemProperty { Name= "Status", Value = gadget.Status},
@@ -102,102 +86,90 @@ namespace sp.iot.core
                                             );
 
                                 });
+
+                            _database.SaveItem(
+                                       section.Id,
+                                       ConstantStrings.SqlQueries.Section.Get.IdParam,
+                                       ConstantStrings.SqlQueries.Section.Save.Insert,
+                                       ConstantStrings.SqlQueries.Section.Save.UpdateWithId,
+                                       new List<SaveItemProperty> {
+                                                    new SaveItemProperty { Name= "Name", Value = section.Name},
+                                                    new SaveItemProperty { Name= "Region", Value = region.Id},
+                                                    new SaveItemProperty { Name= "RightSection", Value = section.RightSection},
+                                                    new SaveItemProperty { Name= "LeftSection", Value = section.LeftSection},
+                                                    new SaveItemProperty { Name= "TopSection", Value = section.TopSection},
+                                                    new SaveItemProperty { Name= "BottomSection", Value = section.BottomSection},
+                                       },
+                                       (log) => { returnValue.AddAction(string.Format("Section '{0}' : {1}", section.Name, log)); }
+                                       );
                         });
+
+                    _database.SaveItem(
+                                     region.Id,
+                                     ConstantStrings.SqlQueries.Region.Get.IdParam,
+                                     ConstantStrings.SqlQueries.Region.Save.Insert,
+                                     ConstantStrings.SqlQueries.Region.Save.UpdateWithId,
+                                     new List<SaveItemProperty> {
+                                                    new SaveItemProperty { Name= "Name", Value = region.Name},
+                                                    new SaveItemProperty { Name= "Type", Value = region.Type},
+                                     },
+                                     (log) => { returnValue.AddAction(string.Format("Region '{0}' : {1}", region.Name, log)); }
+                                     );
                 });
 
             _database.Close();
             return returnValue;
-            /*
-            SaveResponse<Tank> returnItem = new SaveResponse<Tank>();
-
-            returnItem.AddAction("Save progress started.");
-
-            _database.SaveItem(
-                request.LevelSensorId,
-                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
-                ConstantStrings.SqlQueries.Gadget.Save.Insert,
-                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
-                new List<SaveItemProperty> {
-                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
-                    new SaveItemProperty { Name= "Type", Value = request.LevelSensorType, IsRequired = true },
-                    new SaveItemProperty { Name= "ConnectionPort", Value = request.LevelSensorConnectionPort, IsRequired = false },
-                    new SaveItemProperty { Name= "Value", Value = 0.0 },
-                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
-                },
-                (log) => { returnItem.AddAction("Level Sensor : " + log); }
-            );
-
-            _database.SaveItem(
-                request.FlowSensorId,
-                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
-                ConstantStrings.SqlQueries.Gadget.Save.Insert,
-                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
-                new List<SaveItemProperty> {
-                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
-                    new SaveItemProperty { Name= "Type", Value = request.FlowSensorType, IsRequired = true },
-                    new SaveItemProperty { Name= "ConnectionPort", Value = request.FlowSensorConnectionPort, IsRequired = false },
-                    new SaveItemProperty { Name= "Value", Value = 0.0 },
-                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
-                },
-                (log) => { returnItem.AddAction("Flow Sensor : " + log); }
-            );
-
-            _database.SaveItem(
-                request.ValveId,
-                ConstantStrings.SqlQueries.Gadget.Get.IdParam,
-                ConstantStrings.SqlQueries.Gadget.Save.Insert,
-                ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
-                new List<SaveItemProperty> {
-                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
-                    new SaveItemProperty { Name= "Type", Value = request.ValveType, IsRequired = true },
-                    new SaveItemProperty { Name= "ConnectionPort", Value = request.ValveConnectionPort, IsRequired = false },
-                    new SaveItemProperty { Name= "Value", Value = 0.0 },
-                    new SaveItemProperty { Name= "Status", Value = GadgetStatus.Active},
-                },
-                (log) => { returnItem.AddAction("Valve : " + log); }
-            );
-            
-            _database.SaveItem(
-                request.Id,
-                ConstantStrings.SqlQueries.Tank.Get.IdParam,
-                ConstantStrings.SqlQueries.Tank.Save.Insert,
-                ConstantStrings.SqlQueries.Tank.Save.UpdateWithId,
-                new List<SaveItemProperty> {
-                    new SaveItemProperty { Name= "Name", Value = request.Name, IsRequired = true },
-                    new SaveItemProperty { Name= "Type", Value = request.Type, IsRequired = true },
-                    new SaveItemProperty { Name= "LevelSensor", Value = request.LevelSensorId },
-                    new SaveItemProperty { Name= "FlowSensor", Value = request.FlowSensorId },
-                    new SaveItemProperty { Name= "EmptyValve", Value = request.ValveId },
-                    new SaveItemProperty { Name= "PercentToUnitRatio", Value = request.PercentageRatio },
-                    new SaveItemProperty { Name= "PercentToUnitType", Value = request.Unit },
-                },
-                (log) => { returnItem.AddAction("Tank : " + log); }
-            );
-
-            _database.Close();
-            return returnItem;
-            */
         }
 
-        /*
-        private Tank _bindReaderData(SqliteDataReader reader)
+
+        private Region _bindRegionData(SqliteDataReader reader)
         {
-            Tank returnValue = new Tank
+            Region returnValue = new Region
             {
-                Id = reader.GetValueAsGuid("Id").Value,
+                Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
-                Type = (TankType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
-                Unit = (LiquidUnitType)(int)(long)reader.GetValue(reader.GetOrdinal("PercentToUnitType")),
-                LevelAsPercentage = reader.GetValueAsDouble("LevelSensorValue"),
-                PercentToUnitRatio = reader.GetValueAsDouble("PercentToUnitRatio"),
-                LevelSensorId = reader.GetValueAsGuid("LevelSensor"),
-                FlowSensorId = reader.GetValueAsGuid("FlowSensor"),
-                EmptyValveId = reader.GetValueAsGuid("FlowSensor"),
+                Type = (RegionType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
             };
             return returnValue;
         }
 
-        */
+
+        private Section _bindSectionData(SqliteDataReader reader)
+        {
+            Section returnValue = new Section
+            {
+                Id = reader.GetValueAsGuid("Id"),
+                Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
+                RightSection = reader.GetValueAsGuid("RightSection"),
+                LeftSection = reader.GetValueAsGuid("LeftSection"),
+                TopSection = reader.GetValueAsGuid("TopSection"),
+                BottomSection = reader.GetValueAsGuid("BottomSection"),
+            };
+            return returnValue;
+        }
+
+        private Gadget _bindGadgetData(SqliteDataReader reader)
+        {
+            Gadget returnValue = new Gadget
+            {
+                Id = reader.GetValueAsGuid("Id"),
+                Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
+                Type = (GadgetType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
+                Port = reader.GetValue(reader.GetOrdinal("Port")).ToString(),
+                Status = (GadgetStatus)(int)(long)reader.GetValue(reader.GetOrdinal("Status")),
+                Value = (double)reader.GetValue(reader.GetOrdinal("Value")),
+                ValueUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueUnit")),
+                ValueToTargetRatio = (double)reader.GetValue(reader.GetOrdinal("ValueToTargetRatio")),
+                ValueToTargetUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueToTargetUnit")),
+                ComplexValue = reader.GetValue(reader.GetOrdinal("ComplexValue")).ToString(),
+                SectionPosition = (PositionType)(int)(long)reader.GetValue(reader.GetOrdinal("SectionPosition")),
+                AttachedTo = reader.GetValueAsGuid("AttachedTo"),
+            };
+            return returnValue;
+        }
+
+
+
 
     }
 }

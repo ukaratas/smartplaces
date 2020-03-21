@@ -5,8 +5,9 @@ namespace sp.iot.core
 {
     public enum SaveResponseType
     {
-        Created = 10,
-        Updated = 20,
-        Error = 30
+        NotSet = 0,
+        Created = 1001,
+        Updated = 2001,
+        Error = 3001
     }
 }

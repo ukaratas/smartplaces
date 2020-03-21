@@ -23,8 +23,6 @@ namespace sp.iot.core
 
             if (Connection == null)
             {
-                //if (Connection.State != ConnectionState.Open) Connection.Open();
-
                 var conn = new SqliteConnectionStringBuilder();
                 conn.DataSource = _config.GetValue<string>("Database:File");
 
@@ -96,7 +94,7 @@ namespace sp.iot.core
         {
             SqliteDataReader reader = ExecuteReader(
                     getQuery,
-                    new List<SqliteParameter>() { new SqliteParameter("Id", id.ToString()) });
+                    new List<SqliteParameter>() { new SqliteParameter("Id", id) });
 
             var saveParameters = new List<SqliteParameter>();
             saveParameters.Add(new SqliteParameter("Id", id));
@@ -139,10 +137,7 @@ namespace sp.iot.core
 
                               break;
                           case Guid guidValue:
-                              if (guidValue == Guid.Empty)
-                                  updateParameters.Add(new SqliteParameter(item.Name, DBNull.Value));
-                              else
-                                  updateParameters.Add(new SqliteParameter(item.Name, guidValue));
+                              updateParameters.Add(new SqliteParameter(item.Name, guidValue));
 
                               if ((oldValue == DBNull.Value && guidValue != Guid.Empty)
                                     || (oldValue is Guid && guidValue != (Guid)oldValue)) hasFieldChange = true;
@@ -158,13 +153,10 @@ namespace sp.iot.core
                               var baseType = item.Value.GetType().BaseType;
                               if (baseType.FullName == "System.Enum")
                               {
-                                  if ((int)item.Value == 0)
-                                      updateParameters.Add(new SqliteParameter(item.Name, DBNull.Value));
-                                  else
-                                      updateParameters.Add(new SqliteParameter(item.Name, item.Value));
+                                  updateParameters.Add(new SqliteParameter(item.Name, item.Value));
 
                                   if ((oldValue == DBNull.Value && (int)item.Value != 0)
-                                      || (oldValue != DBNull.Value && oldValue != item.Value)) hasFieldChange = true;
+                                      || (oldValue != DBNull.Value && (long)oldValue != (long)(int)item.Value)) hasFieldChange = true;
                               }
                               else
                               {
