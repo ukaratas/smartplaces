@@ -33,7 +33,7 @@ namespace sp.iot.core
                 public static class Save
                 {
                     public const string UpdateWithId = "UPDATE Gadgets SET Name = @Name, Type = @Type, ConnectionPort = @ConnectionPort, Status = @Status, Value = @Value WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO Gadgets (ID, Name, Type, ConnectionPort, Value, Status) VALUES ( @Id, @Name, @Type, @ConnectionPort, @Value, @Status )";
+                    public const string Insert = "INSERT INTO Gadgets (Id,Name,Type,Port,Status,Value,ValueUnit,ValueToTargetRatio,ValueToTargetUnit,ComplexValue,Section,SectionPosition,AttachedTo) VALUES (@Id,@Name,@Type,@Port,@Status,@Value,@ValueUnit,@ValueToTargetRatio,@ValueToTargetUnit,@ComplexValue,@Section,@SectionPosition,@AttachedTo)";
                 }
 
             }

@@ -70,7 +70,6 @@ namespace sp.iot.core
         public SaveResponse<Settings> Save(Settings request)
         {
             var returnValue = new SaveResponse<Settings>();
-
             request.Regions.ForEach(
                 region =>
                 {
@@ -94,18 +93,20 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "ValueToTargetRatio", Value = gadget.ValueToTargetRatio },
                                                     new SaveItemProperty { Name= "ValueToTargetUnit", Value = gadget.ValueToTargetUnit },
                                                     new SaveItemProperty { Name= "Section", Value = section.Id },
-                                                    new SaveItemProperty { Name= "Section", Value = gadget.PositionInSection },
+                                                    new SaveItemProperty { Name= "SectionPosition", Value = gadget.PositionInSection },
                                                     new SaveItemProperty { Name= "ComplexValue", Value = gadget.ComplexValue},
+                                                    new SaveItemProperty { Name= "AttachedTo", Value = gadget.AttachedTo},
                                                     new SaveItemProperty { Name= "Status", Value = gadget.Status},
                                             },
                                             (log) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log)); }
-           );
+                                            );
 
                                 });
                         });
                 });
 
-            return null;
+            _database.Close();
+            return returnValue;
             /*
             SaveResponse<Tank> returnItem = new SaveResponse<Tank>();
 

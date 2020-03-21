@@ -37,9 +37,10 @@ namespace sp.iot.server.Controllers
         [HttpPost()]
         [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(Settings), 200)]
-        public IEnumerable<Tank> SaveSwitch([FromBody] Settings body)
+        public SaveResponse<Settings> SaveSwitch([FromBody] Settings body)
         {
-            throw new NotImplementedException();
+            return _settingsService.Save(body);
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace sp.iot.core
 
         T ExecuteScalar<T>(string commandText, List<SqliteParameter> parameters);
 
-        void SaveItem(Guid? id, string getQuery, string insertQuery, string updateQuery, List<SaveItemProperty> properties, Action<string> logCallback);
+        void SaveItem(Guid id, string getQuery, string insertQuery, string updateQuery, List<SaveItemProperty> properties, Action<string> logCallback);
     }
 
 }

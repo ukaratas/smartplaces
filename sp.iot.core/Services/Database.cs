@@ -86,7 +86,7 @@ namespace sp.iot.core
 
 
         public void SaveItem(
-            Guid? id,
+            Guid id,
             string getQuery,
             string insertQuery,
             string updateQuery,
@@ -94,27 +94,12 @@ namespace sp.iot.core
             Action<string> logCallback
             )
         {
-            bool isRequiredValuesSuplied = true;
-
-            properties.ForEach(item =>
-            {
-                if (item.IsRequired && item.Value == null)
-                {
-                    isRequiredValuesSuplied = false;
-                    logCallback(string.Format("Property '{0}' is required but not suplied.", item.Name));
-                }
-            });
-
-            if (!isRequiredValuesSuplied) return;
-
-            if (id == null) id = Guid.NewGuid();
-
             SqliteDataReader reader = ExecuteReader(
                     getQuery,
                     new List<SqliteParameter>() { new SqliteParameter("Id", id.ToString()) });
 
             var saveParameters = new List<SqliteParameter>();
-            saveParameters.Add(new SqliteParameter("Id", id.ToDBString()));
+            saveParameters.Add(new SqliteParameter("Id", id));
 
             if (reader.Read())
             {
@@ -133,85 +118,67 @@ namespace sp.iot.core
                 ExecuteScalar<int>(insertQuery, saveParameters);
                 logCallback("Items is created.");
             }
-
-
         }
 
         private bool _buildSaveParameters(List<SaveItemProperty> properties, SqliteDataReader oldRecordReader, List<SqliteParameter> updateParameters, Action<string> logCallback)
         {
             var hasChange = false;
-
             properties.ForEach(item =>
                   {
-                      object oldValue = DBNull.Value;
-                      if (oldRecordReader != null) oldValue = oldRecordReader.GetValue(oldRecordReader.GetOrdinal(item.Name));
-
+                      object oldValue = (oldRecordReader != null) ? oldRecordReader.GetValue(oldRecordReader.GetOrdinal(item.Name)) : DBNull.Value;
+                      var hasFieldChange = false;
                       switch (item.Value)
                       {
                           case null:
                               updateParameters.Add(new SqliteParameter(item.Name, oldValue));
                               break;
                           case string stringValue:
-                              if (stringValue != oldValue.ToString())
-                              {
-                                  hasChange = true;
-                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                                  updateParameters.Add(new SqliteParameter(item.Name, stringValue));
-                              }
-                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              updateParameters.Add(new SqliteParameter(item.Name, stringValue));
+
+                              if (stringValue != oldValue.ToString()) hasFieldChange = true;
 
                               break;
                           case Guid guidValue:
-                              if (oldValue == DBNull.Value)
-                              {
-                                  hasChange = true;
+                              if (guidValue == Guid.Empty)
+                                  updateParameters.Add(new SqliteParameter(item.Name, DBNull.Value));
+                              else
                                   updateParameters.Add(new SqliteParameter(item.Name, guidValue));
-                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                              }
-                              else if (guidValue != Guid.Parse(oldValue.ToString()))
-                              {
-                                  hasChange = true;
-                                  updateParameters.Add(new SqliteParameter(item.Name, guidValue));
-                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                              }
+
+                              if ((oldValue == DBNull.Value && guidValue != Guid.Empty)
+                                    || (oldValue is Guid && guidValue != (Guid)oldValue)) hasFieldChange = true;
                               break;
                           case double doubleValue:
-                              if (oldValue == DBNull.Value || doubleValue != (double)oldValue)
-                              {
-                                  hasChange = true;
-                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                                  updateParameters.Add(new SqliteParameter(item.Name, doubleValue));
-                              }
-                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              updateParameters.Add(new SqliteParameter(item.Name, doubleValue));
+                              if (oldValue != DBNull.Value && (double)oldValue != doubleValue) hasFieldChange = true;
                               break;
                           case int intValue:
-                              if (oldValue != DBNull.Value && intValue != (int)oldValue)
-                              {
-                                  hasChange = true;
-                                  if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                                  updateParameters.Add(new SqliteParameter(item.Name, intValue));
-                              }
-                              else updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                              updateParameters.Add(new SqliteParameter(item.Name, intValue));
                               break;
                           default:
                               var baseType = item.Value.GetType().BaseType;
                               if (baseType.FullName == "System.Enum")
                               {
-                                  if (oldValue != DBNull.Value && (int)(long)oldValue != (int)item.Value)
-                                  {
-                                      hasChange = true;
-                                      if (oldRecordReader != null) logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
-                                  }
-
                                   if ((int)item.Value == 0)
-                                      updateParameters.Add(new SqliteParameter(item.Name, oldValue));
+                                      updateParameters.Add(new SqliteParameter(item.Name, DBNull.Value));
                                   else
                                       updateParameters.Add(new SqliteParameter(item.Name, item.Value));
+
+                                  if ((oldValue == DBNull.Value && (int)item.Value != 0)
+                                      || (oldValue != DBNull.Value && oldValue != item.Value)) hasFieldChange = true;
+                              }
+                              else
+                              {
+                                  throw new NotSupportedException(string.Format("{0} : {1}", item.Name, item.Value.GetType()));
                               }
                               break;
                       }
-                  });
 
+                      if (hasFieldChange && oldRecordReader != null)
+                      {
+                          logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                          hasChange = true;
+                      }
+                  });
             return hasChange;
         }
     }
@@ -219,10 +186,7 @@ namespace sp.iot.core
     public class SaveItemProperty
     {
         public string Name { get; set; }
-
         public object Value { get; set; }
-
-        public bool IsRequired { get; set; }
     }
 
 

@@ -12,10 +12,9 @@ namespace sp.iot.core
         {
             services.AddScoped<IDatabase, Database>();
             services.AddScoped<ISettingsService, SettingsService>();
-            services.AddScoped<ITankService, TankService>();
         }
 
-        
+        /*
         public static object ToDBString(this Guid? value)
         {
             if (value == null || value == Guid.Empty)
@@ -43,31 +42,7 @@ namespace sp.iot.core
             }
         }
 
-        public static object GetDBChangeValue(this TankType? newValue, object oldValue)
-        {
-            if (newValue == null || newValue == 0)
-            {
-                return oldValue;
-            }
-            else
-            {
-                return newValue;
-            }
-
-        }
-
-        public static object GetDBChangeValue(this LiquidUnitType? newValue, object oldValue)
-        {
-            if (newValue == null || newValue == 0)
-            {
-                return oldValue;
-            }
-            else
-            {
-                return newValue;
-            }
-
-        }
+      
 
         public static object GetDBChangeValue(this GadgetType? newValue, object oldValue)
         {
@@ -105,5 +80,6 @@ namespace sp.iot.core
                 return (double)value;
             }
         }
+        */
     }
 }
