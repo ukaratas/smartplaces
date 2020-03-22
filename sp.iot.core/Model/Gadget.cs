@@ -8,6 +8,9 @@ namespace sp.iot.core
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("type-group")]
+        public GadgetTypeGroup TypeGroup { get; set; }
+
         [JsonPropertyName("type")]
         public GadgetType Type { get; set; }
 
@@ -25,6 +28,9 @@ namespace sp.iot.core
 
         [JsonPropertyName("value-to-target-unit")]
         public UnitType ValueToTargetUnit { get; set; }
+
+        [JsonPropertyName("value-to-target")]
+        public double ValueToTarget { get { return ValueToTargetRatio * Value; } }
 
         [JsonPropertyName("complex-value")]
         public string ComplexValue { get; set; }

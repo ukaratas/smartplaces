@@ -43,14 +43,16 @@ namespace sp.iot.core
             {
                 public static class Get
                 {
+                    public const string All = "SELECT * FROM Gadgets";
+                    public const string AllIncludeRegion = "SELECT Gadgets.*, Sections.Region FROM Gadgets LEFT JOIN Sections ON Section = Sections.Id";
                     public const string FilterBySection = "SELECT * FROM Gadgets WHERE Section = @Section";
                     public const string IdParam = "SELECT * FROM Gadgets WHERE Id = @Id";
                 }
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE Gadgets SET Name = @Name,Type = @Type,Port = @Port,Status = @Status,Value = @Value,ValueUnit = @ValueUnit,ValueToTargetRatio = @ValueToTargetRatio,ValueToTargetUnit = @ValueToTargetUnit,ComplexValue = @ComplexValue,Section = @Section,SectionPosition = @SectionPosition,AttachedTo = @AttachedTo WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO Gadgets (Id,Name,Type,Port,Status,Value,ValueUnit,ValueToTargetRatio,ValueToTargetUnit,ComplexValue,Section,SectionPosition,AttachedTo) VALUES (@Id,@Name,@Type,@Port,@Status,@Value,@ValueUnit,@ValueToTargetRatio,@ValueToTargetUnit,@ComplexValue,@Section,@SectionPosition,@AttachedTo)";
+                    public const string UpdateWithId = "UPDATE Gadgets SET Name = @Name,Type = @Type,TypeGroup = @TypeGroup,Port = @Port,Status = @Status,Value = @Value,ValueUnit = @ValueUnit,ValueToTargetRatio = @ValueToTargetRatio,ValueToTargetUnit = @ValueToTargetUnit,ComplexValue = @ComplexValue,Section = @Section,SectionPosition = @SectionPosition,AttachedTo = @AttachedTo WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO Gadgets (Id,Name,Type,TypeGroup,Port,Status,Value,ValueUnit,ValueToTargetRatio,ValueToTargetUnit,ComplexValue,Section,SectionPosition,AttachedTo) VALUES (@Id,@Name,@Type,@TypeGroup,@Port,@Status,@Value,@ValueUnit,@ValueToTargetRatio,@ValueToTargetUnit,@ComplexValue,@Section,@SectionPosition,@AttachedTo)";
                 }
 
             }

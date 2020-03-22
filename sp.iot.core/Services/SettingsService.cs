@@ -10,11 +10,13 @@ namespace sp.iot.core
     {
         private readonly IConfiguration _config;
         private readonly IDatabase _database;
+        private readonly IGadgetService _gadgetService;
 
-        public SettingsService(IConfiguration config, IDatabase database)
+        public SettingsService(IConfiguration config, IDatabase database, IGadgetService gadgetService)
         {
             _config = config;
             _database = database;
+            _gadgetService = gadgetService;
         }
 
         public Settings Get()
@@ -43,7 +45,7 @@ namespace sp.iot.core
 
                     while (gadgetReader.Read())
                     {
-                        var gadget = _bindGadgetData(gadgetReader);
+                        var gadget = _gadgetService.BindGadgetData(gadgetReader);
                         section.Gadgets.Add(gadget);
                     }
                 }
@@ -71,6 +73,7 @@ namespace sp.iot.core
                                             new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = gadget.Name},
                                                     new SaveItemProperty { Name= "Type", Value = gadget.Type},
+                                                    new SaveItemProperty { Name= "TypeGroup", Value = gadget.TypeGroup},
                                                     new SaveItemProperty { Name= "Port", Value = gadget.Port},
                                                     new SaveItemProperty { Name= "Value", Value = gadget.Value },
                                                     new SaveItemProperty { Name= "ValueUnit", Value = gadget.ValueUnit },
@@ -147,29 +150,5 @@ namespace sp.iot.core
             };
             return returnValue;
         }
-
-        private Gadget _bindGadgetData(SqliteDataReader reader)
-        {
-            Gadget returnValue = new Gadget
-            {
-                Id = reader.GetValueAsGuid("Id"),
-                Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
-                Type = (GadgetType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
-                Port = reader.GetValue(reader.GetOrdinal("Port")).ToString(),
-                Status = (GadgetStatus)(int)(long)reader.GetValue(reader.GetOrdinal("Status")),
-                Value = (double)reader.GetValue(reader.GetOrdinal("Value")),
-                ValueUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueUnit")),
-                ValueToTargetRatio = (double)reader.GetValue(reader.GetOrdinal("ValueToTargetRatio")),
-                ValueToTargetUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueToTargetUnit")),
-                ComplexValue = reader.GetValue(reader.GetOrdinal("ComplexValue")).ToString(),
-                SectionPosition = (PositionType)(int)(long)reader.GetValue(reader.GetOrdinal("SectionPosition")),
-                AttachedTo = reader.GetValueAsGuid("AttachedTo"),
-            };
-            return returnValue;
-        }
-
-
-
-
     }
 }
