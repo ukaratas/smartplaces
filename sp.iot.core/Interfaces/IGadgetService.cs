@@ -12,5 +12,7 @@ namespace sp.iot.core
         Gadget BindGadgetData(SqliteDataReader reader);
 
         IEnumerable<Gadget> GetFiltered(Guid region, Guid section, GadgetTypeGroup? typeGroup, GadgetType? type);
+
+        SaveResponse<string> SetValue(Guid id, GadgetSetValueRequest value);
     }
 }

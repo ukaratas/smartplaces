@@ -89,3 +89,6 @@ Content-Type: application/json
 Accept: text/plain 
 
 ###
+
+
+curl -X GET "https://localhost:5001/Gadget/GetFiltered?type-group=Level" -H "accept: text/plain"

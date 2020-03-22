@@ -25,7 +25,6 @@ namespace sp.iot.server.Controllers
             _gadgetService = gadgetService;
         }
 
-
         /// <summary>
         /// Return requested gadget information.
         /// </summary>
@@ -49,12 +48,12 @@ namespace sp.iot.server.Controllers
             return _gadgetService.GetFiltered(region, section, typeGroup, type);
         }
 
-        [HttpPost("SetValue")]
+        [HttpPost("SetValue/{id}")]
         [ProducesErrorResponseType(typeof(void))]
-        [ProducesResponseType(typeof(Settings), 200)]
-        public SaveResponse<Settings> SetValue([FromBody] Settings body)
+        [ProducesResponseType(typeof(SaveResponse<string>), 200)]
+        public SaveResponse<string> SetValue(Guid id, [FromBody] GadgetSetValueRequest value)
         {
-            return null;
+            return _gadgetService.SetValue(id, value);
         }
     }
 }

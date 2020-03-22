@@ -32,7 +32,6 @@ namespace sp.iot.core
             return gadget;
         }
 
-
         public IEnumerable<Gadget> GetFiltered(Guid region, Guid section, GadgetTypeGroup? typeGroup, GadgetType? type)
         {
             List<Gadget> returnValue = new List<Gadget>();
@@ -75,6 +74,11 @@ namespace sp.iot.core
                 returnValue.Add(BindGadgetData(reader));
             }
             return returnValue;
+        }
+
+        public SaveResponse<string> SetValue(Guid id, GadgetSetValueRequest value)
+        {
+            return null;
         }
 
         public Gadget BindGadgetData(SqliteDataReader reader)
