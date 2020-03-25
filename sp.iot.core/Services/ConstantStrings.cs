@@ -55,9 +55,12 @@ namespace sp.iot.core
                     public const string Insert = "INSERT INTO Gadgets (Id,Name,Type,TypeGroup,Port,Status,Value,ValueUnit,ValueToTargetRatio,ValueToTargetUnit,ComplexValue,Section,SectionPosition,AttachedTo) VALUES (@Id,@Name,@Type,@TypeGroup,@Port,@Status,@Value,@ValueUnit,@ValueToTargetRatio,@ValueToTargetUnit,@ComplexValue,@Section,@SectionPosition,@AttachedTo)";
                 }
 
+                public static class Update
+                {
+                    public const string UpdateValue = "UPDATE Gadgets SET Value = @Value, ComplexValue = @ComplexValue WHERE Id = @Id";
+                }
+
             }
-
-
         }
     }
 }

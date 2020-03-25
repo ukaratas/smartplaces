@@ -51,7 +51,7 @@ namespace sp.iot.server.Controllers
         [HttpPost("SetValue/{id}")]
         [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(SaveResponse<string>), 200)]
-        public SaveResponse<string> SetValue(Guid id, [FromBody] GadgetSetValueRequest value)
+        public SaveResponse SetValue(Guid id, [FromBody] GadgetSetValueRequest value)
         {
             return _gadgetService.SetValue(id, value);
         }

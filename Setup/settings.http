@@ -92,3 +92,14 @@ Accept: text/plain
 
 
 curl -X GET "https://localhost:5001/Gadget/GetFiltered?type-group=Level" -H "accept: text/plain"
+
+###
+
+POST https://localhost:5001/Gadget/SetValue/8DE4C111-F63A-46A2-8F4C-152EF1271458 HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "complex-value": "LOW",
+  "value": 22
+}

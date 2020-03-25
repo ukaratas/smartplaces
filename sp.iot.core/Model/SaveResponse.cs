@@ -21,4 +21,21 @@ namespace sp.iot.core
 
         public SaveResponseType Status { get; set; }
     }
+
+    public class SaveResponse
+    {
+        public SaveResponse()
+        {
+            Actions = new List<SaveResponseAction>();
+        }
+
+        public void AddAction(string action)
+        {
+            Actions.Add(new SaveResponseAction { TimeStamp = DateTime.Now, Action = action });
+        }
+
+        public List<SaveResponseAction> Actions { get; set; }
+
+        public SaveResponseType Status { get; set; }
+    }
 }

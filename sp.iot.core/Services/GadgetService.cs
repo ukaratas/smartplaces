@@ -76,9 +76,23 @@ namespace sp.iot.core
             return returnValue;
         }
 
-        public SaveResponse<string> SetValue(Guid id, GadgetSetValueRequest value)
+        public SaveResponse SetValue(Guid id, GadgetSetValueRequest value)
         {
-            return null;
+
+            SaveResponse returnValue = new SaveResponse();
+
+            _database.ExecuteScalar<string>(
+                ConstantStrings.SqlQueries.Gadget.Update.UpdateValue,
+                new List<SqliteParameter> {
+                    new SqliteParameter("Id", id),
+                    new SqliteParameter("Value", value.Value),
+                    new SqliteParameter("ComplexValue", value.ComplexValue)
+                    }
+                );
+
+            returnValue.Status = SaveResponseType.Updated;
+
+            return returnValue;
         }
 
         public Gadget BindGadgetData(SqliteDataReader reader)

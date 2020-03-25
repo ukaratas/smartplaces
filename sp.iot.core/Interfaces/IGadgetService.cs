@@ -13,6 +13,6 @@ namespace sp.iot.core
 
         IEnumerable<Gadget> GetFiltered(Guid region, Guid section, GadgetTypeGroup? typeGroup, GadgetType? type);
 
-        SaveResponse<string> SetValue(Guid id, GadgetSetValueRequest value);
+        SaveResponse SetValue(Guid id, GadgetSetValueRequest value);
     }
 }
