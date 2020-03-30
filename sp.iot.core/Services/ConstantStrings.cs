@@ -61,6 +61,23 @@ namespace sp.iot.core
                 }
 
             }
+
+            public static class GadgetAction
+            {
+                public static class Get
+                {
+                    public const string IdParam = "SELECT * FROM GadgetActions WHERE Id = @Id";
+                    public const string BySourceGadget = "SELECT * FROM GadgetActions WHERE SourceGadget = @SourceGadget";
+                }
+
+                public static class Save
+                {
+                    public const string UpdateWithId = "UPDATE GadgetActions SET 'Order' = @Order, SourceValue = @SourceValue, SourceGadget = @SourceGadget, TargetGadget = @TargetGadget, TargetValue = @TargetValue, OnExecuteScript = @OnExecuteScript WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO GadgetActions (Id,'Order',SourceGadget,SourceValue,TargetGadget,TargetValue,OnExecuteScript) VALUES (@Id, @Order,@SourceGadget,@SourceValue,@TargetGadget,@TargetValue,@OnExecuteScript)";
+                }
+
+
+            }
         }
     }
 }

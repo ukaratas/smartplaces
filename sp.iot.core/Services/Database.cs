@@ -148,6 +148,7 @@ namespace sp.iot.core
                               break;
                           case int intValue:
                               updateParameters.Add(new SqliteParameter(item.Name, intValue));
+                              if (oldValue != DBNull.Value && (long)oldValue != intValue) hasFieldChange = true;
                               break;
                           default:
                               var baseType = item.Value.GetType().BaseType;

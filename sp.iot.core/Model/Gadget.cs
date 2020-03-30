@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace sp.iot.core
 {
     public class Gadget : BaseItem
     {
+        public Gadget()
+        {
+            Actions = new List<GadgetAction>();
+        }
+
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
@@ -38,11 +44,13 @@ namespace sp.iot.core
         [JsonPropertyName("status")]
         public GadgetStatus Status { get; set; }
 
-
         [JsonPropertyName("position-in-section")]
         public PositionType SectionPosition { get; set; }
 
         [JsonPropertyName("attached-to")]
         public Guid AttachedTo { get; set; }
+
+        [JsonPropertyName("actions")]
+        public List<GadgetAction> Actions { get; set; }
     }
 }

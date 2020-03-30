@@ -54,7 +54,25 @@ Accept: application/json
               "complex-value": "X:10;Y:20",
               "status": "Active",
               "position-in-section": "Free",
-              "id": "8de4c111-f63a-46a2-8f4c-152ef1271410"
+              "id": "8de4c111-f63a-46a2-8f4c-152ef1271410",
+              "actions": [
+                {
+                  "id": "2de4c111-f63a-46a2-8f4c-152ef1271411",
+                  "order": 1,
+                  "when": 96,
+                  "set": 1,
+                  "target-gadget": "8de4c111-f63a-46a2-8f4c-152ef1271411",
+                  "on-execute-script": "@NONE"
+                },
+                {
+                  "id": "3de4c111-f63a-46a2-8f4c-152ef1271411",
+                  "order": 2,
+                  "when": 5,
+                  "set": 0,
+                  "target-gadget": "8de4c111-f63a-46a2-8f4c-152ef1271411",
+                  "on-execute-script": "@NONE"
+                }
+              ]
             },
              {
               "name": "Boşaltma Vanası",
@@ -84,7 +102,7 @@ Accept: text/plain
 
 ###
 
-GET https://localhost:5001/Gadget/GetById/8de4c111-f63a-46a2-8f4c-152ef1271410 HTTP/1.1
+GET https://localhost:5001/Gadget/GetById/8de4c111-f63a-46a2-8f4c-152ef1271410?include-actions=true HTTP/1.1
 Content-Type: application/json
 Accept: text/plain 
 
@@ -95,11 +113,11 @@ curl -X GET "https://localhost:5001/Gadget/GetFiltered?type-group=Level" -H "acc
 
 ###
 
-POST https://localhost:5001/Gadget/SetValue/8DE4C111-F63A-46A2-8F4C-152EF1271458 HTTP/1.1
+POST https://localhost:5001/Gadget/SetValue/8de4c111-f63a-46a2-8f4c-152ef1271410 HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-  "complex-value": "LOW",
-  "value": 22
+  "complex-value": "LOW:22",
+  "value": 96
 }

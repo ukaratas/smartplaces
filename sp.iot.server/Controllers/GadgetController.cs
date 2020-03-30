@@ -29,15 +29,16 @@ namespace sp.iot.server.Controllers
         /// Return requested gadget information.
         /// </summary>
         /// <remarks>8de4c111-f63a-46a2-8f4c-152ef1271410</remarks>
-        /// <param name="id" example="8de4c111-f63a-46a2-8f4c-152ef1271410">Unique gadget id as Guid format</param>
+        /// <param name="id">Unique gadget id as Guid format</param>
+        /// <param name="includeActions">Includes gadget actions to response</param>
         /// <returns>Gadget  information</returns>
         /// <response code="452">Gadget is not exists</response>  
         [HttpGet("GetById/{id}")]
         [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(Gadget), 200)]
-        public Gadget GetById(Guid id)
+        public Gadget GetById(Guid id, [FromQuery(Name = "include-actions")] bool includeActions = false)
         {
-            return _gadgetService.Get(id);
+            return _gadgetService.Get(id, includeActions);
         }
 
         [HttpGet("GetFiltered")]
@@ -48,9 +49,18 @@ namespace sp.iot.server.Controllers
             return _gadgetService.GetFiltered(region, section, typeGroup, type);
         }
 
+        [HttpPost("Save")]
+        [ProducesErrorResponseType(typeof(void))]
+        [ProducesResponseType(typeof(SaveResponse), 200)]
+        public SaveResponse SetValue([FromBody] Gadget value)
+        {
+            //return _gadgetService.SetValue(value);
+            throw new NotImplementedException();
+        }
+
         [HttpPost("SetValue/{id}")]
         [ProducesErrorResponseType(typeof(void))]
-        [ProducesResponseType(typeof(SaveResponse<string>), 200)]
+        [ProducesResponseType(typeof(SaveResponse), 200)]
         public SaveResponse SetValue(Guid id, [FromBody] GadgetSetValueRequest value)
         {
             return _gadgetService.SetValue(id, value);

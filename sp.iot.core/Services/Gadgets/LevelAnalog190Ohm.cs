@@ -6,20 +6,35 @@ using Microsoft.Extensions.Configuration;
 
 namespace sp.iot.core
 {
-    public class LevelAnalog190Ohm : IGadget
+    public class LevelAnalog190Ohm : IGadgetEngine
     {
         private readonly IConfiguration _config;
         private readonly IDatabase _database;
+        private readonly IGadgetService _gadgetService;
+        private readonly IGadgetActionService _gadgetActionService;
 
-        public LevelAnalog190Ohm(IConfiguration config, IDatabase database)
+        public LevelAnalog190Ohm(IConfiguration config, IDatabase database, IGadgetService gadgetService, IGadgetActionService gadgetActionService)
         {
             _config = config;
             _database = database;
+            _gadgetActionService = gadgetActionService;
+            _gadgetService = gadgetService;
         }
 
-        public SaveResponse SetValue(Guid id, GadgetSetValueRequest value)
+        public void Execute(Guid id, GadgetSetValueRequest value, Action<string> logCallback)
         {
-            throw new NotImplementedException();
+            /*
+            var actions = _gadgetActionService.GetByGadget(id);
+
+            actions.ForEach(action =>
+            {
+                if (action.SourceValue == value.Value)
+                {
+                    _gadgetService.ProcessGadget(action.TargetGadget, new GadgetSetValueRequest() { Value = action.TargetValue }, log);
+                }
+            });
+            */
         }
+
     }
 }

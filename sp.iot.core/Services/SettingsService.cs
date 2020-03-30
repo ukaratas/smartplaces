@@ -38,16 +38,7 @@ namespace sp.iot.core
                 {
                     var section = _bindSectionData(sectionReader);
                     region.Sections.Add(section);
-
-                    SqliteDataReader gadgetReader = _database.ExecuteReader(
-                        ConstantStrings.SqlQueries.Gadget.Get.FilterBySection,
-                        new List<SqliteParameter> { new SqliteParameter("Section", section.Id) });
-
-                    while (gadgetReader.Read())
-                    {
-                        var gadget = _gadgetService.BindGadgetData(gadgetReader);
-                        section.Gadgets.Add(gadget);
-                    }
+                    section.Gadgets.AddRange(_gadgetService.GetBySection(section.Id, true));
                 }
             }
             return settings;
@@ -65,6 +56,29 @@ namespace sp.iot.core
                             section.Gadgets.ForEach(
                                 gadget =>
                                 {
+
+                                    gadget.Actions.ForEach(
+                                        action =>
+                                        {
+                                            _database.SaveItem(
+                                                action.Id,
+                                                ConstantStrings.SqlQueries.GadgetAction.Get.IdParam,
+                                                ConstantStrings.SqlQueries.GadgetAction.Save.Insert,
+                                                ConstantStrings.SqlQueries.GadgetAction.Save.UpdateWithId,
+                                                new List<SaveItemProperty> {
+                                                    new SaveItemProperty { Name= "Order", Value = action.Order},
+                                                    new SaveItemProperty { Name= "SourceGadget", Value = gadget.Id},
+                                                    new SaveItemProperty { Name= "SourceValue", Value = action.SourceValue},
+                                                    new SaveItemProperty { Name= "TargetGadget", Value = action.TargetGadget},
+                                                    new SaveItemProperty { Name= "TargetValue", Value = action.TargetValue },
+                                                    new SaveItemProperty { Name= "OnExecuteScript", Value = action.Script },
+                                                    },
+                                                    (log) => { returnValue.AddAction(string.Format("Gadget Action '{0}' : {1}", action.Order, log)); }
+                                                    );
+                                        }
+                                    );
+
+
                                     _database.SaveItem(
                                             gadget.Id,
                                             ConstantStrings.SqlQueries.Gadget.Get.IdParam,

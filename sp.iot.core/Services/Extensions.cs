@@ -13,8 +13,9 @@ namespace sp.iot.core
             services.AddScoped<IDatabase, Database>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IGadgetService, GadgetService>();
+            services.AddScoped<IGadgetActionService, GadgetActionService>();
 
-            services.AddTransient<IGadget, LevelAnalog190Ohm>();
+            services.AddTransient<IGadgetEngine, LevelAnalog190Ohm>();
         }
 
         public static Guid GetValueAsGuid(this SqliteDataReader reader, string fieldName)

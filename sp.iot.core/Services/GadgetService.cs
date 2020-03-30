@@ -2,22 +2,37 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+using System.Reflection;
+using System.IO;
+using System.Runtime.Loader;
+//using Microsoft.AspNetCore.Hosting;
 
 
 namespace sp.iot.core
 {
     public class GadgetService : IGadgetService
+
     {
         private readonly IConfiguration _config;
         private readonly IDatabase _database;
 
-        public GadgetService(IConfiguration config, IDatabase database)
+        private readonly IServiceProvider _services;
+
+        private readonly IGadgetActionService _gadgetActionService;
+
+        public GadgetService(IConfiguration config, IDatabase database, IGadgetActionService gadgetActionService, IServiceProvider services)
         {
             _config = config;
             _database = database;
+            _gadgetActionService = gadgetActionService;
+            _services = services;
+
         }
 
-        public Gadget Get(Guid id)
+        public Gadget Get(Guid id, bool includeActions)
         {
             Gadget gadget = null;
             SqliteDataReader reader = _database.ExecuteReader(
@@ -28,8 +43,36 @@ namespace sp.iot.core
             if (reader.Read())
             {
                 gadget = BindGadgetData(reader);
+
+                if (includeActions)
+                {
+                    gadget.Actions.AddRange(_gadgetActionService.GetByGadget(id));
+                }
             }
             return gadget;
+        }
+
+        public IEnumerable<Gadget> GetBySection(Guid section, bool includeActions)
+        {
+            var returnValue = new List<Gadget>();
+
+            SqliteDataReader reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.Gadget.Get.FilterBySection,
+                new List<SqliteParameter> { new SqliteParameter("Section", section) }
+                );
+
+            while (reader.Read())
+            {
+                var gadget = BindGadgetData(reader);
+
+                if (includeActions)
+                {
+                    gadget.Actions.AddRange(_gadgetActionService.GetByGadget(reader.GetValueAsGuid("Id")));
+                }
+
+                returnValue.Add(gadget);
+            }
+            return returnValue;
         }
 
         public IEnumerable<Gadget> GetFiltered(Guid region, Guid section, GadgetTypeGroup? typeGroup, GadgetType? type)
@@ -78,22 +121,143 @@ namespace sp.iot.core
 
         public SaveResponse SetValue(Guid id, GadgetSetValueRequest value)
         {
-
             SaveResponse returnValue = new SaveResponse();
 
-            _database.ExecuteScalar<string>(
-                ConstantStrings.SqlQueries.Gadget.Update.UpdateValue,
-                new List<SqliteParameter> {
-                    new SqliteParameter("Id", id),
-                    new SqliteParameter("Value", value.Value),
-                    new SqliteParameter("ComplexValue", value.ComplexValue)
-                    }
-                );
+            returnValue.AddAction(string.Format("Set Value '{0}' started with values {1}, {2}", id, value.Value, value.ComplexValue));
 
-            returnValue.Status = SaveResponseType.Updated;
+            ProcessGadget(
+                id,
+                value,
+                (log) => { returnValue.AddAction(string.Format("Process for '{0}' :{1}", id, log)); }
+                );
 
             return returnValue;
         }
+
+        public void ProcessGadget(Guid id, GadgetSetValueRequest value, Action<string> logCallback)
+        {
+            Gadget gadget = Get(id, false);
+
+            if (gadget == null)
+            {
+                logCallback(string.Format("Gadget '{0}' not found.", id));
+                return;
+            }
+            else
+            {
+                logCallback(string.Format("Gadget {0} is found. Updateting database with values.", gadget.Name));
+            }
+
+            _database.ExecuteScalar<string>(
+               ConstantStrings.SqlQueries.Gadget.Update.UpdateValue,
+               new List<SqliteParameter> {
+                    new SqliteParameter("Id", id),
+                    new SqliteParameter("Value", value.Value),
+                    new SqliteParameter("ComplexValue", value.ComplexValue)
+                   }
+               );
+
+            logCallback(string.Format("Gadget {0} is updated with values ({1},{2}).", gadget.Name, value.Value, value.ComplexValue));
+
+            var actions = _gadgetActionService.GetByGadget(id);
+
+            actions.ForEach(action =>
+            {
+                logCallback(string.Format("Action {0} - ({1}) checking.", action.Order, action.Id));
+
+                if (action.SourceValue == value.Value)
+                {
+                    ProcessGadget(action.TargetGadget, new GadgetSetValueRequest() { Value = action.TargetValue, ComplexValue = "none" }, logCallback);
+                }
+            });
+
+
+            const string code = @"
+            using System;
+            using System.IO;
+            
+
+            namespace sp.iot.core
+            {
+                 public static class GadgetRunner
+                  {
+                        public static bool CanExecute(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
+                        {
+                            return true;
+                        }
+
+                        public static double TargetValue(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
+                        {
+                            return 11;
+                        }
+
+                        public static string TargetComplexValue(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
+                        {
+                            return null;
+                        }
+                  }
+            }";
+
+            IHostingEnvironment x = _services.GetService<IHostingEnvironment>();
+
+            var tree = SyntaxFactory.ParseSyntaxTree(code);
+            string fileName = "sp.iot.core.dll";
+
+            var systemRefLocation = typeof(object).GetTypeInfo().Assembly.Location;
+            var systemReference = MetadataReference.CreateFromFile(systemRefLocation);
+
+            var compilation = CSharpCompilation.Create(fileName)
+                .WithOptions(
+                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                    .AddReferences(systemReference)
+                    .AddSyntaxTrees(tree);
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+            EmitResult compilationResult = compilation.Emit(path);
+
+            if (compilationResult.Success)
+            {
+                logCallback(string.Format("compilation success"));
+
+                
+                Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+                /*
+                object result = asm.GetType("sp.iot.core.GadgetRunner")
+                    .GetMethod("CanExecute")
+                    .Invoke(null, new object[] { 1,1,"none","none",5,"none" });
+
+               logCallback(string.Format(" result is {0}", result));
+               */
+
+
+            }
+            else
+            {
+                foreach (var item in compilationResult.Diagnostics)
+                {
+                    logCallback(string.Format("compilation error : {0}", item.GetMessage()));
+                }
+            }
+
+
+            /*
+                        IGadgetEngine gadgetProvider = null;
+
+                        switch (gadget.Type)
+                        {
+                            case GadgetType.LevelAnalog190Ohm:
+                                gadgetProvider = _services.GetService<LevelAnalog190Ohm>();
+                                break;
+                        }
+
+                        //gadgetProvider.Execute(id, value, logCallback);
+
+                        */
+        }
+
+
+
 
         public Gadget BindGadgetData(SqliteDataReader reader)
         {
@@ -115,6 +279,7 @@ namespace sp.iot.core
             };
             return returnValue;
         }
+
 
     }
 }
