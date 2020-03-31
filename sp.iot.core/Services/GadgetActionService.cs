@@ -42,10 +42,10 @@ namespace sp.iot.core
             {
                 Id = reader.GetValueAsGuid("Id"),
                 Order = (int)(long)reader.GetValue(reader.GetOrdinal("Order")),
-                SourceValue = (double)reader.GetValue(reader.GetOrdinal("SourceValue")),
-                TargetValue = (double)reader.GetValue(reader.GetOrdinal("TargetValue")),
                 TargetGadget = reader.GetValueAsGuid("TargetGadget"),
-                Script = reader.GetValue(reader.GetOrdinal("OnExecuteScript")).ToString(),
+                TargetValue = reader.GetValue(reader.GetOrdinal("TargetValue")).ToString(),
+                TargetComplexValue = reader.GetValue(reader.GetOrdinal("TargetComplexValue")).ToString(),
+                CanExecute = reader.GetValue(reader.GetOrdinal("CanExecute")).ToString(),
             };
             return returnValue;
         }

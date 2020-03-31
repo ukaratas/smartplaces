@@ -68,10 +68,10 @@ namespace sp.iot.core
                                                 new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Order", Value = action.Order},
                                                     new SaveItemProperty { Name= "SourceGadget", Value = gadget.Id},
-                                                    new SaveItemProperty { Name= "SourceValue", Value = action.SourceValue},
+                                                    new SaveItemProperty { Name= "TargetComplexValue", Value = action.TargetComplexValue},
                                                     new SaveItemProperty { Name= "TargetGadget", Value = action.TargetGadget},
                                                     new SaveItemProperty { Name= "TargetValue", Value = action.TargetValue },
-                                                    new SaveItemProperty { Name= "OnExecuteScript", Value = action.Script },
+                                                    new SaveItemProperty { Name= "CanExecute", Value = action.CanExecute },
                                                     },
                                                     (log) => { returnValue.AddAction(string.Format("Gadget Action '{0}' : {1}", action.Order, log)); }
                                                     );
@@ -134,7 +134,6 @@ namespace sp.iot.core
                                      );
                 });
 
-            _database.Close();
             return returnValue;
         }
 

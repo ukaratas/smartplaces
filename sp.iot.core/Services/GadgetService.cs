@@ -5,11 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
-using System.Reflection;
-using System.IO;
-using System.Runtime.Loader;
-//using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace sp.iot.core
 {
@@ -23,12 +21,15 @@ namespace sp.iot.core
 
         private readonly IGadgetActionService _gadgetActionService;
 
-        public GadgetService(IConfiguration config, IDatabase database, IGadgetActionService gadgetActionService, IServiceProvider services)
+        private readonly IScriptingService _scriptingService;
+
+        public GadgetService(IConfiguration config, IDatabase database, IGadgetActionService gadgetActionService, IServiceProvider services, IScriptingService scriptingService)
         {
             _config = config;
             _database = database;
             _gadgetActionService = gadgetActionService;
             _services = services;
+            _scriptingService = scriptingService;
 
         }
 
@@ -145,7 +146,7 @@ namespace sp.iot.core
             }
             else
             {
-                logCallback(string.Format("Gadget {0} is found. Updateting database with values.", gadget.Name));
+                logCallback(string.Format("Gadget {0} is found. Item will be updated.", gadget.Name));
             }
 
             _database.ExecuteScalar<string>(
@@ -165,99 +166,26 @@ namespace sp.iot.core
             {
                 logCallback(string.Format("Action {0} - ({1}) checking.", action.Order, action.Id));
 
-                if (action.SourceValue == value.Value)
+                Gadget targetGadget = Get(action.TargetGadget, false);
+
+                var scriptResult = _scriptingService.Execute(
+                    action,
+                    new ScriptParameter()
+                    {
+                        SourceNewValue = value.Value,
+                        SourceNewComplexValue = value.ComplexValue,
+                        SourceOldValue = gadget.Value,
+                        SourceOldComplexValue = gadget.ComplexValue,
+                        TargetOldValue = targetGadget.Value,
+                        TargetOldComplexValue = targetGadget.ComplexValue
+                    });
+
+                if (scriptResult.CanExecute)
                 {
-                    ProcessGadget(action.TargetGadget, new GadgetSetValueRequest() { Value = action.TargetValue, ComplexValue = "none" }, logCallback);
+                    ProcessGadget(action.TargetGadget, new GadgetSetValueRequest() { Value = scriptResult.TargetNewValue, ComplexValue = scriptResult.TargetNewComplexValue }, logCallback);
                 }
             });
-
-
-            const string code = @"
-            using System;
-            using System.IO;
-            
-
-            namespace sp.iot.core
-            {
-                 public static class GadgetRunner
-                  {
-                        public static bool CanExecute(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
-                        {
-                            return true;
-                        }
-
-                        public static double TargetValue(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
-                        {
-                            return 11;
-                        }
-
-                        public static string TargetComplexValue(double fromValue, double toValue, string fromComplexValue, string toComplexValue, double targetValue, string targetComplexValue)
-                        {
-                            return null;
-                        }
-                  }
-            }";
-
-            IHostingEnvironment x = _services.GetService<IHostingEnvironment>();
-
-            var tree = SyntaxFactory.ParseSyntaxTree(code);
-            string fileName = "sp.iot.core.dll";
-
-            var systemRefLocation = typeof(object).GetTypeInfo().Assembly.Location;
-            var systemReference = MetadataReference.CreateFromFile(systemRefLocation);
-
-            var compilation = CSharpCompilation.Create(fileName)
-                .WithOptions(
-                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                    .AddReferences(systemReference)
-                    .AddSyntaxTrees(tree);
-
-            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-
-            EmitResult compilationResult = compilation.Emit(path);
-
-            if (compilationResult.Success)
-            {
-                logCallback(string.Format("compilation success"));
-
-                
-                Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-                /*
-                object result = asm.GetType("sp.iot.core.GadgetRunner")
-                    .GetMethod("CanExecute")
-                    .Invoke(null, new object[] { 1,1,"none","none",5,"none" });
-
-               logCallback(string.Format(" result is {0}", result));
-               */
-
-
-            }
-            else
-            {
-                foreach (var item in compilationResult.Diagnostics)
-                {
-                    logCallback(string.Format("compilation error : {0}", item.GetMessage()));
-                }
-            }
-
-
-            /*
-                        IGadgetEngine gadgetProvider = null;
-
-                        switch (gadget.Type)
-                        {
-                            case GadgetType.LevelAnalog190Ohm:
-                                gadgetProvider = _services.GetService<LevelAnalog190Ohm>();
-                                break;
-                        }
-
-                        //gadgetProvider.Execute(id, value, logCallback);
-
-                        */
         }
-
-
-
 
         public Gadget BindGadgetData(SqliteDataReader reader)
         {

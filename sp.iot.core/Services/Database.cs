@@ -16,24 +16,12 @@ namespace sp.iot.core
         public Database(IConfiguration config)
         {
             _config = config;
-        }
 
-        public void Open()
-        {
+            var conn = new SqliteConnectionStringBuilder();
+            conn.DataSource = _config.GetValue<string>("Database:File");
 
-            if (Connection == null)
-            {
-                var conn = new SqliteConnectionStringBuilder();
-                conn.DataSource = _config.GetValue<string>("Database:File");
-
-                Connection = new SqliteConnection(conn.ConnectionString);
-            }
-            if (Connection.State != ConnectionState.Open) Connection.Open();
-        }
-
-        public void Close()
-        {
-            if (Connection != null) Connection.Close();
+            Connection = new SqliteConnection(conn.ConnectionString);
+            Connection.Open();
         }
 
         public SqliteConnection GetConnection()
@@ -50,9 +38,6 @@ namespace sp.iot.core
 
         public SqliteDataReader ExecuteReader(string commandText, List<SqliteParameter> parameters)
         {
-
-            Open();
-
             SqliteCommand command = Connection.CreateCommand();
             command.CommandText = commandText;
             if (parameters != null)
@@ -68,14 +53,13 @@ namespace sp.iot.core
 
         public T ExecuteScalar<T>(string commandText, List<SqliteParameter> parameters)
         {
-            Open();
             SqliteCommand command = Connection.CreateCommand();
             command.CommandText = commandText;
             if (parameters != null)
                 parameters.ForEach(item => command.Parameters.Add(item));
 
             var result = command.ExecuteScalar();
-            Close();
+
             if (result != null)
                 return (T)result;
             else

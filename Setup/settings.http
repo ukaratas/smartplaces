@@ -57,20 +57,20 @@ Accept: application/json
               "id": "8de4c111-f63a-46a2-8f4c-152ef1271410",
               "actions": [
                 {
-                  "id": "2de4c111-f63a-46a2-8f4c-152ef1271411",
                   "order": 1,
-                  "when": 96,
-                  "set": 1,
+                  "can-execute": "3*2",
+                  "target-value": "1.0",
+                  "target-complex-value": "\"None\"",
                   "target-gadget": "8de4c111-f63a-46a2-8f4c-152ef1271411",
-                  "on-execute-script": "@NONE"
+                  "id": "2de4c111-f63a-46a2-8f4c-152ef1271411"
                 },
                 {
-                  "id": "3de4c111-f63a-46a2-8f4c-152ef1271411",
                   "order": 2,
-                  "when": 5,
-                  "set": 0,
+                  "can-execute": "5.0",
+                  "target-value": "2*2",
+                  "target-complex-value": "\"a\" + \"b\"",
                   "target-gadget": "8de4c111-f63a-46a2-8f4c-152ef1271411",
-                  "on-execute-script": "@NONE"
+                  "id": "3de4c111-f63a-46a2-8f4c-152ef1271411"
                 }
               ]
             },
@@ -118,6 +118,6 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "complex-value": "LOW:22",
+  "complex-value": "LOW:23122",
   "value": 96
 }

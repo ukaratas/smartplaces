@@ -10,10 +10,13 @@ namespace sp.iot.core
 
         public static void AddCoreServices(this IServiceCollection services)
         {
-            services.AddScoped<IDatabase, Database>();
+            services.AddSingleton<IDatabase, Database>();
+            services.AddSingleton<IScriptingService, ScriptingService>();
+            
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IGadgetService, GadgetService>();
             services.AddScoped<IGadgetActionService, GadgetActionService>();
+            
 
             services.AddTransient<IGadgetEngine, LevelAnalog190Ohm>();
         }
