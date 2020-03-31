@@ -1,0 +1,155 @@
+POST https://localhost:5001/Settings HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "regions": [
+    {
+      "id": "20000000-0000-0000-0000-000000000000",
+      "name": "Karavan",
+      "type": "Motohome",
+      "sections": [
+        {
+          "id": "20000000-0103-0000-0000-000000000000",
+          "name": "Arka Dış Aydınlatma",
+          "row": 1,
+          "column": 3,
+          "background-image": "cdn.example.com/camper/0103.jpg"
+        },
+        {
+          "id": "20000000-0201-0000-0000-000000000000",
+          "name": "Yatak Sol Aydınlatma",
+          "row": 2,
+          "column": 1,
+          "background-image": "cdn.example.com/camper/0201.jpg"
+        },
+        {
+          "name": "Yatak Sol",
+          "id": "20000000-0202-0000-0000-000000000000",
+          "row": 2,
+          "column": 2,
+          "background-image": "cdn.example.com/camper/0202.jpg"
+        },
+        {
+          "name": "Yatak Orta",
+          "id": "20000000-0203-0000-0000-000000000000",
+          "row": 2,
+          "column": 3,
+          "background-image": "cdn.example.com/camper/0203.jpg"
+        },
+        {
+          "name": "Yatak Sağ",
+          "id": "20000000-0204-0000-0000-000000000000",
+          "row": 2,
+          "column": 4,
+          "background-image": "cdn.example.com/camper/0204.jpg"
+        },
+        {
+          "id": "20000000-0302-0000-0000-000000000000",
+          "name": "Banyo Sol",
+          "row": 3,
+          "column": 2,
+          "background-image": "cdn.example.com/camper/0302.jpg"
+        },
+        {
+          "id": "20000000-0303-0000-0000-000000000000",
+          "name": "Banyo Orta",
+          "background-image": "cdn.example.com/camper/0303.jpg",
+          "row": 3,
+          "column": 3
+        },
+        {
+          "id": "20000000-0304-0000-0000-000000000000",
+          "name": "Banyo Sağ",
+          "row": 3,
+          "column": 4,
+          "background-image": "cdn.example.com/camper/0304.jpg"
+        },
+        {
+          "id": "20000000-0401-0000-0000-000000000000",
+          "name": "Dış Kapı",
+          "row": 4,
+          "column": 1,
+          "background-image": "cdn.example.com/camper/0401.jpg"
+        },
+        {
+          "id": "20000000-0402-0000-0000-000000000000",
+          "name": "Mutfak",
+          "row": 4,
+          "column": 2,
+          "background-image": "cdn.example.com/camper/0402.jpg"
+        },
+        {
+          "id": "20000000-0403-0000-0000-000000000000",
+          "name": "Mutfak Hol",
+          "row": 4,
+          "column": 3,
+          "background-image": "cdn.example.com/camper/0403.jpg"
+        },
+        {
+          "id": "20000000-0404-0000-0000-000000000000",
+          "name": "2. Sıra Koltuk",
+          "row": 4,
+          "column": 4,
+          "background-image": "cdn.example.com/camper/0404.jpg"
+        },
+        {
+          "id": "20000000-0501-0000-0000-000000000000",
+          "name": "Kapı Önü",
+          "row": 5,
+          "column": 1,
+          "background-image": "cdn.example.com/camper/0501.jpg"
+        },
+        {
+          "id": "20000000-0502-0000-0000-000000000000",
+          "name": "Kapı",
+          "row": 5,
+          "column": 2,
+          "background-image": "cdn.example.com/camper/0502.jpg"
+        },
+        {
+          "id": "20000000-0503-0000-0000-000000000000",
+          "name": "Masa Hol",
+          "row": 5,
+          "column": 3,
+          "background-image": "cdn.example.com/camper/0503.jpg"
+        },
+        {
+          "id": "20000000-0504-0000-0000-000000000000",
+          "name": "1. Sıra Koltuk",
+          "row": 5,
+          "column": 4,
+          "background-image": "cdn.example.com/camper/0504.jpg"
+        },
+        {
+          "id": "20000000-0505-0000-0000-000000000000",
+          "name": "Sağ Dış Aydınlatma",
+          "row": 5,
+          "column": 5,
+          "background-image": "cdn.example.com/camper/0505.jpg"
+        },
+        {
+          "id": "20000000-0602-0000-0000-000000000000",
+          "name": "Kokpit Sol",
+          "row": 6,
+          "column": 2,
+          "background-image": "cdn.example.com/camper/0602.jpg"
+        },
+        {
+          "id": "20000000-0603-0000-0000-000000000000",
+          "name": "Kokpit Orta",
+          "row": 6,
+          "column": 3,
+          "background-image": "cdn.example.com/camper/0603.jpg"
+        },
+        {
+          "id": "20000000-0604-0000-0000-000000000000",
+          "name": "Kokpit Sağ",
+          "row": 6,
+          "column": 4,
+          "background-image": "cdn.example.com/camper/0604.jpg"
+        }
+      ]
+    }
+  ]
+}

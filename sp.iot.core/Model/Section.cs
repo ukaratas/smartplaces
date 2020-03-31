@@ -17,16 +17,14 @@ namespace sp.iot.core
         [JsonPropertyName("gadgets")]
         public List<Gadget> Gadgets { get; set; }
 
-        [JsonPropertyName("right-section")]
-        public Guid RightSection { get; set; }
+        [JsonPropertyName("background-image")]
+        public string BackgroundImage { get; set; }
 
-        [JsonPropertyName("left-section")]
-        public Guid LeftSection { get; set; }
+        [JsonPropertyName("row")]
+        public long Row { get; set; }
 
-        [JsonPropertyName("top-section")]
-        public Guid TopSection { get; set; }
+        [JsonPropertyName("column")]
+        public long Column { get; set; }
 
-        [JsonPropertyName("bottom-section")]
-        public Guid BottomSection { get; set; }
     }
 }

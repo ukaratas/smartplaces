@@ -112,10 +112,10 @@ namespace sp.iot.core
                                        new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = section.Name},
                                                     new SaveItemProperty { Name= "Region", Value = region.Id},
-                                                    new SaveItemProperty { Name= "RightSection", Value = section.RightSection},
-                                                    new SaveItemProperty { Name= "LeftSection", Value = section.LeftSection},
-                                                    new SaveItemProperty { Name= "TopSection", Value = section.TopSection},
-                                                    new SaveItemProperty { Name= "BottomSection", Value = section.BottomSection},
+                                                    new SaveItemProperty { Name= "BackgroundImage", Value = section.BackgroundImage},
+                                                    new SaveItemProperty { Name= "Row", Value = section.Row},
+                                                    new SaveItemProperty { Name= "Column", Value = section.Column},
+                                                    
                                        },
                                        (log) => { returnValue.AddAction(string.Format("Section '{0}' : {1}", section.Name, log)); }
                                        );
@@ -156,10 +156,9 @@ namespace sp.iot.core
             {
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
-                RightSection = reader.GetValueAsGuid("RightSection"),
-                LeftSection = reader.GetValueAsGuid("LeftSection"),
-                TopSection = reader.GetValueAsGuid("TopSection"),
-                BottomSection = reader.GetValueAsGuid("BottomSection"),
+                BackgroundImage = reader.GetValue(reader.GetOrdinal("BackgroundImage")).ToString(),
+                Row = (long)reader.GetValue(reader.GetOrdinal("Row")),
+                Column = (long)reader.GetValue(reader.GetOrdinal("Column")),
             };
             return returnValue;
         }

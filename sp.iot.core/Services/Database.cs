@@ -134,6 +134,11 @@ namespace sp.iot.core
                               updateParameters.Add(new SqliteParameter(item.Name, intValue));
                               if (oldValue != DBNull.Value && (long)oldValue != intValue) hasFieldChange = true;
                               break;
+                        case long intValue:
+                              updateParameters.Add(new SqliteParameter(item.Name, intValue));
+                              if (oldValue != DBNull.Value && (long)oldValue != intValue) hasFieldChange = true;
+                              break;
+
                           default:
                               var baseType = item.Value.GetType().BaseType;
                               if (baseType.FullName == "System.Enum")
