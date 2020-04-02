@@ -17,9 +17,6 @@ namespace sp.iot.core
         [JsonPropertyName("gadgets")]
         public List<Gadget> Gadgets { get; set; }
 
-        [JsonPropertyName("background-image")]
-        public string BackgroundImage { get; set; }
-
         [JsonPropertyName("row")]
         public long Row { get; set; }
 
