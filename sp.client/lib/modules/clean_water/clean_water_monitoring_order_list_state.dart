@@ -16,7 +16,7 @@ class CleanWaterMonitoringOrderListError
     extends CleanWaterMonitoringOrderListState {}
 
 class CleanWaterMonitoringOrderListLoaded
-    extends CleanWaterMonitoringOrderListState {
+    extends CleanWaterMonitoringOrderListState { 
   final List<CleanWaterMonitoringOrder> items;
   final bool hasReachedMax;
 

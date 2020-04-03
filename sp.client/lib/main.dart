@@ -6,7 +6,11 @@ import 'modules/summary/summary_page.dart';
 
 import 'routes.dart';
 
-void main() => {runApp(MyApp())};
+void main() => {
+  
+  
+  runApp(MyApp())
+  };
 
 class MyApp extends StatelessWidget {
   @override

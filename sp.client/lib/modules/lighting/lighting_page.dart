@@ -22,9 +22,7 @@ class _LightingPageState extends State<LightingPage> {
       appBar: new AppBar(
         title: new Text('Aydınlatma'),
       ),
-      body: PlaceLayout(
-  
-      ),
+      body: PlaceLayout( ),
     );
   }
 }

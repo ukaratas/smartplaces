@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:smart_places/services/rest_api_client.dart';
 import 'package:smart_places/widget/drawer.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -12,6 +14,8 @@ class SummaryPage extends StatefulWidget {
 
 class _SummaryPageState extends State<SummaryPage> {
   bool value = false;
+  final RestApiClient restApiClient =
+      RestApiClient(httpClient: new HttpClient());
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class _SummaryPageState extends State<SummaryPage> {
         child: Switch(
             value: value,
             onChanged: (v) {
+              restApiClient.getSettings();
               setState(() {
                 value = v;
               });

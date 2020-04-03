@@ -20,7 +20,6 @@ class PlaceLayout extends StatelessWidget {
               ),
             ),
           ),
-   
         ]),
       ],
     );
