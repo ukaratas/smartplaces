@@ -30,6 +30,16 @@ namespace sp.iot.core
                 var region = _bindRegionData(regionReader);
                 settings.Regions.Add(region);
 
+                SqliteDataReader rowReader = _database.ExecuteReader(
+                   ConstantStrings.SqlQueries.RegionRows.Get.FilterByRegion,
+                   new List<SqliteParameter> { new SqliteParameter("Region", region.Id) });
+
+                while (rowReader.Read())
+                {
+                    var row = _bindRegionRowData(rowReader);
+                    region.Rows.Add(row);
+                }
+
                 SqliteDataReader sectionReader = _database.ExecuteReader(
                     ConstantStrings.SqlQueries.Section.Get.FilterByRegion,
                     new List<SqliteParameter> { new SqliteParameter("Region", region.Id) });
@@ -50,6 +60,23 @@ namespace sp.iot.core
             request.Regions.ForEach(
                 region =>
                 {
+                    region.Rows.ForEach(row =>
+                    {
+                        _database.SaveItem(
+                                      row.Id,
+                                      ConstantStrings.SqlQueries.RegionRows.Get.IdParam,
+                                      ConstantStrings.SqlQueries.RegionRows.Save.Insert,
+                                      ConstantStrings.SqlQueries.RegionRows.Save.UpdateWithId,
+                                      new List<SaveItemProperty> {
+                                                    new SaveItemProperty { Name= "No", Value = row.No},
+                                                    new SaveItemProperty { Name= "Percentage", Value = row.Percentage},
+
+                                      },
+                                      (log) => { returnValue.AddAction(string.Format("Percante '{0}' : {1}", row.No, log)); }
+                                      );
+
+                    });
+
                     region.Sections.ForEach(
                         section =>
                         {
@@ -104,6 +131,7 @@ namespace sp.iot.core
 
                                 });
 
+
                             _database.SaveItem(
                                        section.Id,
                                        ConstantStrings.SqlQueries.Section.Get.IdParam,
@@ -112,10 +140,9 @@ namespace sp.iot.core
                                        new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = section.Name},
                                                     new SaveItemProperty { Name= "Region", Value = region.Id},
-                                                    new SaveItemProperty { Name= "BackgroundImage", Value = section.BackgroundImage},
                                                     new SaveItemProperty { Name= "Row", Value = section.Row},
                                                     new SaveItemProperty { Name= "Column", Value = section.Column},
-                                                    
+
                                        },
                                        (log) => { returnValue.AddAction(string.Format("Section '{0}' : {1}", section.Name, log)); }
                                        );
@@ -149,6 +176,18 @@ namespace sp.iot.core
             return returnValue;
         }
 
+        private RegionRow _bindRegionRowData(SqliteDataReader reader)
+        {
+            RegionRow returnValue = new RegionRow
+            {
+                Id = reader.GetValueAsGuid("Id"),
+                No = (int)(long)reader.GetValue(reader.GetOrdinal("No")),
+                Percentage = (int)(long)reader.GetValue(reader.GetOrdinal("Percentage")),
+            };
+            return returnValue;
+        }
+
+
 
         private Section _bindSectionData(SqliteDataReader reader)
         {
@@ -156,7 +195,6 @@ namespace sp.iot.core
             {
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
-                BackgroundImage = reader.GetValue(reader.GetOrdinal("BackgroundImage")).ToString(),
                 Row = (long)reader.GetValue(reader.GetOrdinal("Row")),
                 Column = (long)reader.GetValue(reader.GetOrdinal("Column")),
             };

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -10,6 +9,7 @@ namespace sp.iot.core
         public Region()
         {
             Sections = new List<Section>();
+            Rows = new List<RegionRow>();
         }
 
         [JsonPropertyName("name")]
@@ -20,5 +20,8 @@ namespace sp.iot.core
 
         [JsonPropertyName("sections")]
         public List<Section> Sections { get; set; }
+
+        [JsonPropertyName("rows")]
+        public List<RegionRow> Rows { get; set; }
     }
 }

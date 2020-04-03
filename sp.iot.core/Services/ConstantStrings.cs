@@ -23,6 +23,26 @@ namespace sp.iot.core
                 }
             }
 
+
+            public static class RegionRows
+            {
+                public static class Get
+                {
+                    public const string All = "SELECT * FROM RegionRows";
+                    public const string IdParam = "SELECT * FROM RegionRows WHERE Id = @Id";
+                    public const string FilterByRegion = "SELECT * FROM RegionRows WHERE Region = @Region";
+                }
+
+                public static class Save
+                {
+                    public const string UpdateWithId = "UPDATE RegionRows SET No = @No, Percentage = @Percentage WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO RegionRows (Id, No, Percentage)VALUES(@Id, @No, @Percentage)";
+
+
+                }
+            }
+
+
             public static class Section
             {
                 public static class Get
@@ -33,8 +53,8 @@ namespace sp.iot.core
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE Sections SET Name = @Name, Region = @Region, BackgroundImage = @BackgroundImage, Row = @Row, Column = @Column WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO Sections (Id,Name,Region,BackgroundImage,Row,Column)VALUES(@Id,@Name,@Region,@BackgroundImage,@Row,@Column)";
+                    public const string UpdateWithId = "UPDATE Sections SET Name = @Name, Region = @Region, Row = @Row, Column = @Column WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO Sections (Id,Name,Region,Row,Column)VALUES(@Id,@Name,@Region,@Row,@Column)";
                 }
             }
 

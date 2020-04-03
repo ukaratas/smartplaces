@@ -5,151 +5,1011 @@ Accept: application/json
 {
   "regions": [
     {
-      "id": "20000000-0000-0000-0000-000000000000",
+      "name": "Tanklar",
+      "type": "Tank",
+      "sections": [
+        {
+          "name": "Temiz Su Tankı",
+          "gadgets": [
+            {
+              "name": "Temiz Su Tankı Şamandırası",
+              "type-group": "Level",
+              "type": "LevelAnalog190Ohm",
+              "port": "A1",
+              "value": 99,
+              "value-unit": "Percentage",
+              "value-to-target-ratio": 2.2,
+              "value-to-target-unit": "LiquidLiter",
+              "value-to-target": 217.8,
+              "complex-value": "X:10;Y:20",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "10000000-0001-0001-0000-000000000000"
+            },
+            {
+              "name": "Tüketim İzleme",
+              "type-group": "LiquidFlowMeter",
+              "type": "LiquidFlowMeterYF06",
+              "port": "I2C",
+              "value": 99,
+              "value-unit": "LiquidLiter",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "10000000-0001-0002-0000-000000000000"
+            }
+          ],
+          "row": 0,
+          "column": 0,
+          "id": "10000000-0001-0000-0000-000000000000"
+        },
+        {
+          "name": "Gri Su Tankı",
+          "gadgets": [
+            {
+              "name": "Gri Su Tankı Şamandırası",
+              "type-group": "Level",
+              "type": "LevelAnalog190Ohm",
+              "port": "A2",
+              "value": 96,
+              "value-unit": "Percentage",
+              "value-to-target-ratio": 1.1,
+              "value-to-target-unit": "LiquidLiter",
+              "value-to-target": 105.60000000000001,
+              "complex-value": "LOW:23122",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [
+                {
+                  "order": 1,
+                  "can-execute": "SourceNewValue == 96",
+                  "target-value": "1.0",
+                  "target-complex-value": "\"None\"",
+                  "target-gadget": "10000000-0002-0002-0000-000000000000",
+                  "id": "10000000-0002-0001-0000-000000000000"
+                },
+                {
+                  "order": 2,
+                  "can-execute": "SourceNewValue == 5",
+                  "target-value": " ",
+                  "target-complex-value": "\"a\" + \"b\"",
+                  "target-gadget": "10000000-0002-0002-0000-000000000000",
+                  "id": "10000000-0002-0001-0002-000000000000"
+                }
+              ],
+              "id": "10000000-0002-0001-0000-000000000000"
+            },
+            {
+              "name": "Boşaltma Vanası",
+              "type-group": "Valve",
+              "type": "ValveNormallyClosed",
+              "port": "D2",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "None",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "10000000-0002-0002-0000-000000000000"
+            }
+          ],
+          "row": 0,
+          "column": 0,
+          "id": "10000000-0002-0000-0000-000000000000"
+        }
+      ],
+      "rows": [],
+      "id": "10000000-0000-0000-0000-000000000000"
+    },
+    {
       "name": "Karavan",
       "type": "Motohome",
       "sections": [
         {
-          "id": "20000000-0103-0000-0000-000000000000",
           "name": "Arka Dış Aydınlatma",
+          "gadgets": [
+            {
+              "name": "Dış Lamba",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D3",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0103-0001-0000-000000000000"
+            }
+          ],
           "row": 1,
           "column": 3,
-          "background-image": "cdn.example.com/camper/0103.jpg"
+          "id": "20000000-0103-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0201-0000-0000-000000000000",
           "name": "Yatak Sol Aydınlatma",
+          "gadgets": [
+            {
+              "name": "Dış Lamba",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D4",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleRight",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0201-0001-0000-000000000000"
+            }
+          ],
           "row": 2,
           "column": 1,
-          "background-image": "cdn.example.com/camper/0201.jpg"
+          "id": "20000000-0201-0000-0000-000000000000"
         },
         {
           "name": "Yatak Sol",
-          "id": "20000000-0202-0000-0000-000000000000",
+          "gadgets": [
+            {
+              "name": "Okuma Lambası",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D5",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "TopCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0202-0001-0000-000000000000"
+            },
+            {
+              "name": "Okuma Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D6",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0202-0002-0000-000000000000"
+            },
+            {
+              "name": "Yatak Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D7",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0202-0003-0000-000000000000"
+            },
+            {
+              "name": "12V USB Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D13",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0202-0004-0000-000000000000"
+            }
+          ],
           "row": 2,
           "column": 2,
-          "background-image": "cdn.example.com/camper/0202.jpg"
+          "id": "20000000-0202-0000-0000-000000000000"
         },
         {
           "name": "Yatak Orta",
-          "id": "20000000-0203-0000-0000-000000000000",
+          "gadgets": [
+            {
+              "name": "Yatak Lambası",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D8",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0203-0001-0000-000000000000"
+            },
+            {
+              "name": "Termometre ",
+              "type-group": "Sensor",
+              "type": "SensorAirSHT30Heat",
+              "port": "I2C",
+              "value": 22,
+              "value-unit": "PPM",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "S:22;N:78",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0203-0002-0000-000000000000"
+            },
+            {
+              "name": "Nem Ölçer",
+              "type-group": "Sensor",
+              "type": "SensorAirSHT30Humidity",
+              "port": "I2C",
+              "value": 75,
+              "value-unit": "Percentage",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "S:22;N:78",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0203-0003-0000-000000000000"
+            }
+          ],
           "row": 2,
           "column": 3,
-          "background-image": "cdn.example.com/camper/0203.jpg"
+          "id": "20000000-0203-0000-0000-000000000000"
         },
         {
           "name": "Yatak Sağ",
-          "id": "20000000-0204-0000-0000-000000000000",
+          "gadgets": [
+            {
+              "name": "Okuma Lambası",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D8",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "TopCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0204-0001-0000-000000000000"
+            },
+            {
+              "name": "Okuma Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D9",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleRight",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0204-0002-0000-000000000000"
+            },
+            {
+              "name": "Yatak Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D10",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleRight",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0204-0003-0000-000000000000"
+            },
+            {
+              "name": "12V USB Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D11",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleRight",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0204-0004-0000-000000000000"
+            },
+            {
+              "name": "220V Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D12",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleRight",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0204-0005-0000-000000000000"
+            }
+          ],
           "row": 2,
           "column": 4,
-          "background-image": "cdn.example.com/camper/0204.jpg"
+          "id": "20000000-0204-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0302-0000-0000-000000000000",
           "name": "Banyo Sol",
+          "gadgets": [
+            {
+              "name": "Banyo Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D16",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0302-0001-0000-000000000000"
+            },
+            {
+              "name": "220V Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D17",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0302-0002-0000-000000000000"
+            },
+            {
+              "name": "WC Temizleme Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D18",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0302-0003-0000-000000000000"
+            }
+          ],
           "row": 3,
           "column": 2,
-          "background-image": "cdn.example.com/camper/0302.jpg"
+          "id": "20000000-0302-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0303-0000-0000-000000000000",
           "name": "Banyo Orta",
-          "background-image": "cdn.example.com/camper/0303.jpg",
+          "gadgets": [
+            {
+              "name": "Banyo Lamba",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D19",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0303-0001-0000-000000000000"
+            }
+          ],
           "row": 3,
-          "column": 3
+          "column": 3,
+          "id": "20000000-0303-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0304-0000-0000-000000000000",
           "name": "Banyo Sağ",
+          "gadgets": [
+            {
+              "name": "WC Temizleme Elektirik",
+              "type-group": "Relay",
+              "type": "RelayForAction",
+              "port": "D20",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0304-0001-0000-000000000000"
+            },
+            {
+              "name": "WC Sabit Elektirik",
+              "type-group": "Relay",
+              "type": "RelayForDevice",
+              "port": "D21",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "Free",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0304-0002-0000-000000000000"
+            },
+            {
+              "name": "LPG Sensör",
+              "type-group": "Sensor",
+              "type": "SensorGasMQ6",
+              "port": "A3",
+              "value": 0,
+              "value-unit": "PPM",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0304-0003-0000-000000000000"
+            }
+          ],
           "row": 3,
           "column": 4,
-          "background-image": "cdn.example.com/camper/0304.jpg"
+          "id": "20000000-0304-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0401-0000-0000-000000000000",
-          "name": "Dış Kapı",
-          "row": 4,
-          "column": 1,
-          "background-image": "cdn.example.com/camper/0401.jpg"
-        },
-        {
-          "id": "20000000-0402-0000-0000-000000000000",
           "name": "Mutfak",
+          "gadgets": [
+            {
+              "name": "Buzdolabı",
+              "type-group": "Relay",
+              "type": "RelayForDevice",
+              "port": "D22",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0001-0000-000000000000"
+            },
+            {
+              "name": "Tezgah Lambası",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D23",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0002-0000-000000000000"
+            },
+            {
+              "name": "220V Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D24",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0003-0000-000000000000"
+            },
+            {
+              "name": "LPG Sensör",
+              "type-group": "Sensor",
+              "type": "SensorGasMQ6",
+              "port": "A4",
+              "value": 0,
+              "value-unit": "PPM",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0004-0000-000000000000"
+            },
+            {
+              "name": "Gaz Açıcı/Kesici Düğme",
+              "type-group": "Switch",
+              "type": "SwitchForDevice",
+              "port": "D25",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0005-0000-000000000000"
+            },
+            {
+              "name": "Dış Sol Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D26",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0006-0000-000000000000"
+            },
+            {
+              "name": "Dış Sağ Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D27",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0007-0000-000000000000"
+            },
+            {
+              "name": "Dış Arka Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D28",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0008-0000-000000000000"
+            },
+            {
+              "name": "Tezgah Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D29",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0009-0000-000000000000"
+            },
+            {
+              "name": "Hol Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D30",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0010-0000-000000000000"
+            },
+            {
+              "name": "Masa Lamba Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForLight",
+              "port": "D40",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0011-0000-000000000000"
+            },
+            {
+              "name": "Prizlere Elektirik Verme/Kesme Düğmesi",
+              "type-group": "Switch",
+              "type": "SwitchForDevice",
+              "port": "D41",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0012-0000-000000000000"
+            },
+            {
+              "name": "Ocak LPG Aç/Kapa",
+              "type-group": "Switch",
+              "type": "SwitchForDevice",
+              "port": "D42",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0402-0013-0000-000000000000"
+            }
+          ],
           "row": 4,
           "column": 2,
-          "background-image": "cdn.example.com/camper/0402.jpg"
+          "id": "20000000-0402-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0403-0000-0000-000000000000",
           "name": "Mutfak Hol",
+          "gadgets": [],
           "row": 4,
           "column": 3,
-          "background-image": "cdn.example.com/camper/0403.jpg"
+          "id": "20000000-0403-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0404-0000-0000-000000000000",
           "name": "2. Sıra Koltuk",
+          "gadgets": [
+            {
+              "name": "12V USB Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D43",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0404-0001-0000-000000000000"
+            },
+            {
+              "name": "220V Priz",
+              "type-group": "Relay",
+              "type": "RelayForOutlet",
+              "port": "D44",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "MiddleLeft",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0404-0002-0000-000000000000"
+            }
+          ],
           "row": 4,
           "column": 4,
-          "background-image": "cdn.example.com/camper/0404.jpg"
+          "id": "20000000-0404-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0501-0000-0000-000000000000",
           "name": "Kapı Önü",
+          "gadgets": [
+            {
+              "name": "Dış Lamba",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D45",
+              "value": 1,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0501-0001-0000-000000000000"
+            }
+          ],
           "row": 5,
           "column": 1,
-          "background-image": "cdn.example.com/camper/0501.jpg"
+          "id": "20000000-0501-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0502-0000-0000-000000000000",
           "name": "Kapı",
+          "gadgets": [],
           "row": 5,
           "column": 2,
-          "background-image": "cdn.example.com/camper/0502.jpg"
+          "id": "20000000-0502-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0503-0000-0000-000000000000",
           "name": "Masa Hol",
+          "gadgets": [
+            {
+              "name": "Hol Lamba",
+              "type-group": "Relay",
+              "type": "RelayForLight",
+              "port": "D47",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0503-0001-0000-000000000000"
+            },
+            {
+              "name": "Buzzer Alarm",
+              "type-group": "Other",
+              "type": "OtherBuzzer",
+              "port": "D50",
+              "value": 0,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0503-0002-0000-000000000000"
+            },
+            {
+              "name": "Termometre",
+              "type-group": "Sensor",
+              "type": "SensorAirBME280Temprature",
+              "port": "I2C",
+              "value": 22,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0503-0003-0000-000000000000"
+            },
+            {
+              "name": "Nem Ölçer",
+              "type-group": "Sensor",
+              "type": "SensorAirBME280Humidity",
+              "port": "I2C",
+              "value": 75,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0503-0004-0000-000000000000"
+            },
+            {
+              "name": "Basınç Sensörü",
+              "type-group": "Sensor",
+              "type": "SensorAirBME280Pressure",
+              "port": "I2C",
+              "value": 500,
+              "value-unit": "State",
+              "value-to-target-ratio": 0,
+              "value-to-target-unit": "NotSet",
+              "value-to-target": 0,
+              "complex-value": "",
+              "status": "Active",
+              "position-in-section": "BottomCenter",
+              "attached-to": "00000000-0000-0000-0000-000000000000",
+              "actions": [],
+              "id": "20000000-0503-0005-0000-000000000000"
+            }
+          ],
           "row": 5,
           "column": 3,
-          "background-image": "cdn.example.com/camper/0503.jpg"
+          "id": "20000000-0503-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0504-0000-0000-000000000000",
           "name": "1. Sıra Koltuk",
+          "gadgets": [],
           "row": 5,
           "column": 4,
-          "background-image": "cdn.example.com/camper/0504.jpg"
+          "id": "20000000-0504-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0505-0000-0000-000000000000",
           "name": "Sağ Dış Aydınlatma",
+          "gadgets": [],
           "row": 5,
           "column": 5,
-          "background-image": "cdn.example.com/camper/0505.jpg"
+          "id": "20000000-0505-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0602-0000-0000-000000000000",
           "name": "Kokpit Sol",
+          "gadgets": [],
           "row": 6,
           "column": 2,
-          "background-image": "cdn.example.com/camper/0602.jpg"
+          "id": "20000000-0602-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0603-0000-0000-000000000000",
           "name": "Kokpit Orta",
+          "gadgets": [],
           "row": 6,
           "column": 3,
-          "background-image": "cdn.example.com/camper/0603.jpg"
+          "id": "20000000-0603-0000-0000-000000000000"
         },
         {
-          "id": "20000000-0604-0000-0000-000000000000",
           "name": "Kokpit Sağ",
+          "gadgets": [],
           "row": 6,
           "column": 4,
-          "background-image": "cdn.example.com/camper/0604.jpg"
+          "id": "20000000-0604-0000-0000-000000000000"
         }
-      ]
+      ],
+      "rows": [
+        {
+          "no": 1,
+          "percetage": 10,
+          "id": "20000000-0001-0000-0000-00000000000a"
+        },
+        {
+          "no": 2,
+          "percetage": 30,
+          "id": "20000000-0002-0000-0000-00000000000a"
+        },
+        {
+          "no": 3,
+          "percetage": 10,
+          "id": "20000000-0003-0000-0000-00000000000a"
+        },
+        {
+          "no": 4,
+          "percetage": 20,
+          "id": "20000000-0004-0000-0000-00000000000a"
+        },
+        {
+          "no": 5,
+          "percetage": 15,
+          "id": "20000000-0005-0000-0000-00000000000a"
+        },
+        {
+          "no": 6,
+          "percetage": 15,
+          "id": "20000000-0006-0000-0000-00000000000a"
+        }
+      ],
+      "id": "20000000-0000-0000-0000-000000000000"
     }
   ]
 }
