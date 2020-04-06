@@ -1,6 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:smart_places/services/rest_api_client.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_places/blocs/settings/settings_bloc.dart';
+import 'package:smart_places/blocs/settings/settings_event.dart';
+import 'package:smart_places/screens/settings/settings_full_layout_widget.dart';
 import 'package:smart_places/widget/drawer.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -13,28 +15,18 @@ class SummaryPage extends StatefulWidget {
 }
 
 class _SummaryPageState extends State<SummaryPage> {
-  bool value = false;
-  final RestApiClient restApiClient =
-      RestApiClient(httpClient: new HttpClient());
-
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return new Scaffold(
-      backgroundColor: value ? Colors.black : Colors.white,
-      drawer: AppDrawer(),
-      appBar: new AppBar(
-        title: new Text('Özet Bilgiler'),
-      ),
-      body: Center(
-        child: Switch(
-            value: value,
-            onChanged: (v) {
-              restApiClient.getSettings();
-              setState(() {
-                value = v;
-              });
-            }),
-      ),
-    );
+        backgroundColor: Colors.white,
+        drawer: AppDrawer(),
+        appBar: new AppBar(
+          title: new Text('Özet Bilgiler'),
+        ),
+        body: BlocProvider(
+            create: (context) => SettingsBloc()
+               ..add(GetSettings()),
+            child: SettingsFullLayoutWidget()));
   }
 }

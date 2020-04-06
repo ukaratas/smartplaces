@@ -1,32 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:smart_places/models/settings.dart';
 
-abstract class SettingState extends Equatable {
-  final Settings settings = null;
-  final String error = null;
-
-  const SettingState({Settings settings, String error});
+abstract class SettingsState extends Equatable {
+  const SettingsState();
 
   @override
-  List<Object> get props => [settings];
+  List<Object> get props => [];
 }
 
-class SettingsNotLoaded extends SettingState {
+class SettingsNotLoaded extends SettingsState {
   const SettingsNotLoaded() : super();
 
   @override
   String toString() => 'Loading';
 }
 
-class SettingsLoaded extends SettingState {
-  const SettingsLoaded(Settings _settings) : super(settings: _settings);
+class SettingsLoaded extends SettingsState {
+  final Settings settings;
+
+  const SettingsLoaded({this.settings}) : super();
 
   @override
   String toString() => 'Ready';
 }
 
-class SettingsError extends SettingState {
-  const SettingsError(String _error) : super(error: _error);
+class SettingsError extends SettingsState {
+  final String error;
+
+  const SettingsError({this.error}) : super();
 
   @override
   String toString() => 'Error';

@@ -5,24 +5,24 @@ import 'package:smart_places/blocs/settings/settings_state.dart';
 import 'package:smart_places/models/settings.dart';
 import 'package:smart_places/services/rest_api_client.dart';
 
-class SettingsBloc extends Bloc<SettingsEvent, SettingState> {
+class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc();
 
   @override
-  SettingState get initialState => SettingsNotLoaded();
+  SettingsState get initialState => SettingsNotLoaded();
 
   @override
-  Stream<SettingState> mapEventToState(SettingsEvent event) async* {
+  Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
     final currentState = state;
     if (event is GetSettings) {
       try {
         if (currentState is SettingsNotLoaded) {
           final settings = await _fetchSettings();
-          yield SettingsLoaded(settings);
+          yield SettingsLoaded(settings: settings);
           return;
         }
       } catch (e) {
-        yield SettingsError(e.toString());
+        yield SettingsError(error : e.toString());
       }
     }
   }
