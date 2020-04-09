@@ -4,16 +4,16 @@ import 'package:smart_places/blocs/settings/settings_bloc.dart';
 import 'package:smart_places/blocs/settings/settings_event.dart';
 import 'package:smart_places/widgets/drawer/drawer_widget.dart';
 
-class TankMonitorPage extends StatefulWidget {
-  TankMonitorPage({Key key}) : super(key: key);
+class DevicesPage extends StatefulWidget {
+  DevicesPage({Key key}) : super(key: key);
 
-  static const String routeName = '/tank_monitor';
+  static const String routeName = '/devices';
 
   @override
-  _TankMonitorPageState createState() => _TankMonitorPageState();
+  _DevicesPageState createState() => _DevicesPageState();
 }
 
-class _TankMonitorPageState extends State<TankMonitorPage> {
+class _DevicesPageState extends State<DevicesPage> {
   String id;
 
   @override
@@ -27,8 +27,8 @@ class _TankMonitorPageState extends State<TankMonitorPage> {
             create: (context) => SettingsBloc()..add(GetSettings()),
             child: DrawerWidget()),
         appBar: new AppBar(
-          title: new Text('Tank Izleme Bilgiler'),
+          title: new Text('Cihazlar'),
         ),
-        body: Center(child: Text('Tank Section Id : $id')));
+          body: Center(child: Text('Cihazlar Region Id : $id')));
   }
 }

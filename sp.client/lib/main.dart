@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smart_places/modules/clean_water/clean_water_page.dart';
+import 'package:smart_places/pages/device_switch_page.dart';
+import 'package:smart_places/pages/devices_page.dart';
 import 'package:smart_places/pages/light_switch_page.dart';
+import 'package:smart_places/pages/outlet_page.dart';
+import 'package:smart_places/pages/sersors_page.dart';
+import 'package:smart_places/pages/settings_page.dart';
 import 'package:smart_places/pages/summary_page.dart';
-
-import 'modules/lighting/lighting_page.dart';
+import 'package:smart_places/pages/tank_monitor_page.dart';
 
 import 'routes.dart';
 
@@ -17,9 +20,14 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.summary,
       routes: {
         Routes.summary: (context) => SummaryPage(),
-        Routes.lighting: (context) => LightingPage(),
-        Routes.cleanWater: (context) => CleanWaterPage(),
+        Routes.settings: (context) => SettingsPage(),
         Routes.lightSwitch: (context) => LightSwitchPage(),
+        Routes.tankMonitor: (context) => TankMonitorPage(),
+        Routes.lightSwitch: (context) => LightSwitchPage(),
+        Routes.sensor: (context) => SensorsPage(),
+        Routes.outlet: (context) => OutletPage(),
+        Routes.deviceSwitch: (context) => DeviceSwitchPage(),
+        Routes.devices: (context) => DevicesPage(),
       },
     );
   }

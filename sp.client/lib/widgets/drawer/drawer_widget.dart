@@ -51,22 +51,27 @@ class DrawerWidget extends StatelessWidget {
         Routes.lightSwitch);
 
     _createGroupMenuByGadgetType(context, settings, items, "SwitchForDevice",
-        "Diğer Anahtarlar", FontAwesomeIcons.plug, Routes.lightSwitch);
+        "Diğer Anahtarlar", FontAwesomeIcons.plug, Routes.deviceSwitch);
 
     _createGroupMenuByGadgetType(context, settings, items, "RelayForOutlet",
-        "Prizler", FontAwesomeIcons.toolbox, Routes.lightSwitch);
+        "Prizler", FontAwesomeIcons.toolbox, Routes.outlet);
 
     _createGroupMenuByGadgetType(context, settings, items, "RelayForDevice",
-        "Cihazlar", FontAwesomeIcons.toggleOn, Routes.lightSwitch);
+        "Cihazlar", FontAwesomeIcons.toggleOn, Routes.devices);
 
     _createGroupMenuByGadgetGroup(context, settings, items, "Sensor",
-        "Sensörler", FontAwesomeIcons.thermometerHalf);
+        "Sensörler", FontAwesomeIcons.thermometerHalf, Routes.sensor);
 
     _createTankGroupMenu(context, settings, items);
 
     // footer section
     items.add(Divider());
-    items.add(_createDrawerItem(icon: Icons.settings, text: 'Ayarlar'));
+    
+    items.add(_createDrawerItem(
+        icon: Icons.settings,
+        text: 'Ayarlar',
+        onTap: () => Navigator.pushNamed(context, Routes.settings)));
+
     items.add(ListTile(
       title: Text('0.0.1'),
       onTap: () {},
@@ -120,7 +125,8 @@ class DrawerWidget extends StatelessWidget {
       List<Widget> items,
       String gadgetGroup,
       String groupLabel,
-      IconData icon) {
+      IconData icon,
+      String route) {
     var itemCount = settings.numberOfRegionHasGadgetsByGroup(gadgetGroup);
 
     if (itemCount == 1) {
@@ -129,7 +135,7 @@ class DrawerWidget extends StatelessWidget {
           items.add(_createDrawerItem(
               icon: icon,
               text: groupLabel,
-              onTap: () => Navigator.pushNamed(context, Routes.lightSwitch,
+              onTap: () => Navigator.pushNamed(context, route,
                   arguments: {'id': region.id})));
         }
       });
@@ -145,7 +151,7 @@ class DrawerWidget extends StatelessWidget {
         if (region.numberOfSectionHasGadgetsByGroup(gadgetGroup) > 0) {
           items.add(_createDrawerItem(
               text: region.name,
-              onTap: () => Navigator.pushNamed(context, Routes.lightSwitch,
+              onTap: () => Navigator.pushNamed(context, route,
                   arguments: {'id': region.id})));
         }
       });
@@ -164,8 +170,8 @@ class DrawerWidget extends StatelessWidget {
         region.sections.forEach((section) {
           items.add(_createDrawerItem(
               text: section.name,
-              onTap: () => Navigator.pushNamed(context, Routes.lightSwitch,
-                  arguments: {'id': region.id})));
+              onTap: () => Navigator.pushNamed(context, Routes.tankMonitor,
+                  arguments: {'id': section.id})));
         });
       }
     });

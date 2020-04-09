@@ -83,6 +83,7 @@ class GridLoader extends StatelessWidget {
 
     List<TableRow> rows = List<TableRow>();
 
+
     var areaW = MediaQuery.of(context).size.width *.9 ;
 
     for (var i = 0; i < region.layoutRowsCount; i++) {

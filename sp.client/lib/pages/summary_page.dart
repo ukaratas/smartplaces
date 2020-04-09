@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_places/blocs/settings/settings_bloc.dart';
 import 'package:smart_places/blocs/settings/settings_event.dart';
-import 'package:smart_places/screens/settings/settings_full_layout_widget.dart';
 import 'package:smart_places/widgets/drawer/drawer_widget.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -25,8 +24,6 @@ class _SummaryPageState extends State<SummaryPage> {
         appBar: new AppBar(
           title: new Text('Özet Bilgiler'),
         ),
-        body: BlocProvider(
-            create: (context) => SettingsBloc()..add(GetSettings()),
-            child: SettingsFullLayoutWidget()));
+        body: Center(child: Text('Özet Anasayfa')));
   }
 }
