@@ -2,10 +2,30 @@ import 'package:equatable/equatable.dart';
 import 'package:smart_places/models/region.dart';
 
 class Settings extends Equatable {
-  
   final List<Region> regions = List<Region>();
 
   Settings();
+
+  int numberOfRegionHasGadgetsByType(String gadgetType) {
+    int no = 0;
+    regions.forEach((region) {
+      if (region.numberOfSectionHasGadgetsByType(gadgetType) > 0) {
+        no++;
+      }
+    });
+    return no;
+  }
+
+
+  int numberOfRegionHasGadgetsByGroup(String gadgetGroup) {
+    int no = 0;
+    regions.forEach((region) {
+      if (region.numberOfSectionHasGadgetsByGroup(gadgetGroup) > 0) {
+        no++;
+      }
+    });
+    return no;
+  }
 
   Settings.fromJson(Map<String, dynamic> json) {
     if (json['regions'] != null) {
@@ -16,7 +36,7 @@ class Settings extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>(); 
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.regions != null) {
       data['regions'] = this.regions.map((v) => v.toJson()).toList();
     }
@@ -24,9 +44,5 @@ class Settings extends Equatable {
   }
 
   @override
-  List<Object> get props =>[
-        regions
-      ];
-
-  
+  List<Object> get props => [regions];
 }

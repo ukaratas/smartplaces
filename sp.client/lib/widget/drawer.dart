@@ -12,6 +12,7 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           _createHeader(),
+          Text("subtitle"),
           _createDrawerItem(
               icon: Icons.home,
               text: 'Özet',

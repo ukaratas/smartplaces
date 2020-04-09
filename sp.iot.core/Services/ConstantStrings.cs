@@ -18,8 +18,8 @@ namespace sp.iot.core
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE Regions SET Name = @Name, Type = @Type WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO Regions (Id,Name,Type)VALUES(@Id,@Name,@Type)";
+                    public const string UpdateWithId = "UPDATE Regions SET Name = @Name, Type = @Type, BackgroundImage= @BackgroundImage, AspectRatio = @AspectRatio WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO Regions (Id,Name,Type, BackgroundImage, AspectRatio)VALUES(@Id,@Name,@Type, @BackgroundImage, @AspectRatio)";
                 }
             }
 

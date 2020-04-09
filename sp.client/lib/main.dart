@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smart_places/modules/clean_water/clean_water_page.dart';
+import 'package:smart_places/pages/light_switch_page.dart';
+import 'package:smart_places/pages/summary_page.dart';
 
 import 'modules/lighting/lighting_page.dart';
-import 'modules/summary/summary_page.dart';
 
 import 'routes.dart';
 
-void main() => {
-  
-  
-  runApp(MyApp())
-  };
+void main() => {runApp(MyApp())};
 
 class MyApp extends StatelessWidget {
   @override
@@ -22,6 +19,7 @@ class MyApp extends StatelessWidget {
         Routes.summary: (context) => SummaryPage(),
         Routes.lighting: (context) => LightingPage(),
         Routes.cleanWater: (context) => CleanWaterPage(),
+        Routes.lightSwitch: (context) => LightSwitchPage(),
       },
     );
   }
