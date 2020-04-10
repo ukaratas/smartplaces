@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Linq;
 
 namespace sp.iot.core
 {
@@ -15,6 +16,12 @@ namespace sp.iot.core
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("background-image")]
+        public string BackgroundImage { get; set; }
+
+        [JsonPropertyName("aspect-ratio")]
+        public double AspectRatio { get; set; }
+
         [JsonPropertyName("type")]
         public RegionType Type { get; set; }
 
@@ -23,5 +30,23 @@ namespace sp.iot.core
 
         [JsonPropertyName("rows")]
         public List<RegionRow> Rows { get; set; }
+
+        [JsonPropertyName("layout-rows-count")]
+        public long RowsCount
+        {
+            get
+            {
+                return Sections.Max(section => section.Row);
+            }
+        }
+
+        [JsonPropertyName("layout-column-count")]
+        public long ColumnCount
+        {
+            get
+            {
+                return Sections.Max(section => section.Column);
+            }
+        }
     }
 }

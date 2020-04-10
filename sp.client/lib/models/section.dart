@@ -9,6 +9,26 @@ class Section {
 
   Section({this.name, this.gadgets, this.row, this.column, this.id});
 
+  int numberOfGadgetsByType(String gadgetType) {
+    int no = 0;
+    gadgets.forEach((gadget) {
+      if (gadget.type == gadgetType) {
+        no++;
+      }
+    });
+    return no;
+  }
+
+  int numberOfGadgetsByGroup(String gadgetGroup) {
+    int no = 0;
+    gadgets.forEach((gadget) {
+      if (gadget.typeGroup == gadgetGroup) {
+        no++;
+      }
+    });
+    return no;
+  }
+
   Section.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     if (json['gadgets'] != null) {

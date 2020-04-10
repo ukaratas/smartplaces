@@ -1,14 +1,14 @@
 
 class Row {
   int no;
-  int percetage;
+  double percetage;
   String id;
 
   Row({this.no, this.percetage, this.id});
 
   Row.fromJson(Map<String, dynamic> json) {
     no = json['no'];
-    percetage = json['percetage'];
+    percetage = json['percetage'].toDouble();
     id = json['id'];
   }
 

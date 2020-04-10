@@ -156,6 +156,9 @@ namespace sp.iot.core
                                      new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = region.Name},
                                                     new SaveItemProperty { Name= "Type", Value = region.Type},
+                                                    new SaveItemProperty { Name= "BackgroundImage", Value = region.BackgroundImage},
+                                                    new SaveItemProperty { Name= "AspectRatio", Value = region.AspectRatio},
+
                                      },
                                      (log) => { returnValue.AddAction(string.Format("Region '{0}' : {1}", region.Name, log)); }
                                      );
@@ -172,6 +175,8 @@ namespace sp.iot.core
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
                 Type = (RegionType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
+                AspectRatio = (double)reader.GetValue(reader.GetOrdinal("AspectRatio")),
+                BackgroundImage = reader.GetValue(reader.GetOrdinal("BackgroundImage")).ToString(),
             };
             return returnValue;
         }
