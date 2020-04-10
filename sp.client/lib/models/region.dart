@@ -15,11 +15,18 @@ class Region {
   Region(
       {this.name,
       this.type,
+      this.backgroundImage,
+      this.aspectRatio,
       this.sections,
       this.rows,
-      this.layoutRowsCount,
-      this.layoutColumnCount,
       this.id});
+
+  bool get hasVirtualLayoutInfo {
+    return aspectRatio > 0 &&
+        backgroundImage.isNotEmpty &&
+        layoutColumnCount > 0 &&
+        layoutRowsCount > 0;
+  }
 
   int numberOfSectionHasGadgetsByType(String gadgetType) {
     int no = 0;
