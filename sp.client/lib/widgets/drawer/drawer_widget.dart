@@ -66,7 +66,7 @@ class DrawerWidget extends StatelessWidget {
 
     // footer section
     items.add(Divider());
-    
+
     items.add(_createDrawerItem(
         icon: Icons.settings,
         text: 'Ayarlar',
@@ -97,7 +97,7 @@ class DrawerWidget extends StatelessWidget {
               icon: icon,
               text: groupLabel,
               onTap: () => Navigator.pushNamed(context, route,
-                  arguments: {'id': region.id})));
+                  arguments: {'regionId': region.id})));
         }
       });
     }
@@ -113,7 +113,7 @@ class DrawerWidget extends StatelessWidget {
           items.add(_createDrawerItem(
               text: region.name,
               onTap: () => Navigator.pushNamed(context, route,
-                  arguments: {'id': region.id})));
+                  arguments: {'regionId': region.id})));
         }
       });
     }
@@ -136,7 +136,7 @@ class DrawerWidget extends StatelessWidget {
               icon: icon,
               text: groupLabel,
               onTap: () => Navigator.pushNamed(context, route,
-                  arguments: {'id': region.id})));
+                  arguments: {'regionId': region.id})));
         }
       });
     }
@@ -152,7 +152,7 @@ class DrawerWidget extends StatelessWidget {
           items.add(_createDrawerItem(
               text: region.name,
               onTap: () => Navigator.pushNamed(context, route,
-                  arguments: {'id': region.id})));
+                  arguments: {'regionId': region.id})));
         }
       });
     }
@@ -171,7 +171,7 @@ class DrawerWidget extends StatelessWidget {
           items.add(_createDrawerItem(
               text: section.name,
               onTap: () => Navigator.pushNamed(context, Routes.tankMonitor,
-                  arguments: {'id': section.id})));
+                  arguments: {'sectionId': section.id})));
         });
       }
     });

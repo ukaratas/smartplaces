@@ -1,0 +1,4 @@
+enum ModifyType { 
+   newItem, 
+   updateExisting 
+}

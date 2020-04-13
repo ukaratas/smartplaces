@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_places/models/modify_type.dart';
 import 'package:smart_places/models/region.dart';
+import 'package:smart_places/routes.dart';
 
 class RegionWidget extends StatelessWidget {
   final Region region;
@@ -48,12 +50,17 @@ class RegionWidget extends StatelessWidget {
               onPressed: () {},
             ),
             FlatButton(
-              child: const Text('BÖLÜMLER'),
+              child:
+                  Text('BÖLÜMLER (' + region.sections.length.toString() + ')'),
               onPressed: () {},
             ),
             FlatButton(
               child: const Text('GÜNCELLE'),
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(
+                  context, Routes.settingsRegionModify, arguments: {
+                'region': region.copy(),
+                'modifyType': ModifyType.updateExisting
+              }),
             ),
           ],
         ),

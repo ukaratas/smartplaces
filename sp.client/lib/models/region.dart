@@ -48,6 +48,15 @@ class Region {
     return no;
   }
 
+  Region copy() {
+    return Region(
+        name: this.name,
+        type: this.type,
+        backgroundImage: this.backgroundImage,
+        aspectRatio: this.aspectRatio,
+        id: this.id);
+  }
+
   Region.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     type = json['type'];

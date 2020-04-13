@@ -78,8 +78,7 @@ class GridLoader extends StatelessWidget {
 
   List<TableRow> _buildRows(
       BuildContext context, Settings settings, String regionId) {
-    Region region =
-        settings.regions.where((region) => region.id == regionId).first;
+    Region region = settings.regions.where((region) => region.id == regionId) .first;
 
     List<TableRow> rows = List<TableRow>();
 
