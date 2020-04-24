@@ -1,6 +1,6 @@
 # Smart Places
 
-![.NET Core](https://github.com/ukaratas/smartplaces/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/ukaratas/smartplaces/workflows/.NET%20Core/badge.svg) ![Flutter](https://github.com/ukaratas/smartplaces/workflows/Flutter/badge.svg)
 
 > Smart Home, Camper &amp; Boat etc. Management Software
 
