@@ -6,15 +6,14 @@ jobs:
   build:
     name: install dependencies
     runs-on: ubuntu-latest
-      working-directory:sp.client
     steps:
     - uses: actions/checkout@v1
-
+        working-directory:sp.client
     - name: install dependencies
       uses: steebchen/flutter@v1.0.0
       with:
         args: pub get
-
+      
     - name: build apk
       uses: steebchen/flutter@v1.0.0
       with:
