@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_places/blocs/settings/settings_bloc.dart';
+import 'package:smart_places/blocs/settings/settings_event.dart';
 import 'package:smart_places/models/modify_type.dart';
 import 'package:smart_places/models/region.dart';
 import 'package:smart_places/routes.dart';
@@ -57,10 +59,22 @@ class RegionWidget extends StatelessWidget {
             FlatButton(
               child: const Text('GÜNCELLE'),
               onPressed: () => Navigator.pushNamed(
-                  context, Routes.settingsRegionModify, arguments: {
-                'region': region.copy(),
-                'modifyType': ModifyType.updateExisting
-              }),
+                  context, Routes.settingsRegionModify,
+                  arguments: {
+                    'region': region.copy(),
+                    'modifyType': ModifyType.updateExisting,
+                    'onSave': (region) {
+                      //region.update(region);
+
+                      SettingsBloc()..add(UpdateRegion(region));
+
+/*
+                      BlocProvider(
+                          create: (context) =>
+                              SettingsBloc()..add(UpdateSettings()));
+                              */
+                    }
+                  }),
             ),
           ],
         ),

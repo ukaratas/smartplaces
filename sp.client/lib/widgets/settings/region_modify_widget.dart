@@ -104,13 +104,11 @@ class _RegionModifyWidgetState extends State<RegionModifyWidget> {
                   color: Colors.blue,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text('Kayit ediliyor.')));
+                      if (widget.onSave != null) {
+                        widget.onSave(widget.region);
+                      }
 
-                      if (widget.onSave != null) widget.onSave(widget.region);
-
-                      Scaffold.of(context).hideCurrentSnackBar();
-
+                      //Scaffold.of(context).hideCurrentSnackBar();
                       //Navigator.pop(context);
                     }
                   }),

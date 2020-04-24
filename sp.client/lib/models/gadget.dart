@@ -1,3 +1,5 @@
+import 'package:strings/strings.dart';
+
 import 'action.dart';
 
 class Gadget {
@@ -59,23 +61,23 @@ class Gadget {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type-group'] = this.typeGroup;
-    data['type'] = this.type;
-    data['port'] = this.port;
-    data['value'] = this.value;
-    data['value-unit'] = this.valueUnit;
-    data['value-to-target-ratio'] = this.valueToTargetRatio;
-    data['value-to-target-unit'] = this.valueToTargetUnit;
-    data['value-to-target'] = this.valueToTarget;
-    data['complex-value'] = this.complexValue;
-    data['status'] = this.status;
-    data['position-in-section'] = this.positionInSection;
-    data['attached-to'] = this.attachedTo;
+    data['"name"'] = '"' + this.name + '"';
+    data['"type-group"'] = '"' + this.typeGroup + '"';
+    data['"type"'] = '"' + this.type + '"';
+    data['"port"'] = '"' + this.port + '"';
+    data['"value"'] = this.value;
+    data['"value-unit"'] = '"' + this.valueUnit + '"';
+    data['"value-to-target-ratio"'] = this.valueToTargetRatio;
+    data['"value-to-target-unit"'] = '"' + this.valueToTargetUnit + '"';
+    data['"value-to-target"'] = this.valueToTarget;
+    data['"complex-value"'] = '"' + escape(this.complexValue) + '"';
+    data['"status"'] = '"' + this.status + '"';
+    data['"position-in-section"'] = '"' + this.positionInSection + '"';
+    data['"attached-to"'] = '"' + this.attachedTo + '"';
     if (this.actions != null) {
-      data['actions'] = this.actions.map((v) => v.toJson()).toList();
+      data['"actions"'] = this.actions.map((v) => v.toJson()).toList();
     }
-    data['id'] = this.id;
+    data['"id"'] = '"' + this.id + '"';
     return data;
   }
 }

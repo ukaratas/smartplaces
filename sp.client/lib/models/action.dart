@@ -1,3 +1,4 @@
+import 'package:strings/strings.dart';
 
 class Action {
   int order;
@@ -26,12 +27,13 @@ class Action {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order'] = this.order;
-    data['can-execute'] = this.canExecute;
-    data['target-value'] = this.targetValue;
-    data['target-complex-value'] = this.targetComplexValue;
-    data['target-gadget'] = this.targetGadget;
-    data['id'] = this.id;
+    data['"order"'] = this.order;
+    data['"can-execute"'] = '"' + escape(this.canExecute) + '"';
+    data['"target-value"'] = '"' +  escape(this.targetValue) + '"';
+    data['"target-complex-value"'] =
+        '"' + escape(this.targetComplexValue) + '"';
+    data['"target-gadget"'] = '"' + this.targetGadget + '"';
+    data['"id"'] = '"' + this.id + '"';
     return data;
   }
 }

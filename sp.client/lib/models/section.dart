@@ -44,13 +44,13 @@ class Section {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    data['"name"'] = '"' + this.name + '"';
     if (this.gadgets != null) {
-      data['gadgets'] = this.gadgets.map((v) => v.toJson()).toList();
+      data['"gadgets"'] = this.gadgets.map((v) => v.toJson()).toList();
     }
-    data['row'] = this.row;
-    data['column'] = this.column;
-    data['id'] = this.id;
+    data['"row"'] = this.row;
+    data['"column"'] = this.column;
+    data['"id"'] =  '"' +  this.id + '"';
     return data;
   }
 }

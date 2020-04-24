@@ -38,7 +38,7 @@ class Settings extends Equatable {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.regions != null) {
-      data['regions'] = this.regions.map((v) => v.toJson()).toList();
+      data['"regions"'] = this.regions.map((v) => v.toJson()).toList();
     }
     return data;
   }

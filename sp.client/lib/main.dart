@@ -40,9 +40,11 @@ class MyApp extends StatelessWidget {
               (ModalRoute.of(context).settings.arguments as Map)['region'];
           var modifyType =
               (ModalRoute.of(context).settings.arguments as Map)['modifyType'];
+          var onSave =
+              (ModalRoute.of(context).settings.arguments as Map)['onSave'];
 
           return SettingsRegionModifyPage(
-              region: region, modifyType: modifyType);
+              region: region, modifyType: modifyType, onSave: onSave);
         },
       },
     );

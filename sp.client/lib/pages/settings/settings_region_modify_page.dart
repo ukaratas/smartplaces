@@ -11,8 +11,9 @@ class SettingsRegionModifyPage extends StatefulWidget {
   static const String routeName = '/settings_region_modify';
   final Region region;
   final ModifyType modifyType;
+  final Function(Region region) onSave;
 
-  SettingsRegionModifyPage({Key key, this.region, this.modifyType})
+  SettingsRegionModifyPage({Key key, this.region, this.modifyType, this.onSave})
       : super(key: key);
 
   @override
@@ -21,10 +22,8 @@ class SettingsRegionModifyPage extends StatefulWidget {
 }
 
 class _SettingsRegionModifyPageState extends State<SettingsRegionModifyPage> {
-
   @override
   Widget build(BuildContext context) {
-    
     return new Scaffold(
         backgroundColor: Colors.white,
         drawer: BlocProvider(
@@ -35,6 +34,9 @@ class _SettingsRegionModifyPageState extends State<SettingsRegionModifyPage> {
               ? 'Bölge Güncelleme'
               : 'Yeni Bölge'),
         ),
-        body: RegionModifyWidget(region: widget.region));
+        body: RegionModifyWidget(
+          region: widget.region,
+          onSave: widget.onSave,
+        ));
   }
 }

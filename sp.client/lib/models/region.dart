@@ -57,6 +57,13 @@ class Region {
         id: this.id);
   }
 
+  update(Region _region) {
+    this.name = _region.name;
+    this.type = _region.type;
+    this.backgroundImage = _region.backgroundImage;
+    this.aspectRatio = _region.aspectRatio;
+  }
+
   Region.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     type = json['type'];
@@ -81,19 +88,18 @@ class Region {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['background-image'] = this.backgroundImage;
-    data['aspect-ratio'] = this.aspectRatio;
+    data['"name"'] = '"' + this.name + '"';
+    data['"type"'] = '"' +  this.type + '"';
+    data['"background-image"'] = '"' + this.backgroundImage + '"';
+    data['"aspect-ratio"'] = this.aspectRatio;
 
     if (this.sections != null) {
-      data['sections'] = this.sections.map((v) => v.toJson()).toList();
+      data['"sections"'] = this.sections.map((v) => v.toJson()).toList();
     }
     if (this.rows != null) {
-      data['rows'] = this.rows.map((v) => v.toJson()).toList();
+      data['"rows"'] = this.rows.map((v) => v.toJson()).toList();
     }
-    data['id'] = this.id;
+    data['"id"'] = '"' + this.id + '"';
     return data;
   }
 }
-

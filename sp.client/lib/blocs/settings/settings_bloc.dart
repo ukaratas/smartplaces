@@ -6,6 +6,7 @@ import 'package:smart_places/models/settings.dart';
 import 'package:smart_places/services/rest_api_client.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
+  
   SettingsBloc();
 
   @override
@@ -17,12 +18,24 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (event is GetSettings) {
       try {
         if (currentState is SettingsNotLoaded) {
+          
           final settings = await _fetchSettings();
           yield SettingsLoaded(settings: settings);
           return;
         }
       } catch (e) {
-        yield SettingsError(error : e.toString());
+        yield SettingsError(error: e.toString());
+      }
+    }
+
+    if (event is UpdateRegion) {
+      try {
+        await _updateRegion(event.region);
+        final settings = await _fetchSettings();
+        yield SettingsLoaded(settings: settings);
+        return;
+      } catch (e) {
+        yield SettingsError(error: e.toString());
       }
     }
   }
@@ -30,5 +43,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<Settings> _fetchSettings() async {
     final settingsClient = new RestApiClient(httpClient: new HttpClient());
     return settingsClient.getSettings();
+  }
+
+  Future<Settings> _updateRegion(region) async {
+    final settingsClient = new RestApiClient(httpClient: new HttpClient());
+    return settingsClient.updateRegion(region);
   }
 }
