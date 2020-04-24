@@ -6,7 +6,7 @@ jobs:
   build:
     name: install dependencies
     runs-on: ubuntu-latest
-      working-directory:./sp.client
+      working-directory:sp.client
     steps:
     - uses: actions/checkout@v1
 
