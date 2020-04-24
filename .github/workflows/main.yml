@@ -8,15 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-        
-    - name: install dependencies
-      uses: steebchen/flutter@v1.0.0
+    - uses: actions/setup-java@v1
+
       with:
-        args: pub get
-          working-directory:./sp.client
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.9.1+hotfix.6'
       
-    - name: build apk
-      uses: steebchen/flutter@v1.0.0
-      with:
-        args: build apk --release
-          working-directory:./sp.client  
+    - run: flutter pub get
+      working-directory: sp.client
+
+    - run: flutter build apk
+      working-directory: sp.client
