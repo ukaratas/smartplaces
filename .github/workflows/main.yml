@@ -8,13 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-        working-directory:sp.client
+        
     - name: install dependencies
       uses: steebchen/flutter@v1.0.0
       with:
         args: pub get
+          working-directory:./sp.client
       
     - name: build apk
       uses: steebchen/flutter@v1.0.0
       with:
         args: build apk --release
+          working-directory:./sp.client  
