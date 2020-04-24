@@ -25,6 +25,6 @@ jobs:
       uses: steebchen/flutter@v1.0.0
       with:
         args: build apk --release
-        working-directory: dart_project
+        working-directory: sp.client
     
 
