@@ -36,7 +36,7 @@ namespace sp.iot.server.Controllers
 
         [HttpPost()]
         [ProducesErrorResponseType(typeof(void))]
-        [ProducesResponseType(typeof(Settings), 200)]
+        [ProducesResponseType(typeof(SaveResponse<Settings>), 200)]
         public SaveResponse<Settings> SaveSwitch([FromBody] Settings body)
         {
             return _settingsService.Save(body);

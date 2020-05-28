@@ -6,6 +6,20 @@ class Settings extends Equatable {
 
   Settings();
 
+  bool saveRegion(Region region) {
+    var targetRegion = regions.firstWhere((_region) => _region.id == region.id);
+    
+    if (targetRegion != null) {
+      targetRegion.update(region);
+      print("region updated");
+      return true;
+    } else {
+      print("region not found going to added");
+      regions.add(region);
+      return true;
+    }
+  }
+
   int numberOfRegionHasGadgetsByType(String gadgetType) {
     int no = 0;
     regions.forEach((region) {
@@ -15,7 +29,6 @@ class Settings extends Equatable {
     });
     return no;
   }
-
 
   int numberOfRegionHasGadgetsByGroup(String gadgetGroup) {
     int no = 0;

@@ -36,7 +36,7 @@ namespace sp.iot.server.Controllers
         [HttpGet("GetById/{id}")]
         [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(Gadget), 200)]
-        public Gadget GetById(Guid id, [FromQuery(Name = "include-actions")] bool includeActions = false)
+        public Gadget GetById(Guid id, [FromRoute]  [FromQuery(Name = "include-actions")] bool includeActions = false)
         {
             return _gadgetService.Get(id, includeActions);
         }
