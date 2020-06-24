@@ -20,7 +20,9 @@ class _RegionModifyWidgetState extends State<RegionModifyWidget> {
   }
 
   Widget _form() {
-    var nameController = TextEditingController(text: widget.region.name);
+    //var nameController = TextEditingController(text: widget.region.name);
+    //var backgroundImageController = TextEditingController(text: widget.region.backgroundImage);
+    //var aspectRatioController = TextEditingController(text: widget.region.aspectRatio);
 
     final _formKey = GlobalKey<FormState>();
 
@@ -36,8 +38,8 @@ class _RegionModifyWidgetState extends State<RegionModifyWidget> {
                   }
                   return null;
                 },
-                //initialValue: widget.region.name,
-                controller: nameController,
+                initialValue: widget.region.name,
+                controller: TextEditingController(),
                 decoration: new InputDecoration(
                   labelText: 'Bölge Adı',
                   hintText: "Bölge adını giriniz",
@@ -108,7 +110,7 @@ class _RegionModifyWidgetState extends State<RegionModifyWidget> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       if (widget.onSave != null) {
-                        widget.region.name = nameController.text;
+                        //widget.region.name = nameController.text;
                         widget.onSave(widget.region);
                       }
                       Navigator.pop(context);
