@@ -33,10 +33,16 @@ namespace sp.iot.server
         {
             services.AddCoreServices();
 
+            services.AddControllers();
+            
+            
+            /*
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
+            */
 
             services.AddSwaggerGen(c =>
               {
