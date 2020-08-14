@@ -38,7 +38,10 @@ class _SettingsRegionListPageState extends State<SettingsRegionListPage> {
                   context, Routes.settingsRegionModify,
                   arguments: {
                     'region': Region(id: Uuid().v1(), aspectRatio: 0),
-                    'modifyType': ModifyType.newItem
+                    'modifyType': ModifyType.newItem,
+                    'onSave': (region) {
+                      new SettingsBloc()..add(SaveRegion(region));
+                    }
                   }),
           child: Icon(Icons.add)),
     );

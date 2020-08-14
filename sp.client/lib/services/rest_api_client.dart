@@ -2,13 +2,22 @@ import 'dart:io';
 import 'package:http/io_client.dart';
 import 'dart:convert';
 import 'package:meta/meta.dart';
+import 'package:smart_places/blocs/settings/settings_event.dart';
 import 'package:smart_places/models/region.dart';
 import 'package:smart_places/models/settings.dart';
 
 class RestApiClient {
   static const baseUrl = 'https://10.0.2.2:5001';
 
-  static Settings settings;
+  static Settings _settings;
+
+  Settings get settings {
+    if (_settings == null)
+    {
+      GetSettings();
+    }
+    return _settings;
+  }
 
   final HttpClient httpClient;
 
@@ -28,17 +37,21 @@ class RestApiClient {
       throw Exception('error getting settings');
     }
     final data = json.decode(response.body);
-    settings = Settings.fromJson(data);
+    _settings = Settings.fromJson(data);
 
-    return settings;
+    return _settings;
   }
 
-  Future updateRegion(Region region) async {}
+  Future saveRegion(Region region) async {
+    if (_settings.saveRegion(region)) {
+      updateSettings();
+    }
+  }
 
   Future updateSettings() async {
     final settingsUrl = '$baseUrl/settings';
     IOClient ioClient = new IOClient(httpClient);
-    final String updateValue = settings.toJson().toString();
+    final String updateValue = _settings.toJson().toString();
 
     final response = await ioClient.post(settingsUrl,
         headers: {
@@ -47,9 +60,11 @@ class RestApiClient {
         },
         body: updateValue);
 
-    print(response.body);
-
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      var returnObject = jsonDecode(response.body);
+      _settings = Settings.fromJson(returnObject["item"]);
+    } else {
+      print(response);
       throw Exception('error updating settings');
     }
   }

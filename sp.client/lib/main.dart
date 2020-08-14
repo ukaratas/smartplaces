@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.summary: (context) => SummaryPage(),
         Routes.settings: (context) => SettingsPage(),
-        Routes.lightSwitch: (context) => LightSwitchPage(),
+        //Routes.lightSwitch: (context) => LightSwitchPage(),
         Routes.tankMonitor: (context) => TankMonitorPage(),
         Routes.lightSwitch: (context) {
           var regionId =

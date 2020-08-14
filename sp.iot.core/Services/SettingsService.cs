@@ -164,6 +164,8 @@ namespace sp.iot.core
                                      );
                 });
 
+            returnValue.Item = Get();
+
             return returnValue;
         }
 

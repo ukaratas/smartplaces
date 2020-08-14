@@ -8,9 +8,8 @@ abstract class SettingsEvent extends Equatable {
 
 class GetSettings extends SettingsEvent {}
 
-class UpdateRegion extends SettingsEvent {
-  
+class SaveRegion extends SettingsEvent {
   final Region region;
 
-  UpdateRegion(this.region);
+  SaveRegion(this.region);
 }
