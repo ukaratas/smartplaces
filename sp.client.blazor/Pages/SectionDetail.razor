@@ -1,0 +1,16 @@
+@page "/sectiondetail/{RegionId:guid}/{SectionId:guid}"
+
+<h1>Section Detail, @SectionId</h1>
+
+Welcome to your section  details.
+
+<SwitchManager RegionId=@RegionId  SectionId=@SectionId />
+<ConsumptionManager RegionId=@RegionId  SectionId=@SectionId />
+
+@code {
+    [Parameter]
+    public Guid RegionId { get; set; }
+   
+    [Parameter]
+    public Guid SectionId { get; set; }
+}

@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject SettingsClient SettingsClient
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">sp.client.blazor</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -7,26 +9,55 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
+                        <NavLink class="nav-link" >
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Ayarlar
+                        </NavLink>
+                    
+                        <ul class="nav flex-column">
+                      
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="/settings-region-list"> Bölümler
+                                </NavLink>
+                            </li>
+                        </ul>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var regionItem in settings.Regions)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="fetchdata">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> @regionItem.Name
+                        </NavLink>
+                    
+                        <ul class="nav flex-column">
+                        @foreach (var sectionItem in regionItem.Sections)
+                        {
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="@($"sectiondetail/{regionItem.Id}/{sectionItem.Id}")">@sectionItem.Name
+                                </NavLink>
+                            </li>
+                        }
+                        </ul>
+                    </li>
+                }
+        }
+
+
+
     </ul>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
+
+    private iot.core.Settings settings = null;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -34,4 +65,10 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+    }
+
 }

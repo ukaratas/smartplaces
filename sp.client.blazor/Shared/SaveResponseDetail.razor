@@ -1,0 +1,49 @@
+
+@using sp.iot.core
+
+
+@if (Items != null)
+{
+<div class="alert alert-secondary mt-4" role="alert">
+    <span class="oi oi-pencil mr-2" aria-hidden="true"></span>
+
+
+    <span class="text-nowrap">
+        Save Response Detail
+    </span>
+
+     <table class="table">
+        <thead>
+            <tr>
+                <th>Aciklama</th>
+                <th>Zaman</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Items == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <td>@item.Action</td>
+                    <td>@item.TimeStamp</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+</div>
+}
+@code {
+    [Parameter]
+    public bool Display { get; set; }
+
+    [Parameter]
+    public List<SaveResponseAction> Items { get; set; }
+
+}

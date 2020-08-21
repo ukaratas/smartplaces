@@ -1,0 +1,53 @@
+@page "/settings-region-list"
+
+@inject SettingsClient SettingsClient
+
+<h1>Bolum Ayarlari</h1>
+
+  <NavLink class="nav-link" href="@($"settings/region-modify/{Guid.NewGuid()}")">Yeni</NavLink>
+
+ <table class="table">
+        <thead>
+            <tr>
+                <th>Anahtar</th>
+                <th>Adı</th>
+                <th>Tipi</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var regionItem in settings.Regions)
+            {
+                <tr>
+                    <td>@regionItem.Id</td>
+                    <td>@regionItem.Name</td>
+                    <td>@regionItem.Type</td>
+                    <td><NavLink class="nav-link" href="@($"settings-section-list/{@regionItem.Id}")">Birimler</NavLink></td>
+                    <td><NavLink class="nav-link" href="@($"settings/region-modify/{@regionItem.Id}")">Güncelle</NavLink></td>
+                    <td>Sil</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+
+    
+
+@code {
+    private iot.core.Settings settings = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+    }
+
+}

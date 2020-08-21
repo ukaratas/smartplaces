@@ -36,7 +36,10 @@ namespace sp.iot.core
         {
             get
             {
-                return Sections.Max(section => section.Row);
+                if (Sections.Count > 0)
+                    return Sections.Max(section => section.Row);
+                else
+                    return 0;
             }
         }
 
@@ -45,7 +48,11 @@ namespace sp.iot.core
         {
             get
             {
-                return Sections.Max(section => section.Column);
+                if (Sections.Count > 0)
+                    return Sections.Max(section => section.Column);
+                else
+                    return 0;
+               
             }
         }
     }

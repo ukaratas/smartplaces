@@ -1,0 +1,83 @@
+@page "/settings/region-modify/{RegionId:guid}"
+
+@using sp.iot.core
+
+@inject SettingsClient SettingsClient
+
+<h1>New Or Modify Region</h1>
+
+
+<EditForm Model="@editModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+     <p>
+        <label>
+            Id:
+                 @editModel.Id
+        </label>
+    </p>
+
+     <p>
+        <label>
+            Adı:
+                <InputText id="name" @bind-Value="editModel.Name" />
+        </label>
+    </p>
+
+      <p>
+        <label>
+            Tipi:
+                <InputSelect @bind-Value="editModel.Type">
+                <option value="">Tipini Seçiniz...</option>
+                <option value="NotSet">Tanımsız...</option>
+                <option value="Floor">Kat</option>
+                <option value="Tank">Tank</option>
+                <option value="Motohome">Karavan</option>
+                <option value="Boat">Tekne</option>
+                </InputSelect>
+        </label>
+    </p>
+
+    <button type="submit">Submit</button>
+
+    <SaveResponseDetail Display=true Items=@actionItems />
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid RegionId { get; set; }
+    
+    private Settings settings = null;
+
+     protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+        var targetRegion = settings.Regions.First(item=> item.Id == RegionId);
+        if (targetRegion != null)
+        {
+            editModel = targetRegion;
+        }
+        else
+        {
+        editModel = new Region();
+        editModel.Id = RegionId;
+        settings.Regions.Add(editModel);
+        }
+    }
+
+    private Region editModel = new Region();
+
+
+     private List<SaveResponseAction> actionItems { get; set; }
+
+    private async  void HandleValidSubmit()
+    {
+        Console.WriteLine(editModel.Name);
+        var result = await SettingsClient.SaveAsync(settings);
+        actionItems = result.Actions;
+        StateHasChanged();
+
+    }
+}

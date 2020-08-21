@@ -33,14 +33,13 @@ namespace sp.client.blazor
             services.AddSingleton<HttpClient>();
 
             services.AddHttpClient<SettingsClient>(client => client.BaseAddress = new Uri("https://localhost:5001/"));
-/*
+            
+            /*
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
-
             */
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

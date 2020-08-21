@@ -1,24 +1,5 @@
 ﻿@page "/"
 
-@using System.Net.Http
-@using System.Net.Http.Json
-@inject HttpClient Http
+<h1>Hello SmartHome User!</h1>
 
-@inject SettingsClient SettingsClient
-
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<button @onclick=@(async () => await PrintWebApiResponse())> Print Web API Response</button>
-
-@functions {
-    private async Task PrintWebApiResponse()
-    {
-        var x = await SettingsClient.GetAsync();
-        Console.WriteLine(x);
-    }
-}
+Welcome to your sumary page.

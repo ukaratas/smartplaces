@@ -1,0 +1,53 @@
+
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+
+
+
+<div class="alert alert-secondary mt-4" role="alert">
+    <span class="oi oi-pencil mr-2" aria-hidden="true"></span>
+
+
+    <span class="text-nowrap">
+        Switch Manager
+    </span>
+
+    <strong>@SectionId</strong>
+
+    @if (settings != null)
+    {
+        @foreach (var gadgetItem in Section.Gadgets)
+            {
+                <li>
+                    @gadgetItem.Name
+                </li>
+            }
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    public Guid SectionId { get; set; }
+
+    [Parameter]
+    public Section Section { get; set; }
+
+    [Parameter]
+    public Guid RegionId { get; set; }
+
+
+    private iot.core.Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+
+        var targetRegion = settings.Regions.First(item => item.Id == RegionId);
+
+        Section = targetRegion.Sections.First(item => item.Id == SectionId);
+        Console.Write(Section.Id);
+    }
+
+
+}

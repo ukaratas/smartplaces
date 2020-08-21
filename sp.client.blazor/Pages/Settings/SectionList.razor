@@ -1,0 +1,55 @@
+@page "/settings-section-list/{RegionId:guid}"
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+
+<h1>Birim Ayarlari</h1>
+
+ <table class="table">
+        <thead>
+            <tr>
+                <th>Anahtar</th>
+                <th>Adı</th>
+                <th></th>
+                <th>
+                     <NavLink class="nav-link" href="@($"settings/section-modify/{RegionId}/{Guid.NewGuid()}")">Yeni</NavLink>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var sectionItem in region.Sections)
+            {
+                <tr>
+                    <td>@sectionItem.Id</td>
+                    <td>@sectionItem.Name</td>
+                    <td>Aletler </td>
+                    <td>Sil</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+
+    
+
+@code {
+    [Parameter]
+    public Guid RegionId { get; set; }
+
+    public Region region { get; set; }
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+        region = settings.Regions.First(item => item.Id == RegionId);
+    }
+
+}

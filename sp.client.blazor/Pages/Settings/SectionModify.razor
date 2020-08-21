@@ -1,0 +1,74 @@
+@page "/settings/section-modify/{RegionId:guid}/{SectionId:guid}"
+
+@using sp.iot.core
+
+@inject SettingsClient SettingsClient
+
+<h1>New Or Modify Section</h1>
+
+
+<EditForm Model="@editModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+     <p>
+        <label>
+            Id:
+                 @editModel.Id
+        </label>
+    </p>
+
+     <p>
+        <label>
+            Adı:
+                <InputText id="name" @bind-Value="editModel.Name" />
+        </label>
+    </p>
+
+    <button type="submit">Submit</button>
+
+    <SaveResponseDetail Display=true Items=@actionItems />
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid RegionId { get; set; }
+
+    [Parameter]
+    public Guid SectionId { get; set; }
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+        var targetRegion = settings.Regions.First(item => item.Id == RegionId);
+
+        var targetSection = targetRegion.Sections.FirstOrDefault(item => item.Id == SectionId);
+
+        if (targetSection != null)
+        {
+            editModel = targetSection;
+        }
+        else
+        {
+            editModel = new Section();
+            editModel.Id = SectionId;
+            targetRegion.Sections.Add(editModel);
+        }
+    }
+
+    private Section editModel = new Section();
+
+
+    private List<SaveResponseAction> actionItems { get; set; }
+
+    private async void HandleValidSubmit()
+    {
+        var result = await SettingsClient.SaveAsync(settings);
+        actionItems = result.Actions;
+        StateHasChanged();
+
+    }
+}

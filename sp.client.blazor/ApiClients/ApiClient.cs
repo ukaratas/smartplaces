@@ -22,9 +22,31 @@ public class SettingsClient
         }
         catch
         {
-            
+            return null;
         }
     
         return settings;
+    }
+
+
+    public async Task<SaveResponse<Settings>> SaveAsync(Settings settings)
+    {
+
+        SaveResponse<Settings> result = null;
+        try
+        {
+            using (var response = await client.PostAsJsonAsync("Settings", settings))
+            {
+
+                result = await response.Content.ReadAsAsync<SaveResponse<Settings>>();
+
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    
+        return result;
     }
 }
