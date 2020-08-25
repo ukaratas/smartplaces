@@ -44,7 +44,7 @@ public class SettingsClient
         }
         catch
         {
-            return null;
+            throw;
         }
     
         return result;

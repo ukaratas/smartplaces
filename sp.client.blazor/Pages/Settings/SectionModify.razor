@@ -3,6 +3,7 @@
 @using sp.iot.core
 
 @inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
 
 <h1>New Or Modify Section</h1>
 
@@ -25,11 +26,14 @@
         </label>
     </p>
 
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Kaydet</button>
+    
+    <BackButtonComponent BaseReturnUrl="@($"settings-section-list/{RegionId}")" />
 
-    <SaveResponseDetail Display=true Items=@actionItems />
+    <SaveResponseDetail Display=@showResponseLog Items=@actionItems />
 
 </EditForm>
+
 
 @code {
     [Parameter]
@@ -38,7 +42,11 @@
     [Parameter]
     public Guid SectionId { get; set; }
 
+    private bool showResponseLog = false;
+
     private Settings settings = null;
+    private Section editModel = new Section();
+
 
     protected override async Task OnParametersSetAsync()
     {
@@ -59,16 +67,14 @@
         }
     }
 
-    private Section editModel = new Section();
-
-
     private List<SaveResponseAction> actionItems { get; set; }
 
     private async void HandleValidSubmit()
     {
         var result = await SettingsClient.SaveAsync(settings);
         actionItems = result.Actions;
+        showResponseLog = true;
         StateHasChanged();
-
     }
+
 }

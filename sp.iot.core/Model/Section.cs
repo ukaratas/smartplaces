@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace sp.iot.core
@@ -11,6 +12,7 @@ namespace sp.iot.core
             Gadgets = new List<Gadget>();
         }
 
+        [Required]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 

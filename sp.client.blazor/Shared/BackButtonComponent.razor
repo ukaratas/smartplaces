@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager
+
+<button class="btn btn-secondary" type="button" @onclick="Back">Geri</button>
+
+@code {
+    [Parameter]
+    public string BaseReturnUrl { get; set; }
+
+    [Parameter]
+    public string ReturnUrl { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+         var query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(query).TryGetValue("returnUrl", out var value))
+        {
+            ReturnUrl = value;
+        }
+    }
+
+    private void Back()
+    {
+        if (!string.IsNullOrEmpty(ReturnUrl))
+        {
+            NavigationManager.NavigateTo(ReturnUrl);
+        }
+        else
+        {
+            NavigationManager.NavigateTo(BaseReturnUrl);
+        }
+    }
+}
