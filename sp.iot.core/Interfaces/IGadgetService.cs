@@ -15,7 +15,7 @@ namespace sp.iot.core
 
         Gadget Get(Guid Id, bool includeActions);
 
-        IEnumerable<Gadget> GetBySection(Guid section, bool includeActions);
+        List<Gadget> GetBySection(Guid section, bool includeActions);
 
         SaveResponse SetValue(Guid id, GadgetSetValueRequest value);
 

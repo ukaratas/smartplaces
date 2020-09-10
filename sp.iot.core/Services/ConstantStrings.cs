@@ -56,6 +56,11 @@ namespace sp.iot.core
                     public const string UpdateWithId = "UPDATE Sections SET Name = @Name, Region = @Region, Row = @Row, Column = @Column WHERE Id = @Id";
                     public const string Insert = "INSERT INTO Sections (Id,Name,Region,Row,Column)VALUES(@Id,@Name,@Region,@Row,@Column)";
                 }
+
+                public static class Delete
+                {
+                    public const string DeleteWithId = "DELETE FROM Sections WHERE Id = @Id";
+                }
             }
 
 

@@ -169,6 +169,67 @@ namespace sp.iot.core
             return returnValue;
         }
 
+        public SaveResponse<Section> DeleteSection(Guid sectionId)
+        {
+
+            var returnValue = new SaveResponse<Section>();
+
+            //1- Check Existance
+
+            returnValue.AddAction("Checking section existance");
+
+            Section section = null;
+            SqliteDataReader reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.Section.Get.IdParam,
+                new List<SqliteParameter> { new SqliteParameter("Id", sectionId) }
+                );
+
+            if (reader.Read())
+            {
+                section = _bindSectionData(reader);
+                returnValue.Item = section;
+                returnValue.AddAction("Section is exist", SaveActionType.Information);
+            }
+            else
+            {
+                returnValue.AddAction("Section is NOT exist", SaveActionType.Error);
+                return returnValue;
+            }
+
+            //2- Check Dependency - Any Gadget
+
+            returnValue.AddAction("Checking dependent gadgets");
+            List<Gadget> gadgets = _gadgetService.GetBySection(sectionId, false);
+            if (gadgets.Count > 0)
+            {
+                returnValue.AddAction("Section has gadgets", SaveActionType.Warning);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Section has not dependent gadgets", SaveActionType.Information);
+            }
+
+            //3- Delete
+
+
+            var deleteResult = _database.ExecuteNonQuery(
+                ConstantStrings.SqlQueries.Section.Delete.DeleteWithId,
+                new List<SqliteParameter> { new SqliteParameter("Id", sectionId) }
+                );
+
+            if (deleteResult > 0)
+            {
+                returnValue.AddAction("Section has deleted successfully", SaveActionType.Success);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Section has not deleted !", SaveActionType.Error);
+            }
+
+            return returnValue;
+        }
 
         private Region _bindRegionData(SqliteDataReader reader)
         {
@@ -193,8 +254,6 @@ namespace sp.iot.core
             };
             return returnValue;
         }
-
-
 
         private Section _bindSectionData(SqliteDataReader reader)
         {

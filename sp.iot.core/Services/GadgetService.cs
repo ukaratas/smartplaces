@@ -53,7 +53,7 @@ namespace sp.iot.core
             return gadget;
         }
 
-        public IEnumerable<Gadget> GetBySection(Guid section, bool includeActions)
+        public List<Gadget> GetBySection(Guid section, bool includeActions)
         {
             var returnValue = new List<Gadget>();
 

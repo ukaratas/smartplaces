@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using sp.client.blazor.Data;
 
 namespace sp.client.blazor
 {
@@ -29,7 +28,6 @@ namespace sp.client.blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<HttpClient>();
 
             services.AddHttpClient<SettingsClient>(client => client.BaseAddress = new Uri("https://localhost:5001/"));

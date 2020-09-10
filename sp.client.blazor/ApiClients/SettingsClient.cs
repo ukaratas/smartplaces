@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -40,6 +41,26 @@ public class SettingsClient
 
                 result = await response.Content.ReadAsAsync<SaveResponse<Settings>>();
 
+            }
+        }
+        catch
+        {
+            throw;
+        }
+    
+        return result;
+    }
+
+     public async Task<SaveResponse<Section>> DeleteAsync(Guid sectionId)
+    {
+
+        SaveResponse<Section> result = null;
+        try
+        {
+            using (var response = await client.DeleteAsync("Settings/Section/" + sectionId.ToString()))
+            {
+
+                result = await response.Content.ReadAsAsync<SaveResponse<Section>>();
             }
         }
         catch

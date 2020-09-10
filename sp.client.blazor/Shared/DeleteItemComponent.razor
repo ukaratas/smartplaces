@@ -1,0 +1,68 @@
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
+
+<h1>Delete @ItemTypeName</h1>
+
+@if (IsLoaded == true)
+{
+    @if (IsItemFound == true)
+    {
+        <div class="alert alert-warning" role="alert">
+            Delete process is irreversible. When you delete item, item is removed from database permanenetly.
+        </div>
+
+        @ChildContent
+
+        <button disabled="@isDeleteTriggered" class="btn btn-primary" @onclick="Delete">Delete</button>
+        <BackButtonComponent BaseReturnUrl=@BaseReturnUrl />
+        <SaveResponseDetail Display=@displayResult Items=@actionItems />
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <b>@ItemTypeName</b> is not available in database.
+        </div>
+    }
+}   
+else
+{
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+</div>
+}
+
+
+@code {
+    [Parameter]
+    public bool IsLoaded { get; set; }
+
+    [Parameter]
+    public bool IsItemFound { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ItemTypeName { get; set; }
+
+    [Parameter]
+    public string BaseReturnUrl { get; set; }
+
+    [Parameter]
+    public Func<MouseEventArgs,Task<List<SaveResponseAction>>> OnDelete { get; set; }
+
+    private bool isDeleteTriggered = false;
+    private bool displayResult = false;
+
+    private List<SaveResponseAction> actionItems { get; set; }
+
+    private async void Delete(MouseEventArgs args)
+    {
+        isDeleteTriggered = true;
+        actionItems = await OnDelete(args);
+        displayResult = true;
+        StateHasChanged();
+    }
+
+}

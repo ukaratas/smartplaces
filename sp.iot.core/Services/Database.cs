@@ -45,7 +45,6 @@ namespace sp.iot.core
             return command.ExecuteReader();
         }
 
-
         public T ExecuteScalar<T>(string commandText)
         {
             return ExecuteScalar<T>(commandText, null);
@@ -64,6 +63,19 @@ namespace sp.iot.core
                 return (T)result;
             else
                 return default(T);
+        }
+
+
+        public int ExecuteNonQuery(string commandText, List<SqliteParameter> parameters)
+        {
+            SqliteCommand command = Connection.CreateCommand();
+            command.CommandText = commandText;
+            if (parameters != null)
+                parameters.ForEach(item => command.Parameters.Add(item));
+
+            var result = command.ExecuteNonQuery();
+
+            return result;
         }
 
 
@@ -134,7 +146,7 @@ namespace sp.iot.core
                               updateParameters.Add(new SqliteParameter(item.Name, intValue));
                               if (oldValue != DBNull.Value && (long)oldValue != intValue) hasFieldChange = true;
                               break;
-                        case long intValue:
+                          case long intValue:
                               updateParameters.Add(new SqliteParameter(item.Name, intValue));
                               if (oldValue != DBNull.Value && (long)oldValue != intValue) hasFieldChange = true;
                               break;

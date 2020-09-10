@@ -1,18 +1,18 @@
 @page "/settings-section-list/{RegionId:guid}"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
+ 
+<h1> <b>@region?.Name</b>  Birim Listesi</h1>
 
-<h1>Birim Ayarlari</h1>
-
- <table class="table">
+ <table class="table table-striped">
         <thead>
             <tr>
-                <th>Anahtar</th>
+                
                 <th>Adı</th>
                 <th></th>
                 <th>
-                     <NavLink class="nav-link" href="@($"settings/section-modify/{RegionId}/{Guid.NewGuid()}")">Yeni</NavLink>
                 </th>
+                 <th>Anahtar</th>
             </tr>
         </thead>
         <tbody>
@@ -25,15 +25,19 @@
             @foreach (var sectionItem in region.Sections)
             {
                 <tr>
-                    <td>@sectionItem.Id</td>
-                    <td>@sectionItem.Name</td>
-                    <td>Aletler </td>
-                    <td>Sil</td>
+                    <td><NavLink href="@($"settings/section-modify/{RegionId}/{sectionItem.Id}")">@sectionItem.Name</NavLink></td>                
+                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Aletler</a> </td>
+                    <td><a href="@($"settings/section-delete/{RegionId}/{sectionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Sil</a> </td>
+                    <td><i>@sectionItem.Id</i></td>
                 </tr>
             }
         }
         </tbody>
     </table>
+
+    <a role="button" class="btn btn-primary" href="@($"settings/section-modify/{RegionId}/{Guid.NewGuid()}")">Yeni Birim</a>
+
+    <BackButtonComponent BaseReturnUrl="@($"settings-region-list")" />
 
 
     

@@ -12,7 +12,12 @@ namespace sp.iot.core
 
         public void AddAction(string action)
         {
-            Actions.Add(new SaveResponseAction { TimeStamp = DateTime.Now, Action = action });
+            Actions.Add(new SaveResponseAction { CreatedAt = DateTime.Now, Action = action });
+        }
+
+        public void AddAction(string action, SaveActionType type)
+        {
+            Actions.Add(new SaveResponseAction { CreatedAt = DateTime.Now, Action = action, Type = type });
         }
 
         public T Item { get; set; }
@@ -31,7 +36,7 @@ namespace sp.iot.core
 
         public void AddAction(string action)
         {
-            Actions.Add(new SaveResponseAction { TimeStamp = DateTime.Now, Action = action });
+            Actions.Add(new SaveResponseAction { CreatedAt = DateTime.Now, Action = action });
         }
 
         public List<SaveResponseAction> Actions { get; set; }

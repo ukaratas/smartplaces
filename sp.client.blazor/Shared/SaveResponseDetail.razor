@@ -26,10 +26,41 @@
         {
             @foreach (var item in Items)
             {
-                <tr>
-                    <td>@item.Action</td>
-                    <td>@item.TimeStamp</td>
-                </tr>
+
+                @switch (item.Type)
+                {
+                case SaveActionType.Information:
+                    <tr class="table-info">
+                        <td>@item.Action</td>
+                        <td>@item.CreatedAt.ToString()</td>
+                    </tr>
+                    break;
+                case SaveActionType.Warning:
+                    <tr class="table-warning">
+                        <td>@item.Action</td>
+                        <td>@item.CreatedAt.ToString()</td>
+                    </tr>
+                    break;
+                case SaveActionType.Success:
+                    <tr class="table-success">
+                        <td>@item.Action</td>
+                        <td>@item.CreatedAt.ToString()</td>
+                    </tr>
+                    break;
+                case SaveActionType.Error:
+                    <tr class="table-error">
+                        <td>@item.Action</td>
+                        <td>@item.CreatedAt.ToString()</td>
+                    </tr>
+                    break;
+                default:
+                    <tr class="table-primary">
+                        <td>@item.Action</td>
+                        <td>@item.CreatedAt.ToString()</td>
+                    </tr>
+                    break;
+                }
+
             }
         }
         </tbody>

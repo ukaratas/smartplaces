@@ -42,5 +42,14 @@ namespace sp.iot.server.Controllers
             return _settingsService.Save(body);
 
         }
+
+        [HttpDelete("Section/{sectionId}")]
+        [ProducesErrorResponseType(typeof(void))]
+        [ProducesResponseType(typeof(SaveResponse<Section>), 200)]
+        public SaveResponse<Section> DeleteSection(Guid sectionId)
+        {
+            return _settingsService.DeleteSection(sectionId);
+
+        }
     }
 }

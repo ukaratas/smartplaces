@@ -5,31 +5,26 @@
 @inject SettingsClient SettingsClient
 @inject NavigationManager NavigationManager
 
-<h1>New Or Modify Section</h1>
+<h1>Birim Guncelleme</h1>
 
 
 <EditForm Model="@editModel" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
+      
+    <div class="form-group">        
+        <label for="Id">Anahtar: </label>  
+        <label Id="Id">editModel.Id</label>       
+    </div>    
 
-     <p>
-        <label>
-            Id:
-                 @editModel.Id
-        </label>
-    </p>
-
-     <p>
-        <label>
-            Adı:
-                <InputText id="name" @bind-Value="editModel.Name" />
-        </label>
-    </p>
+    <div class="form-group">        
+        <label for="name">Adı: </label>        
+        <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>        
+        <ValidationMessage For="@(() => editModel.Name)" />    
+    </div>    
 
     <button class="btn btn-primary" type="submit">Kaydet</button>
-    
     <BackButtonComponent BaseReturnUrl="@($"settings-section-list/{RegionId}")" />
-
     <SaveResponseDetail Display=@showResponseLog Items=@actionItems />
 
 </EditForm>
@@ -38,6 +33,9 @@
 @code {
     [Parameter]
     public Guid RegionId { get; set; }
+
+     [Parameter]
+    public Region Region { get; set; }
 
     [Parameter]
     public Guid SectionId { get; set; }
@@ -51,9 +49,9 @@
     protected override async Task OnParametersSetAsync()
     {
         settings = await SettingsClient.GetAsync();
-        var targetRegion = settings.Regions.First(item => item.Id == RegionId);
+        Region = settings.Regions.First(item => item.Id == RegionId);
 
-        var targetSection = targetRegion.Sections.FirstOrDefault(item => item.Id == SectionId);
+        var targetSection = Region.Sections.FirstOrDefault(item => item.Id == SectionId);
 
         if (targetSection != null)
         {
@@ -63,7 +61,7 @@
         {
             editModel = new Section();
             editModel.Id = SectionId;
-            targetRegion.Sections.Add(editModel);
+            Region.Sections.Add(editModel);
         }
     }
 

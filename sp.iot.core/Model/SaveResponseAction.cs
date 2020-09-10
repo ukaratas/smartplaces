@@ -7,8 +7,10 @@ namespace sp.iot.core
     public class SaveResponseAction
     {
         [JsonPropertyName("time-stamp")]
-        public DateTime TimeStamp { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public String Action { get; set; }
+
+        public SaveActionType Type { get; set; }
     }
 }
