@@ -5,42 +5,40 @@
 @inject SettingsClient SettingsClient
 @inject NavigationManager NavigationManager
 
-<h1>Birim Guncelleme</h1>
 
+<ModifyItemComponent 
+    Model = "@editModel"
+    IsLoaded = "@pageBusinessInitalized"
+    ItemTypeName = "Section"
+    BaseReturnUrl = "@($"settings-section-list/{RegionId}")"
+    OnSave = "@OnSave">
 
-<EditForm Model="@editModel" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-      
-    <div class="form-group">        
-        <label for="Id">Anahtar: </label>  
-        <label Id="Id">editModel.Id</label>       
-    </div>    
+    <FormTemplate>
+        <div class="form-group">        
+            <label for="Id">Anahtar: </label>  
+            <label Id="Id">editModel.Id</label>       
+        </div>    
 
-    <div class="form-group">        
-        <label for="name">Adı: </label>        
-        <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>        
-        <ValidationMessage For="@(() => editModel.Name)" />    
-    </div>    
+        <div class="form-group">        
+            <label for="name">Adı: </label>        
+            <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>        
+            <ValidationMessage For="@(() => editModel.Name)" />    
+        </div>    
+    </FormTemplate>
 
-    <button class="btn btn-primary" type="submit">Kaydet</button>
-    <BackButtonComponent BaseReturnUrl="@($"settings-section-list/{RegionId}")" />
-    <SaveResponseDetail Display=@showResponseLog Items=@actionItems />
-
-</EditForm>
-
+</ModifyItemComponent>
 
 @code {
     [Parameter]
     public Guid RegionId { get; set; }
 
-     [Parameter]
+    [Parameter]
     public Region Region { get; set; }
 
     [Parameter]
     public Guid SectionId { get; set; }
 
-    private bool showResponseLog = false;
+    private bool pageBusinessInitalized = false;
 
     private Settings settings = null;
     private Section editModel = new Section();
@@ -63,16 +61,16 @@
             editModel.Id = SectionId;
             Region.Sections.Add(editModel);
         }
+
+        pageBusinessInitalized = true;
     }
 
-    private List<SaveResponseAction> actionItems { get; set; }
 
-    private async void HandleValidSubmit()
+    private async Task<List<SaveResponseAction>> OnSave()
     {
         var result = await SettingsClient.SaveAsync(settings);
-        actionItems = result.Actions;
-        showResponseLog = true;
-        StateHasChanged();
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
     }
 
 }

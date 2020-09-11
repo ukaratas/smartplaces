@@ -17,7 +17,7 @@ namespace sp.iot.core
 
         int ExecuteNonQuery(string commandText, List<SqliteParameter> parameters);
 
-        void SaveItem(Guid id, string getQuery, string insertQuery, string updateQuery, List<SaveItemProperty> properties, Action<string> logCallback);
+        void SaveItem(Guid id, string getQuery, string insertQuery, string updateQuery, List<SaveItemProperty> properties, Action<string, SaveActionType> logCallback);
     }
 
 }

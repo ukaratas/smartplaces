@@ -72,7 +72,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "Percentage", Value = row.Percentage},
 
                                       },
-                                      (log) => { returnValue.AddAction(string.Format("Percante '{0}' : {1}", row.No, log)); }
+                                      (log, actionType) => { returnValue.AddAction(string.Format("Percante '{0}' : {1}", row.No, log), actionType); }
                                       );
 
                     });
@@ -100,7 +100,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "TargetValue", Value = action.TargetValue },
                                                     new SaveItemProperty { Name= "CanExecute", Value = action.CanExecute },
                                                     },
-                                                    (log) => { returnValue.AddAction(string.Format("Gadget Action '{0}' : {1}", action.Order, log)); }
+                                                    (log, actionType) => { returnValue.AddAction(string.Format("Gadget Action '{0}' : {1}", action.Order, log), actionType); }
                                                     );
                                         }
                                     );
@@ -126,7 +126,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "AttachedTo", Value = gadget.AttachedTo},
                                                     new SaveItemProperty { Name= "Status", Value = gadget.Status},
                                             },
-                                            (log) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log)); }
+                                            (log, actionType) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log), actionType); }
                                             );
 
                                 });
@@ -144,7 +144,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "Column", Value = section.Column},
 
                                        },
-                                       (log) => { returnValue.AddAction(string.Format("Section '{0}' : {1}", section.Name, log)); }
+                                       (log, actionType) => { returnValue.AddAction(string.Format("Section '{0}' : {1}", section.Name, log), actionType); }
                                        );
                         });
 
@@ -160,7 +160,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "AspectRatio", Value = region.AspectRatio},
 
                                      },
-                                     (log) => { returnValue.AddAction(string.Format("Region '{0}' : {1}", region.Name, log)); }
+                                     (log, actionType) => { returnValue.AddAction(string.Format("Region '{0}' : {1}", region.Name, log), actionType); }
                                      );
                 });
 

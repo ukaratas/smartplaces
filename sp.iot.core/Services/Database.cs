@@ -85,7 +85,7 @@ namespace sp.iot.core
             string insertQuery,
             string updateQuery,
             List<SaveItemProperty> properties,
-            Action<string> logCallback
+            Action<string, SaveActionType> logCallback
             )
         {
             SqliteDataReader reader = ExecuteReader(
@@ -97,24 +97,24 @@ namespace sp.iot.core
 
             if (reader.Read())
             {
-                logCallback("Items is exists");
+                logCallback("Items is exists", SaveActionType.Information);
                 var hasChange = _buildSaveParameters(properties, reader, saveParameters, logCallback);
                 if (hasChange)
                 {
                     ExecuteScalar<int>(updateQuery, saveParameters);
-                    logCallback("Item is updated.");
+                    logCallback("Item is updated.", SaveActionType.Success);
                 }
             }
             else
             {
-                logCallback("Items is NOT exists");
+                logCallback("Items is NOT exists", SaveActionType.Information);
                 _buildSaveParameters(properties, null, saveParameters, logCallback);
                 ExecuteScalar<int>(insertQuery, saveParameters);
-                logCallback("Items is created.");
+                logCallback("Items is created.", SaveActionType.Success);
             }
         }
 
-        private bool _buildSaveParameters(List<SaveItemProperty> properties, SqliteDataReader oldRecordReader, List<SqliteParameter> updateParameters, Action<string> logCallback)
+        private bool _buildSaveParameters(List<SaveItemProperty> properties, SqliteDataReader oldRecordReader, List<SqliteParameter> updateParameters, Action<string, SaveActionType> logCallback)
         {
             var hasChange = false;
             properties.ForEach(item =>
@@ -169,7 +169,7 @@ namespace sp.iot.core
 
                       if (hasFieldChange && oldRecordReader != null)
                       {
-                          logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name));
+                          logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name), SaveActionType.Success );
                           hasChange = true;
                       }
                   });

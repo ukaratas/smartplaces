@@ -1,0 +1,64 @@
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
+
+@typeparam TItem
+
+@if (IsLoaded == true)
+{
+    <h1>Item @ItemTypeName</h1>
+
+    <EditForm Model="@Model" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        
+        @FormTemplate(Model)
+
+        <button disabled="@isSaveTriggered" class="btn btn-primary" type="submit">Kaydet</button>
+
+        <BackButtonComponent BaseReturnUrl=@BaseReturnUrl />
+        <SaveResponseDetail Display=@displayResult Items=@actionItems />
+    </EditForm>
+}   
+else
+{
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+</div>
+}
+
+
+@code {
+    [Parameter]
+    public RenderFragment<TItem> FormTemplate { get; set; }
+    [Parameter]
+    public TItem Model { get; set; }
+
+
+    [Parameter]
+    public bool IsLoaded { get; set; }
+
+    [Parameter]
+    public string ItemTypeName { get; set; }
+
+    [Parameter]
+    public string BaseReturnUrl { get; set; }
+
+    [Parameter]
+    public Func<Task<List<SaveResponseAction>>> OnSave { get; set; }
+
+    private bool isSaveTriggered = false;
+    private bool displayResult = false;
+
+    private List<SaveResponseAction> actionItems { get; set; }
+
+
+    private async void Save()
+    {
+        isSaveTriggered = true;
+        actionItems = await OnSave();
+        displayResult = true;
+        StateHasChanged();
+    }
+
+}
