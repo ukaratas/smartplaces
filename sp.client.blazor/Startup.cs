@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -28,16 +27,11 @@ namespace sp.client.blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
             services.AddSingleton<HttpClient>();
 
-            services.AddHttpClient<SettingsClient>(client => client.BaseAddress = new Uri("https://localhost:5001/"));
+            services.AddHttpClient<SettingsClient>(client => client.BaseAddress = new Uri("http://localhost:5006/"));
             
-            /*
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,21 +11,23 @@ public class SettingsClient
     public SettingsClient(HttpClient client)
     {
         this.client = client;
+
     }
 
     public async Task<Settings> GetAsync()
     {
         var settings = new Settings();
-    
-        try
+
+        /*ry
+        {*/
+        settings = await client.GetFromJsonAsync<Settings>("Settings");
+        /*}
+        catch (Exception ex)
         {
-            settings = await client.GetFromJsonAsync<Settings>("Settings");
-        }
-        catch
-        {
-            return null;
-        }
-    
+            throw ex;
+            //return null;
+        }*/
+
         return settings;
     }
 
@@ -47,17 +49,17 @@ public class SettingsClient
         {
             throw;
         }
-    
+
         return result;
     }
 
-     public async Task<SaveResponse<Section>> DeleteAsync(Guid sectionId)
+    public async Task<SaveResponse<Section>> DeleteSectionAsync(Guid sectionId)
     {
 
         SaveResponse<Section> result = null;
         try
         {
-            using (var response = await client.DeleteAsync("Settings/Section/" + sectionId.ToString()))
+            using (var response = await client.DeleteAsync("Settings/section/" + sectionId.ToString()))
             {
 
                 result = await response.Content.ReadAsAsync<SaveResponse<Section>>();
@@ -67,7 +69,27 @@ public class SettingsClient
         {
             throw;
         }
-    
+
+        return result;
+    }
+
+     public async Task<SaveResponse<Region>> DeleteRegionAsync(Guid regionId)
+    {
+
+        SaveResponse<Region> result = null;
+        try
+        {
+            using (var response = await client.DeleteAsync("Settings/region/" + regionId.ToString()))
+            {
+
+                result = await response.Content.ReadAsAsync<SaveResponse<Region>>();
+            }
+        }
+        catch
+        {
+            throw;
+        }
+
         return result;
     }
 }

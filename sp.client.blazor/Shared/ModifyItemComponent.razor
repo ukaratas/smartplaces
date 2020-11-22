@@ -6,7 +6,14 @@
 
 @if (IsLoaded == true)
 {
-    <h1>Item @ItemTypeName</h1>
+    @if (IsNew)
+    {
+    <h1>New @ItemTypeName</h1>
+    } 
+    else 
+    {
+    <h1>Edit @ItemTypeName</h1>
+    }
 
     <EditForm Model="@Model" OnValidSubmit="Save">
         <DataAnnotationsValidator />
@@ -14,7 +21,7 @@
         
         @FormTemplate(Model)
 
-        <button disabled="@isSaveTriggered" class="btn btn-primary" type="submit">Kaydet</button>
+        <button disabled="@isSaveTriggered" class="btn btn-primary" type="submit">Save</button>
 
         <BackButtonComponent BaseReturnUrl=@BaseReturnUrl />
         <SaveResponseDetail Display=@displayResult Items=@actionItems />
@@ -33,10 +40,12 @@ else
     public RenderFragment<TItem> FormTemplate { get; set; }
     [Parameter]
     public TItem Model { get; set; }
-
-
+ 
     [Parameter]
     public bool IsLoaded { get; set; }
+
+    [Parameter]
+    public bool IsNew { get; set; }
 
     [Parameter]
     public string ItemTypeName { get; set; }

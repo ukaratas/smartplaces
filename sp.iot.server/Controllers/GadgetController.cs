@@ -65,5 +65,6 @@ namespace sp.iot.server.Controllers
         {
             return _gadgetService.SetValue(id, value);
         }
+
     }
 }

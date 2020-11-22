@@ -1,20 +1,20 @@
 @page "/settings-region-list"
-
+@using sp.iot.core
 @inject SettingsClient SettingsClient
 
-<h1>Bolum Ayarlari</h1>
+<h1>Regions</h1>
 
-  <NavLink class="nav-link" href="@($"settings/region-modify/{Guid.NewGuid()}")">Yeni</NavLink>
 
- <table class="table">
+<table class="table table-striped">
         <thead>
             <tr>
-                <th>Anahtar</th>
-                <th>Adı</th>
-                <th>Tipi</th>
+                
+                <th>Name</th>
+                <th>Type</th>
                 <th></th>
-                <th></th>
-                <th></th>
+                <th>
+                </th>
+                 <th>Id</th>
             </tr>
         </thead>
         <tbody>
@@ -27,20 +27,20 @@
             @foreach (var regionItem in settings.Regions)
             {
                 <tr>
-                    <td>@regionItem.Id</td>
-                    <td>@regionItem.Name</td>
-                    <td>@regionItem.Type</td>
-                    <td><NavLink class="nav-link" href="@($"settings-section-list/{@regionItem.Id}")">Birimler</NavLink></td>
-                    <td><NavLink class="nav-link" href="@($"settings/region-modify/{@regionItem.Id}")">Güncelle</NavLink></td>
-                    <td>Sil</td>
+                    <td><NavLink href="@($"settings/region-modify/{@regionItem.Id}")">@regionItem.Name</NavLink></td>                
+                    <td>@regionItem.Type</td> 
+                    <td><a href="@($"settings-section-list/{@regionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Sections</a> </td>
+                    <td><a href="@($"settings/region-delete/{@regionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                    <td><i>@regionItem.Id</i></td>
                 </tr>
             }
         }
         </tbody>
     </table>
 
+   <a role="button" class="btn btn-primary" href="@($"settings/region-modify/{Guid.NewGuid()}")">New Region</a>
 
-    
+   <BackButtonComponent BaseReturnUrl="@($"/")" />
 
 @code {
     private iot.core.Settings settings = null;

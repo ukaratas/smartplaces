@@ -169,6 +169,70 @@ namespace sp.iot.core
             return returnValue;
         }
 
+
+        public SaveResponse<Region> DeleteRegion(Guid regionId)
+        {
+            var returnValue = new SaveResponse<Region>();
+
+            //1- Check Existance
+            returnValue.AddAction("Checking any dependend section existance", SaveActionType.Information);
+
+            Region region = null;
+            SqliteDataReader reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.Region.Get.IdParam,
+                new List<SqliteParameter> { new SqliteParameter("Id", regionId) }
+                );
+
+            if (reader.Read())
+            {
+                region = _bindRegionData(reader);
+                returnValue.Item = region;
+                returnValue.AddAction("Region is exist", SaveActionType.Information);
+            }
+            else
+            {
+                returnValue.AddAction("Region is NOT exist", SaveActionType.Error);
+                return returnValue;
+            }
+
+            //2- Check Dependency - Any Section
+          
+            reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.Section.Get.FilterByRegion,
+                new List<SqliteParameter> { new SqliteParameter("Region", regionId) }
+                );
+
+            if (reader.Read())
+            {
+                returnValue.AddAction("Region has sections", SaveActionType.Warning);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Region has not dependent sections", SaveActionType.Information);
+            }
+
+            //3- Delete
+
+
+            var deleteResult = _database.ExecuteNonQuery(
+                ConstantStrings.SqlQueries.Region.Delete.DeleteWithId,
+                new List<SqliteParameter> { new SqliteParameter("Id", regionId) }
+                );
+
+            if (deleteResult > 0)
+            {
+                returnValue.AddAction("Region has deleted successfully", SaveActionType.Success);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Region has not deleted !", SaveActionType.Error);
+            }
+
+            return returnValue;
+        }
+
         public SaveResponse<Section> DeleteSection(Guid sectionId)
         {
 

@@ -32,20 +32,8 @@ namespace sp.iot.server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreServices();
-
-            //services.AddControllers();
-
-            
-            
-            
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                //options.JsonSerializerOptions.da
-    
-            });
-            
-
-    
+            services.AddControllers();
+             
             services.AddSwaggerGen(c =>
               {
                   c.SwaggerDoc("v1", new OpenApiInfo
@@ -56,7 +44,7 @@ namespace sp.iot.server
 
                       License = new OpenApiLicense
                       {
-                          Name = "Use under Apache 2.0",
+                          Name = "Use 1 under Apache 2.0",
                           Url = new Uri("https://raw.githubusercontent.com/ukaratas/smartplaces/master/LICENSE"),
                       }
 
@@ -83,7 +71,7 @@ namespace sp.iot.server
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Card API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Smart Home API V1");
                 c.RoutePrefix = string.Empty;
             });
             app.UseRouting();

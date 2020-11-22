@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:3999",
+      "applicationUrl": "http://localhost:9756",
       "sslPort": 0
     }
   },
@@ -17,6 +17,7 @@
     },
     "sp.client.blazor": {
       "commandName": "Project",
+      "dotnetRunMessages": "true",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {

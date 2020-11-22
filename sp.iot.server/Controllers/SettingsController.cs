@@ -15,7 +15,6 @@ namespace sp.iot.server.Controllers
     [Route("[controller]")]
     public class SettingsController : ControllerBase
     {
-
         private readonly ILogger<SettingsController> _logger;
         private readonly ISettingsService _settingsService;
 
@@ -43,6 +42,16 @@ namespace sp.iot.server.Controllers
 
         }
 
+        [HttpDelete("Region/{regionId}")]
+        [ProducesErrorResponseType(typeof(void))]
+        [ProducesResponseType(typeof(SaveResponse<Region>), 200)]
+        public SaveResponse<Region> DeleteRegion(Guid regionId)
+        {
+            return _settingsService.DeleteRegion(regionId);
+
+        }
+
+
         [HttpDelete("Section/{sectionId}")]
         [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(SaveResponse<Section>), 200)]
@@ -51,5 +60,6 @@ namespace sp.iot.server.Controllers
             return _settingsService.DeleteSection(sectionId);
 
         }
+        
     }
 }

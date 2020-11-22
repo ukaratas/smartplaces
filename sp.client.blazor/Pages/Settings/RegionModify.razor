@@ -3,81 +3,76 @@
 @using sp.iot.core
 
 @inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
 
-<h1>New Or Modify Region</h1>
+<ModifyItemComponent Model="@editModel" IsLoaded="@pageBusinessInitalized" ItemTypeName="Region"
+    BaseReturnUrl="@($"settings-region-list")" OnSave="@OnSave" IsNew="@isNew">
 
+    <FormTemplate>
+        <div class="form-group">
+            <label for="Id">Anahtar: </label>
+            <label Id="Id">@editModel.Id</label>
+        </div>
 
-<EditForm Model="@editModel" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <div class="form-group">
+            <label for="name">Adı: </label>
+            <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>
+            <ValidationMessage For="@(() => editModel.Name)" />
+        </div>
 
-     <p>
-        <label>
-            Id:
-                 @editModel.Id
-        </label>
-    </p>
-
-     <p>
-        <label>
-            Adı:
-                <InputText id="name" @bind-Value="editModel.Name" />
-        </label>
-    </p>
-
-      <p>
-        <label>
-            Tipi:
-                <InputSelect @bind-Value="editModel.Type">
+        <div class="form-group">
+            <label for="name">Tipi: </label>
+            <InputSelect Id="name" Class="form-control" @bind-Value="@editModel.Type">
                 <option value="">Tipini Seçiniz...</option>
                 <option value="NotSet">Tanımsız...</option>
                 <option value="Floor">Kat</option>
                 <option value="Tank">Tank</option>
                 <option value="Motohome">Karavan</option>
                 <option value="Boat">Tekne</option>
-                </InputSelect>
-        </label>
-    </p>
 
-    <button type="submit">Submit</button>
+            </InputSelect>
+            <ValidationMessage For="@(() => editModel.Name)" />
+        </div>
 
-    <SaveResponseDetail Display=true Items=@actionItems />
+    </FormTemplate>
+</ModifyItemComponent>
 
-</EditForm>
 
 @code {
     [Parameter]
     public Guid RegionId { get; set; }
-    
     private Settings settings = null;
+    private bool pageBusinessInitalized = false;
+    private bool isNew = false;
+    private Region editModel = new Region();
 
-     protected override async Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
         settings = await SettingsClient.GetAsync();
-        var targetRegion = settings.Regions.First(item=> item.Id == RegionId);
+        
+        var targetRegion = settings.Regions.FirstOrDefault(item => item.Id == RegionId);
+
+
         if (targetRegion != null)
         {
             editModel = targetRegion;
         }
         else
         {
-        editModel = new Region();
-        editModel.Id = RegionId;
-        settings.Regions.Add(editModel);
+            editModel = new Region();
+            editModel.Id = RegionId;
+            editModel.Type = RegionType.NotSet;
+            settings.Regions.Add(editModel);
+            isNew = true;
         }
+
+        pageBusinessInitalized = true;
     }
 
-    private Region editModel = new Region();
-
-
-     private List<SaveResponseAction> actionItems { get; set; }
-
-    private async  void HandleValidSubmit()
+    private async Task<List<SaveResponseAction>> OnSave()
     {
-        Console.WriteLine(editModel.Name);
         var result = await SettingsClient.SaveAsync(settings);
-        actionItems = result.Actions;
-        StateHasChanged();
-
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
     }
 }

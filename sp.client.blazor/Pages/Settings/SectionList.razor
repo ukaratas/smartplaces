@@ -2,17 +2,17 @@
 @using sp.iot.core
 @inject SettingsClient SettingsClient
  
-<h1> <b>@region?.Name</b>  Birim Listesi</h1>
+<h1> <b>@region?.Name</b> Sections</h1>
 
  <table class="table table-striped">
         <thead>
             <tr>
                 
-                <th>Adı</th>
+                <th>Name</th>
                 <th></th>
                 <th>
                 </th>
-                 <th>Anahtar</th>
+                 <th>Id</th>
             </tr>
         </thead>
         <tbody>
@@ -26,8 +26,8 @@
             {
                 <tr>
                     <td><NavLink href="@($"settings/section-modify/{RegionId}/{sectionItem.Id}")">@sectionItem.Name</NavLink></td>                
-                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Aletler</a> </td>
-                    <td><a href="@($"settings/section-delete/{RegionId}/{sectionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Sil</a> </td>
+                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
+                    <td><a href="@($"settings/section-delete/{RegionId}/{sectionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                     <td><i>@sectionItem.Id</i></td>
                 </tr>
             }
@@ -35,12 +35,9 @@
         </tbody>
     </table>
 
-    <a role="button" class="btn btn-primary" href="@($"settings/section-modify/{RegionId}/{Guid.NewGuid()}")">Yeni Birim</a>
+    <a role="button" class="btn btn-primary" href="@($"settings/section-modify/{RegionId}/{Guid.NewGuid()}")">New Section</a>
 
     <BackButtonComponent BaseReturnUrl="@($"settings-region-list")" />
-
-
-    
 
 @code {
     [Parameter]

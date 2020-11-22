@@ -21,6 +21,11 @@ namespace sp.iot.core
                     public const string UpdateWithId = "UPDATE Regions SET Name = @Name, Type = @Type, BackgroundImage= @BackgroundImage, AspectRatio = @AspectRatio WHERE Id = @Id";
                     public const string Insert = "INSERT INTO Regions (Id,Name,Type, BackgroundImage, AspectRatio)VALUES(@Id,@Name,@Type, @BackgroundImage, @AspectRatio)";
                 }
+
+                public static class Delete
+                {
+                    public const string DeleteWithId = "DELETE FROM Regions WHERE Id = @Id";
+                }
             }
 
 
@@ -40,6 +45,8 @@ namespace sp.iot.core
 
 
                 }
+
+
             }
 
 
