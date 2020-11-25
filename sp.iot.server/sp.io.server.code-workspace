@@ -7,5 +7,10 @@
 			"path": "..\\sp.iot.core"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"openshiftConnector.crcBinaryLocation": "D:\\crc\\crc.exe",
+		"openshiftConnector.crcPullSecretPath": "D:\\crc\\pull-secret.txt",
+		"openshiftConnector.crcCpuCores": 4,
+		"openshiftConnector.crcMemoryAllocated": 9216
+	}
 }

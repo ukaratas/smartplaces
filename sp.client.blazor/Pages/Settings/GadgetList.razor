@@ -1,0 +1,78 @@
+@page "/Settings/settings-gadget-list/{SectionId:guid}"
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+ 
+<h1> <b>@Section?.Name</b> Gadgets</h1>
+
+ <table class="table table-striped">
+        <thead>
+            <tr>
+                
+                <th>Name</th>
+                <th>TypeGroup</th>
+                <th>Type</th>
+                <th>Port</th>
+                <th>Value</th>
+                <th>ValueUnit</th>
+                <th>ValueToTargetRatio</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                 <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var item in Section.Gadgets)
+            {
+                <tr>
+                    <td><NavLink href="@($"settings/section-modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
+                    <td>@item.TypeGroup</td>
+                    <td>@item.Type</td>
+                    <td>@item.Port</td>
+                    <td>@item.Value</td>
+                    <td>@item.ValueUnit</td>
+                    <td>@item.ValueToTargetRatio</td>
+                    <td>@item.ValueToTargetUnit</td>
+                    <td>@item.ValueToTarget</td>
+                    <td>@item.ComplexValue</td>
+                    <td>@item.Status</td>
+                    <td>@item.AttachedTo</td>
+                    
+                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Actions</a> </td>
+                    <td><a href="@($"settings/gadget-delete/{SectionId}/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                    <td><i>@item.Id</i></td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <a role="button" class="btn btn-primary" href="@($"settings/gadget-modify/{SectionId}/{Guid.NewGuid()}")">New Gadget</a>
+
+    <BackButtonComponent BaseReturnUrl="@($"/settings/section-list/{Section?.Parent}")" />
+
+@code {
+    [Parameter]
+    public Guid SectionId { get; set; }
+
+    public Section Section { get; set; }
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+        Section = settings.FindSection(SectionId);
+    }
+
+}

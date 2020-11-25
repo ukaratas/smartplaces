@@ -1,4 +1,4 @@
-@page "/settings-section-list/{RegionId:guid}"
+@page "/settings/section-list/{RegionId:guid}"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
  
@@ -26,7 +26,7 @@
             {
                 <tr>
                     <td><NavLink href="@($"settings/section-modify/{RegionId}/{sectionItem.Id}")">@sectionItem.Name</NavLink></td>                
-                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
+                    <td><a href="@($"settings/settings-gadget-list/{sectionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
                     <td><a href="@($"settings/section-delete/{RegionId}/{sectionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                     <td><i>@sectionItem.Id</i></td>
                 </tr>

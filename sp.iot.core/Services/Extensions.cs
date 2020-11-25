@@ -12,11 +12,11 @@ namespace sp.iot.core
         {
             services.AddSingleton<IDatabase, Database>();
             services.AddSingleton<IScriptingService, ScriptingService>();
-            
+
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IGadgetService, GadgetService>();
             services.AddScoped<IGadgetActionService, GadgetActionService>();
-            
+
 
             services.AddTransient<IGadgetEngine, LevelAnalog190Ohm>();
         }
@@ -26,5 +26,24 @@ namespace sp.iot.core
             var value = reader.GetValue(reader.GetOrdinal(fieldName));
             return Guid.Parse(value.ToString());
         }
+
+        public static Section FindSection(this Settings settings, Guid sectionId)
+        {
+            foreach (var region in settings.Regions)
+            {
+                foreach (var section in region.Sections)
+                {
+                    if (section.Id == sectionId) 
+                    {
+                        section.Parent = region.Id;
+                        return section;
+                    }
+                    
+                }
+            }
+            return null;
+        }
+
+
     }
 }
