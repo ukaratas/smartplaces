@@ -9,8 +9,8 @@ namespace sp.iot.core
     {
         Settings Get();
         SaveResponse<Settings> Save(Settings request);
-
         SaveResponse<Section> DeleteSection(Guid sectionId);
         SaveResponse<Region> DeleteRegion(Guid regionId);
+        SaveResponse<GadgetDefinition> DeleteGadgetDefinition(Guid gadgetDefinitionId);
     }
 }

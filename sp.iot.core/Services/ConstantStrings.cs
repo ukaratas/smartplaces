@@ -7,6 +7,26 @@ namespace sp.iot.core
     {
         public static class SqlQueries
         {
+            public static class GadgetDefinition
+            {
+                public static class Get
+                {
+                    public const string All = "SELECT * FROM GadgetDefinitions";
+                    public const string IdParam = "SELECT * FROM GadgetDefinitions WHERE Id = @Id";
+                }
+
+                public static class Save
+                {
+                    public const string UpdateWithId = "UPDATE GadgetDefinitions SET Name = @Name, Type = @Type, Unit= @Unit, ReadScript = @ReadScript, WriteScript = @WriteScript WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO GadgetDefinitions (Id, Name, Type, Unit, ReadScript, WriteScript)VALUES(@Id,@Name,@Type, @Unit, @ReadScript, @WriteScript)";
+                }
+
+                public static class Delete
+                {
+                    public const string DeleteWithId = "DELETE FROM GadgetDefinitions WHERE Id = @Id";
+                }
+            }
+
 
             public static class Region
             {
@@ -78,6 +98,7 @@ namespace sp.iot.core
                     public const string All = "SELECT * FROM Gadgets";
                     public const string AllIncludeRegion = "SELECT Gadgets.*, Sections.Region FROM Gadgets LEFT JOIN Sections ON Section = Sections.Id";
                     public const string FilterBySection = "SELECT * FROM Gadgets WHERE Section = @Section";
+                    public const string FilterByDefinition = "SELECT * FROM Gadgets WHERE DefinitionId = @DefinitionId";
                     public const string IdParam = "SELECT * FROM Gadgets WHERE Id = @Id";
                 }
 

@@ -1,0 +1,120 @@
+@page "/settings/gadget-definition-modify/{GadgetDefinitionId:guid}"
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
+
+<ModifyItemComponent Model="@GadgetDefinition" IsLoaded="@pageBusinessInitalized" ItemTypeName="GadgetDefinition"
+    BaseReturnUrl="settings/gadget-definition-list" OnSave="@OnSave" IsNew="@isNew">
+
+    <FormTemplate>
+        <div class="form-group">
+            <label for="Id">Anahtar: </label>
+            <label Id="Id">@GadgetDefinition.Id</label>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Adı: </label>
+            <InputText Id="name" Class="form-control" @bind-Value="@GadgetDefinition.Name"></InputText>
+            <ValidationMessage For="@(() => GadgetDefinition.Name)" />
+        </div>
+
+        <div class="form-group">
+            <label for="name">Type: </label>
+            <InputSelect Id="name" Class="form-control" @bind-Value="@GadgetDefinition.Type">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Switch">Button</option>
+                <option value="Relay">Relay</option>
+                <option value="Sensor">Sensor</option>
+                <option value="Valve">Valve</option>
+
+            </InputSelect>
+            <ValidationMessage For="@(() => GadgetDefinition.Type)" />
+        </div>
+
+        <div class="form-group">
+            <label for="name">Unit: </label>
+            <InputSelect Id="name" Class="form-control" @bind-Value="@GadgetDefinition.Unit">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Signal">Signal (Push Button)</option>
+                <option value="OnOff">OnOff</option>
+                <option value="Percentage">Percentage</option>
+                <option value="Celcius">Celcius</option>
+                <option value="milliliter">Milliliter</option>
+                <option value="Gram">Gram</option>
+                <option value="PPM">PPM</option>
+
+            </InputSelect>
+            <ValidationMessage For="@(() => GadgetDefinition.Unit)" />
+        </div>
+
+        <div class="form-group">
+            <label for="read-script">Read Script</label>
+            <p>
+                <b>GadgetValue ReadGadgetValue(Configuration configuration)</b><br>
+                <b>{</b>
+                <textarea class="form-control" @bind="@GadgetDefinition.ReadScript" id="read-script"
+                    rows="10"></textarea>
+                <b>}</b>
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="write-script">Write Script</label>
+            <p>
+                <b>GadgetValue WriteGadgetValue(Configuration configuration, GadgetValue newValue)</b><br>
+                <b>{</b>
+                <textarea class="form-control" @bind="@GadgetDefinition.WriteScript" id="write-script"
+                    rows="10"></textarea>
+                <b>}</b>
+            </p>
+        </div>
+
+    </FormTemplate>
+</ModifyItemComponent>
+
+@code {
+    [Parameter]
+    public Guid GadgetDefinitionId { get; set; }
+
+    [Parameter]
+    public GadgetDefinition GadgetDefinition { get; set; }
+
+    private bool pageBusinessInitalized = false;
+    private bool isNew = false;
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+
+        GadgetDefinition = settings.GadgetDefinitions.FirstOrDefault(item => item.Id == GadgetDefinitionId);
+
+
+        if (GadgetDefinition == null)
+        {
+
+            GadgetDefinition = new GadgetDefinition();
+            GadgetDefinition.Id = GadgetDefinitionId;
+            isNew = true;
+        }
+
+        pageBusinessInitalized = true;
+    }
+
+
+    private async Task<List<SaveResponseAction>> OnSave()
+    {
+        if (isNew)
+        {
+            settings.GadgetDefinitions.Add(GadgetDefinition);
+        }
+
+        var result = await SettingsClient.SaveAsync(settings);
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
+    }
+
+}

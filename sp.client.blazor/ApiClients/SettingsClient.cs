@@ -73,7 +73,7 @@ public class SettingsClient
         return result;
     }
 
-     public async Task<SaveResponse<Region>> DeleteRegionAsync(Guid regionId)
+    public async Task<SaveResponse<Region>> DeleteRegionAsync(Guid regionId)
     {
 
         SaveResponse<Region> result = null;
@@ -83,6 +83,39 @@ public class SettingsClient
             {
 
                 result = await response.Content.ReadAsAsync<SaveResponse<Region>>();
+            }
+        }
+        catch
+        {
+            throw;
+        }
+
+        return result;
+    }
+
+
+
+    public async Task<SaveResponse<Gadget>> DeleteGadgetAsync(Guid gadgetId)
+    {
+
+        SaveResponse<Gadget> result = null;
+       
+
+        return result;
+    }
+
+
+
+    public async Task<SaveResponse<GadgetDefinition>> DeleteGadgetDefinitionAsync(Guid gadgetDefinitionId)
+    {
+
+        SaveResponse<GadgetDefinition> result = null;
+        try
+        {
+            using (var response = await client.DeleteAsync("Settings/gadgetdefinition/" + gadgetDefinitionId.ToString()))
+            {
+
+                result = await response.Content.ReadAsAsync<SaveResponse<GadgetDefinition>>();
             }
         }
         catch

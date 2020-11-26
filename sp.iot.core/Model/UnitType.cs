@@ -6,11 +6,13 @@ namespace sp.iot.core
     {
         NotSet = 0,
         Percentage = 1001,
-        State = 1002,
+        Signal = 1002,
+        OnOff = 4001,
         PPM = 1003,
         Celcius = 1004,
         HPA = 1005,
-        LiquidLiter = 2001,
+        Milliliter = 2001,
         LiquidGallon = 2002,
+        Gram = 3001,
     }
 }

@@ -1,0 +1,50 @@
+@page "/settings/gadget-definition-delete/{GadgetDefinitionId:guid}"
+@using sp.iot.core
+
+@inject NavigationManager NavigationManager
+@inject SettingsClient SettingsClient
+
+<DeleteItemComponent 
+    IsLoaded = "@pageBusinessInitalized"
+    IsItemFound = "@isItemFound"
+    ItemTypeName = "GadgetDefinition"
+    BaseReturnUrl = "settings/gadget-definition-list"
+    OnDelete = "@OnDelete">
+
+    <div class="form-group row">
+        <label for="label" class="col-sm-2 col-form-label">Name:</label>
+        <div>
+            <input type="text" readonly class="form-control-plaintext" id="label" value="@Item?.Name">
+        </div>
+    </div>
+
+</DeleteItemComponent>
+
+@code {
+
+
+    [Parameter]
+    public Guid GadgetDefinitionId { get; set; }
+    private bool pageBusinessInitalized = false;
+    private bool isItemFound = false;
+    private GadgetDefinition Item = null;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        var settings = await SettingsClient.GetAsync();
+        Item = settings.GadgetDefinitions.FirstOrDefault(item => item.Id == GadgetDefinitionId);
+
+        isItemFound = (Item != null);
+        pageBusinessInitalized = true;
+    }
+
+    private List<SaveResponseAction> actionItems { get; set; }
+
+    private async Task<List<SaveResponseAction>> OnDelete(MouseEventArgs args)
+    {
+        var result = await SettingsClient.DeleteGadgetDefinitionAsync(GadgetDefinitionId);
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
+    }
+
+}

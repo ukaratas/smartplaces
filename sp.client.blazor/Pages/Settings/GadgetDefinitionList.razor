@@ -1,0 +1,51 @@
+@page "/settings/gadget-definition-list"
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+ 
+<h1>Gadgets Definitions</h1>
+
+ <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Unit</th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var item in settings.GadgetDefinitions)
+            {
+                <tr>
+                    <td><NavLink href="@($"settings/gadget-definition-modify/{item.Id}")">@item.Name</NavLink></td>                
+                    <td>@item.Type</td>
+                    <td>@item.Unit</td>
+                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
+                    <td><a href="@($"settings/gadget-definition-delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <a role="button" class="btn btn-primary" href="@($"settings/gadget-definition-modify/{Guid.NewGuid()}")">New Gadget Definition</a>
+
+    <BackButtonComponent BaseReturnUrl="/" />
+
+@code {
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+    }
+
+}

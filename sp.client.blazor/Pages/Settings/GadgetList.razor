@@ -1,4 +1,4 @@
-@page "/Settings/settings-gadget-list/{SectionId:guid}"
+@page "/Settings/gadget-list/{SectionId:guid}"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
  
@@ -7,7 +7,6 @@
  <table class="table table-striped">
         <thead>
             <tr>
-                
                 <th>Name</th>
                 <th>TypeGroup</th>
                 <th>Type</th>
@@ -35,7 +34,7 @@
             @foreach (var item in Section.Gadgets)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/section-modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
+                    <td><NavLink href="@($"settings/gadget-modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
                     <td>@item.TypeGroup</td>
                     <td>@item.Type</td>
                     <td>@item.Port</td>
@@ -47,10 +46,8 @@
                     <td>@item.ComplexValue</td>
                     <td>@item.Status</td>
                     <td>@item.AttachedTo</td>
-                    
                     <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Actions</a> </td>
-                    <td><a href="@($"settings/gadget-delete/{SectionId}/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
-                    <td><i>@item.Id</i></td>
+                    <td><a href="@($"settings/gadget-delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }
         }

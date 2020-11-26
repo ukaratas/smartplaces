@@ -33,17 +33,36 @@ namespace sp.iot.core
             {
                 foreach (var section in region.Sections)
                 {
-                    if (section.Id == sectionId) 
+                    if (section.Id == sectionId)
                     {
                         section.Parent = region.Id;
                         return section;
                     }
-                    
+
                 }
             }
             return null;
         }
 
 
+        public static Gadget FindGadget(this Settings settings, Guid gadgetId)
+        {
+            foreach (var region in settings.Regions)
+            {
+                foreach (var section in region.Sections)
+                {
+
+                    foreach (var gadget in section.Gadgets)
+                    {
+                        if (gadget.Id == gadgetId)
+                        {
+                            gadget.Parent = section.Id;
+                            return gadget;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

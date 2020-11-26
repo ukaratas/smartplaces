@@ -1,0 +1,81 @@
+@page "/settings/gadget-modify/{SectionId:guid}/{GadgetId:guid}"
+
+@using sp.iot.core
+
+@inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
+
+
+<ModifyItemComponent 
+    Model = "@Gadget"
+    IsLoaded = "@pageBusinessInitalized"
+    ItemTypeName = "Gadget"
+    BaseReturnUrl = "@($"settings/gadget-list/{SectionId}")"
+    OnSave = "@OnSave"
+    IsNew = "@isNew"
+    >
+
+    <FormTemplate>
+        <div class="form-group">        
+            <label for="Id">Anahtar: </label>  
+            <label Id="Id">@Gadget.Id</label>       
+        </div>    
+
+        <div class="form-group">        
+            <label for="name">Adı: </label>        
+            <InputText Id="name" Class="form-control" @bind-Value="@Gadget.Name"></InputText>        
+            <ValidationMessage For="@(() => Gadget.Name)" />    
+        </div>    
+    </FormTemplate>
+</ModifyItemComponent>
+
+@code {
+    [Parameter]
+    public Guid GadgetId { get; set; }
+
+    [Parameter]
+    public Guid SectionId { get; set; }
+
+    [Parameter]
+    public Gadget Gadget { get; set; }
+
+    private bool pageBusinessInitalized = false;
+    private bool isNew = false;
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+
+        Gadget = settings.FindGadget(GadgetId);
+        
+
+        if (Gadget == null)
+        {
+           
+            Gadget = new Gadget();
+            Gadget.Id = GadgetId;
+            isNew = true;
+        }
+
+        pageBusinessInitalized = true;
+    }
+
+
+    private async Task<List<SaveResponseAction>> OnSave()
+    {
+
+        if (isNew)
+        {
+            var Section  = settings.FindSection(SectionId);
+            Section.Gadgets.Add(Gadget);
+        }
+
+
+        var result = await SettingsClient.SaveAsync(settings);
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
+    }
+
+}
