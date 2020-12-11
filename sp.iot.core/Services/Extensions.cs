@@ -24,8 +24,10 @@ namespace sp.iot.core
         public static Guid GetValueAsGuid(this SqliteDataReader reader, string fieldName)
         {
             var value = reader.GetValue(reader.GetOrdinal(fieldName));
+            if (string.IsNullOrEmpty(value.ToString())) value = Guid.Empty.ToString();
             return Guid.Parse(value.ToString());
         }
+
 
         public static Section FindSection(this Settings settings, Guid sectionId)
         {
@@ -60,6 +62,19 @@ namespace sp.iot.core
                             return gadget;
                         }
                     }
+                }
+            }
+            return null;
+        }
+
+
+        public static GadgetDefinition FindGadgetDefinition(this Settings settings, Guid gadgetDefinitionId)
+        {
+            foreach (var gadgetDefinition in settings.GadgetDefinitions)
+            {
+                if (gadgetDefinition.Id == gadgetDefinitionId)
+                {
+                    return gadgetDefinition;
                 }
             }
             return null;

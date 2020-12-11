@@ -148,18 +148,14 @@ namespace sp.iot.core
                                             ConstantStrings.SqlQueries.Gadget.Save.UpdateWithId,
                                             new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = gadget.Name},
-                                                    new SaveItemProperty { Name= "Type", Value = gadget.Type},
-                                                    new SaveItemProperty { Name= "TypeGroup", Value = gadget.TypeGroup},
-                                                    new SaveItemProperty { Name= "Port", Value = gadget.Port},
+                                                    new SaveItemProperty { Name= "Configuration", Value = gadget.Configuration},
                                                     new SaveItemProperty { Name= "Value", Value = gadget.Value },
-                                                    new SaveItemProperty { Name= "ValueUnit", Value = gadget.ValueUnit },
-                                                    new SaveItemProperty { Name= "ValueToTargetRatio", Value = gadget.ValueToTargetRatio },
-                                                    new SaveItemProperty { Name= "ValueToTargetUnit", Value = gadget.ValueToTargetUnit },
+                                                    new SaveItemProperty { Name= "ComplexValue", Value = gadget.ComplexValue},
+                                                    new SaveItemProperty { Name= "Status", Value = gadget.Status},
                                                     new SaveItemProperty { Name= "Section", Value = section.Id },
                                                     new SaveItemProperty { Name= "SectionPosition", Value = gadget.SectionPosition },
-                                                    new SaveItemProperty { Name= "ComplexValue", Value = gadget.ComplexValue},
-                                                    new SaveItemProperty { Name= "AttachedTo", Value = gadget.AttachedTo},
-                                                    new SaveItemProperty { Name= "Status", Value = gadget.Status},
+                                                    new SaveItemProperty { Name= "Definition", Value = gadget.Definition},
+                                                   
                                             },
                                             (log, actionType) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log), actionType); }
                                             );

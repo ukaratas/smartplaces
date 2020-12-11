@@ -8,20 +8,14 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>TypeGroup</th>
-                <th>Type</th>
-                <th>Port</th>
+                <th>Definition</th>
+                <th>Status</th>
                 <th>Value</th>
-                <th>ValueUnit</th>
-                <th>ValueToTargetRatio</th>
+                <th>ComplexValue</th>
+                <th>SectionPosition</th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                 <th>Id</th>
+                 
             </tr>
         </thead>
         <tbody>
@@ -35,17 +29,11 @@
             {
                 <tr>
                     <td><NavLink href="@($"settings/gadget-modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
-                    <td>@item.TypeGroup</td>
-                    <td>@item.Type</td>
-                    <td>@item.Port</td>
-                    <td>@item.Value</td>
-                    <td>@item.ValueUnit</td>
-                    <td>@item.ValueToTargetRatio</td>
-                    <td>@item.ValueToTargetUnit</td>
-                    <td>@item.ValueToTarget</td>
-                    <td>@item.ComplexValue</td>
+                    <td>@settings.FindGadgetDefinition(@item.Definition)?.Name</td>
                     <td>@item.Status</td>
-                    <td>@item.AttachedTo</td>
+                    <td>@item.Value</td>
+                    <td>@item.ComplexValue</td>
+                    <td>@item.SectionPosition</td>
                     <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Actions</a> </td>
                     <td><a href="@($"settings/gadget-delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>

@@ -64,8 +64,7 @@ else
 
     private async void Save()
     {
-        isSaveTriggered = true;
-        actionItems = await OnSave();
+        isSaveTriggered = true;actionItems = await OnSave();
         displayResult = true;
         StateHasChanged();
     }

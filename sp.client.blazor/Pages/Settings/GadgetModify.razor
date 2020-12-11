@@ -25,7 +25,57 @@
             <label for="name">Adı: </label>        
             <InputText Id="name" Class="form-control" @bind-Value="@Gadget.Name"></InputText>        
             <ValidationMessage For="@(() => Gadget.Name)" />    
-        </div>    
+        </div>  
+
+        <div class="form-group">
+            <label for="status">Gadget Definition: </label>
+            <InputSelect Id="status" Class="form-control" @bind-Value="@Gadget.Definition">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+
+                @foreach (var item in settings.GadgetDefinitions)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+
+
+
+
+            </InputSelect>
+            <ValidationMessage For="@(() => Gadget.Status)" />
+        </div>
+
+         <div class="form-group">
+            <label for="status">Status: </label>
+            <InputSelect Id="status" Class="form-control" @bind-Value="@Gadget.Status">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Active">Active</option>
+                <option value="Passive">Pasive</option>
+
+            </InputSelect>
+            <ValidationMessage For="@(() => Gadget.Status)" />
+        </div>
+
+        <div class="form-group">
+            <label for="status">Position: </label>
+            <InputSelect Id="status" Class="form-control" @bind-Value="@Gadget.SectionPosition">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Free">Free/Floating</option>
+                <option value="TopRight">Top Right</option>
+                <option value="TopCenter">Top Center</option>
+                <option value="TopLeft">Top Left</option>
+                <option value="MiddleRight">Middle Right</option>
+                <option value="MiddleCenter">Middle Center</option>
+                <option value="MiddleLeft">Middle Left</option>
+                <option value="BottomRight">Bottom Right</option>
+                <option value="BottomCenter">Bottom Center</option>
+                <option value="BottomLeft">Bottom Left</option>
+            </InputSelect>
+            <ValidationMessage For="@(() => Gadget.Status)" />
+        </div>
+
     </FormTemplate>
 </ModifyItemComponent>
 

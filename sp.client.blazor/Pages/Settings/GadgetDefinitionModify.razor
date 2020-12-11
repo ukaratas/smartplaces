@@ -32,6 +32,7 @@
             <ValidationMessage For="@(() => GadgetDefinition.Type)" />
         </div>
 
+
         <div class="form-group">
             <label for="name">Unit: </label>
             <InputSelect Id="name" Class="form-control" @bind-Value="@GadgetDefinition.Unit">
@@ -44,6 +45,7 @@
                 <option value="milliliter">Milliliter</option>
                 <option value="Gram">Gram</option>
                 <option value="PPM">PPM</option>
+                <option value="HPA">HPA</option>
 
             </InputSelect>
             <ValidationMessage For="@(() => GadgetDefinition.Unit)" />

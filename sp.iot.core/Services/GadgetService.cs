@@ -193,17 +193,12 @@ namespace sp.iot.core
             {
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
-                TypeGroup = (GadgetTypeGroup)(int)(long)reader.GetValue(reader.GetOrdinal("TypeGroup")),
-                Type = (GadgetType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
-                Port = reader.GetValue(reader.GetOrdinal("Port")).ToString(),
+                Configuration = reader.GetValue(reader.GetOrdinal("Configuration")).ToString(),
                 Status = (GadgetStatus)(int)(long)reader.GetValue(reader.GetOrdinal("Status")),
                 Value = (double)reader.GetValue(reader.GetOrdinal("Value")),
-                ValueUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueUnit")),
-                ValueToTargetRatio = (double)reader.GetValue(reader.GetOrdinal("ValueToTargetRatio")),
-                ValueToTargetUnit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("ValueToTargetUnit")),
                 ComplexValue = reader.GetValue(reader.GetOrdinal("ComplexValue")).ToString(),
                 SectionPosition = (PositionType)(int)(long)reader.GetValue(reader.GetOrdinal("SectionPosition")),
-                AttachedTo = reader.GetValueAsGuid("AttachedTo"),
+                Definition = reader.GetValueAsGuid("Definition"),
             };
             return returnValue;
         }

@@ -12,7 +12,6 @@ namespace sp.iot.core
         Celcius = 1004,
         HPA = 1005,
         Milliliter = 2001,
-        LiquidGallon = 2002,
         Gram = 3001,
     }
 }

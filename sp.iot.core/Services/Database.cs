@@ -135,8 +135,8 @@ namespace sp.iot.core
                           case Guid guidValue:
                               updateParameters.Add(new SqliteParameter(item.Name, guidValue));
 
-                              if ((oldValue == DBNull.Value && guidValue != Guid.Empty)
-                                    || (oldValue is Guid && guidValue != (Guid)oldValue)) hasFieldChange = true;
+                              Guid oldValueG =  new Guid(oldValue.ToString());
+                              if (oldValueG != guidValue ) hasFieldChange = true;
                               break;
                           case double doubleValue:
                               updateParameters.Add(new SqliteParameter(item.Name, doubleValue));
