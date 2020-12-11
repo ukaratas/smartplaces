@@ -97,8 +97,19 @@ public class SettingsClient
 
     public async Task<SaveResponse<Gadget>> DeleteGadgetAsync(Guid gadgetId)
     {
-
         SaveResponse<Gadget> result = null;
+
+        try
+        {
+            using (var response = await client.DeleteAsync("Settings/gadget/" + gadgetId.ToString()))
+            {
+                result = await response.Content.ReadAsAsync<SaveResponse<Gadget>>();
+            }
+        }
+        catch
+        {
+            throw;
+        }
        
 
         return result;

@@ -58,15 +58,12 @@ else
 
     private bool isSaveTriggered = false;
     private bool displayResult = false;
-
     private List<SaveResponseAction> actionItems { get; set; }
-
-
     private async void Save()
     {
         isSaveTriggered = true;actionItems = await OnSave();
         displayResult = true;
         StateHasChanged();
     }
-
+    
 }

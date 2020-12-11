@@ -10,23 +10,22 @@
 
     <FormTemplate>
         <div class="form-group">
-            <label for="Id">Anahtar: </label>
             <label Id="Id">@editModel.Id</label>
         </div>
 
         <div class="form-group">
-            <label for="name">Adı: </label>
+            <label for="name">Name: </label>
             <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>
             <ValidationMessage For="@(() => editModel.Name)" />
         </div>
 
         <div class="form-group">
-            <label for="name">Tipi: </label>
+            <label for="name">Type: </label>
             <InputSelect Id="name" Class="form-control" @bind-Value="@editModel.Type">
-                <option value="">Tipini Seçiniz...</option>
-                <option value="NotSet">Tanımsız...</option>
-                <option value="Floor">Kat</option>
-                <option value="Tank">Tank</option>
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Floor">Floor</option>
+                <option value="Warehouse">Warehouse</option>
                 <option value="Motohome">Karavan</option>
                 <option value="Boat">Tekne</option>
 

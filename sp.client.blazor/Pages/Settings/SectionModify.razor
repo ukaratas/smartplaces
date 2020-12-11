@@ -10,22 +10,35 @@
     Model = "@editModel"
     IsLoaded = "@pageBusinessInitalized"
     ItemTypeName = "Section"
-    BaseReturnUrl = "@($"settings-section-list/{RegionId}")"
+    BaseReturnUrl = "@($"settings/section-list/{RegionId}")"
     OnSave = "@OnSave"
     IsNew = "@isNew"
     >
 
     <FormTemplate>
         <div class="form-group">        
-            <label for="Id">Anahtar: </label>  
             <label Id="Id">@editModel.Id</label>       
         </div>    
 
         <div class="form-group">        
-            <label for="name">Adı: </label>        
+            <label for="name">Name: </label>        
             <InputText Id="name" Class="form-control" @bind-Value="@editModel.Name"></InputText>        
             <ValidationMessage For="@(() => editModel.Name)" />    
-        </div>    
+        </div> 
+
+         <div class="form-group">
+            <label for="name">Type: </label>
+            <InputSelect Id="name" Class="form-control" @bind-Value="@editModel.Type">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+                <option value="Room">Room</option>
+                <option value="Tank">Tank</option>
+                <option value="Partial">Partial</option>
+
+            </InputSelect>
+            <ValidationMessage For="@(() => editModel.Name)" />
+        </div>
+
     </FormTemplate>
 </ModifyItemComponent>
 

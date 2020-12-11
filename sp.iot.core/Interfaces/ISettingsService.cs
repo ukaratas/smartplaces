@@ -12,5 +12,6 @@ namespace sp.iot.core
         SaveResponse<Section> DeleteSection(Guid sectionId);
         SaveResponse<Region> DeleteRegion(Guid regionId);
         SaveResponse<GadgetDefinition> DeleteGadgetDefinition(Guid gadgetDefinitionId);
+        SaveResponse<Gadget> DeleteGadget(Guid gadgetId);
     }
 }

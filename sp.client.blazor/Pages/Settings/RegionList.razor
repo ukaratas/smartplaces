@@ -14,7 +14,7 @@
                 <th></th>
                 <th>
                 </th>
-                 <th>Id</th>
+
             </tr>
         </thead>
         <tbody>
@@ -29,9 +29,8 @@
                 <tr>
                     <td><NavLink href="@($"settings/region-modify/{@regionItem.Id}")">@regionItem.Name</NavLink></td>                
                     <td>@regionItem.Type</td> 
-                    <td><a href="@($"settings/section-list/{@regionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Sections</a> </td>
+                    <td><a href="@($"settings/section-list/{@regionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Sections(@regionItem.Sections.Count)</a> </td>
                     <td><a href="@($"settings/region-delete/{@regionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
-                    <td><i>@regionItem.Id</i></td>
                 </tr>
             }
         }

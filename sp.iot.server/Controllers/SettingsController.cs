@@ -69,6 +69,15 @@ namespace sp.iot.server.Controllers
             return _settingsService.DeleteGadgetDefinition(gadgetDefinitionId);
 
         }
+
+        [HttpDelete("Gadget/{gadgetId}")]
+        [ProducesErrorResponseType(typeof(void))]
+        [ProducesResponseType(typeof(SaveResponse<Gadget>), 200)]
+        public SaveResponse<Gadget> DeleteGadget(Guid gadgetId)
+        {
+            return _settingsService.DeleteGadget(gadgetId);
+
+        }
         
     }
 }

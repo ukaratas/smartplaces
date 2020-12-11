@@ -135,8 +135,12 @@ namespace sp.iot.core
                           case Guid guidValue:
                               updateParameters.Add(new SqliteParameter(item.Name, guidValue));
 
-                              Guid oldValueG =  new Guid(oldValue.ToString());
-                              if (oldValueG != guidValue ) hasFieldChange = true;
+                              Guid oldValueG = new Guid();
+
+                              Guid.TryParse(oldValue.ToString(), out oldValueG);
+                              
+                              if (oldValueG != guidValue) hasFieldChange = true;
+
                               break;
                           case double doubleValue:
                               updateParameters.Add(new SqliteParameter(item.Name, doubleValue));
@@ -169,7 +173,7 @@ namespace sp.iot.core
 
                       if (hasFieldChange && oldRecordReader != null)
                       {
-                          logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name), SaveActionType.Success );
+                          logCallback(string.Format("Property '{0}' is changed. Item will be updated.", item.Name), SaveActionType.Success);
                           hasChange = true;
                       }
                   });

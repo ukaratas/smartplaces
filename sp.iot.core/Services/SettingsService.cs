@@ -71,21 +71,21 @@ namespace sp.iot.core
                 gadgetDefinition =>
                 {
 
-                     _database.SaveItem(
-                                     gadgetDefinition.Id,
-                                     ConstantStrings.SqlQueries.GadgetDefinition.Get.IdParam,
-                                     ConstantStrings.SqlQueries.GadgetDefinition.Save.Insert,
-                                     ConstantStrings.SqlQueries.GadgetDefinition.Save.UpdateWithId,
-                                     new List<SaveItemProperty> {
+                    _database.SaveItem(
+                                    gadgetDefinition.Id,
+                                    ConstantStrings.SqlQueries.GadgetDefinition.Get.IdParam,
+                                    ConstantStrings.SqlQueries.GadgetDefinition.Save.Insert,
+                                    ConstantStrings.SqlQueries.GadgetDefinition.Save.UpdateWithId,
+                                    new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = gadgetDefinition.Name},
                                                     new SaveItemProperty { Name= "Type", Value = gadgetDefinition.Type},
                                                     new SaveItemProperty { Name= "Unit", Value = gadgetDefinition.Unit},
                                                     new SaveItemProperty { Name= "ReadScript", Value = gadgetDefinition.ReadScript},
                                                     new SaveItemProperty { Name= "WriteScript", Value = gadgetDefinition.WriteScript},
 
-                                     },
-                                     (log, actionType) => { returnValue.AddAction(string.Format("Gadget Definition '{0}' : {1}", gadgetDefinition.Name, log), actionType); }
-                                     );
+                                    },
+                                    (log, actionType) => { returnValue.AddAction(string.Format("Gadget Definition '{0}' : {1}", gadgetDefinition.Name, log), actionType); }
+                                    );
 
                 });
 
@@ -155,7 +155,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "Section", Value = section.Id },
                                                     new SaveItemProperty { Name= "SectionPosition", Value = gadget.SectionPosition },
                                                     new SaveItemProperty { Name= "Definition", Value = gadget.Definition},
-                                                   
+
                                             },
                                             (log, actionType) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log), actionType); }
                                             );
@@ -171,6 +171,7 @@ namespace sp.iot.core
                                        new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = section.Name},
                                                     new SaveItemProperty { Name= "Region", Value = region.Id},
+                                                    new SaveItemProperty { Name= "Type", Value = section.Type},
                                                     new SaveItemProperty { Name= "Row", Value = section.Row},
                                                     new SaveItemProperty { Name= "Column", Value = section.Column},
 
@@ -199,14 +200,13 @@ namespace sp.iot.core
 
             return returnValue;
         }
-
-         public SaveResponse<GadgetDefinition> DeleteGadgetDefinition(Guid gadgetDefinitionId)
+        public SaveResponse<GadgetDefinition> DeleteGadgetDefinition(Guid gadgetDefinitionId)
         {
             var returnValue = new SaveResponse<GadgetDefinition>();
 
             //1- Check Existance
             returnValue.AddAction("Checking any dependend gadget existance", SaveActionType.Information);
-            
+
             SqliteDataReader reader = _database.ExecuteReader(
                 ConstantStrings.SqlQueries.Gadget.Get.FilterByDefinition,
                 new List<SqliteParameter> { new SqliteParameter("DefinitionId", gadgetDefinitionId) }
@@ -242,8 +242,63 @@ namespace sp.iot.core
 
             return returnValue;
         }
+        public SaveResponse<Gadget> DeleteGadget(Guid gadgetId)
+        {
+            var returnValue = new SaveResponse<Gadget>();
+
+            //1- Check Action Existance
+            returnValue.AddAction("Checking any dependend source gadget actions", SaveActionType.Information);
+
+            SqliteDataReader reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.GadgetAction.Get.BySourceGadget,
+                new List<SqliteParameter> { new SqliteParameter("SourceGadget", gadgetId) }
+                );
+
+            if (reader.Read())
+            {
+                returnValue.AddAction("Gadget definition has gadgets action as a source", SaveActionType.Warning);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Gadget definition has not dependent gadget action as a source", SaveActionType.Information);
+            }
+
+            reader = _database.ExecuteReader(
+                ConstantStrings.SqlQueries.GadgetAction.Get.ByTargetGadget,
+                new List<SqliteParameter> { new SqliteParameter("TargetGadget", gadgetId) }
+                );
+
+            if (reader.Read())
+            {
+                returnValue.AddAction("Gadget definition has gadgets action as a target", SaveActionType.Warning);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Gadget definition has not dependent gadget action as a target", SaveActionType.Information);
+            }
+
+            //3- Delete
 
 
+            var deleteResult = _database.ExecuteNonQuery(
+                ConstantStrings.SqlQueries.Gadget.Delete.DeleteWithId,
+                new List<SqliteParameter> { new SqliteParameter("Id", gadgetId) }
+                );
+
+            if (deleteResult > 0)
+            {
+                returnValue.AddAction("Gadget has deleted successfully", SaveActionType.Success);
+                return returnValue;
+            }
+            else
+            {
+                returnValue.AddAction("Gadget has not deleted !", SaveActionType.Error);
+            }
+
+            return returnValue;
+        }
         public SaveResponse<Region> DeleteRegion(Guid regionId)
         {
             var returnValue = new SaveResponse<Region>();
@@ -306,7 +361,6 @@ namespace sp.iot.core
 
             return returnValue;
         }
-
         public SaveResponse<Section> DeleteSection(Guid sectionId)
         {
 
@@ -368,7 +422,6 @@ namespace sp.iot.core
 
             return returnValue;
         }
-
         private Region _bindRegionData(SqliteDataReader reader)
         {
             Region returnValue = new Region
@@ -381,7 +434,6 @@ namespace sp.iot.core
             };
             return returnValue;
         }
-
         private RegionRow _bindRegionRowData(SqliteDataReader reader)
         {
             RegionRow returnValue = new RegionRow
@@ -399,6 +451,7 @@ namespace sp.iot.core
             {
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
+                Type = (SectionType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
                 Row = (long)reader.GetValue(reader.GetOrdinal("Row")),
                 Column = (long)reader.GetValue(reader.GetOrdinal("Column")),
             };
