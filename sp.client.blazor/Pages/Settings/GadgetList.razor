@@ -1,4 +1,4 @@
-@page "/Settings/gadget-list/{SectionId:guid}"
+@page "/Settings/gadget/list/{SectionId:guid}"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
  
@@ -28,23 +28,23 @@
             @foreach (var item in Section.Gadgets)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/gadget-modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
-                    <td>@settings.FindGadgetDefinition(@item.Definition)?.Name</td>
+                    <td><NavLink href="@($"settings/gadget/modify/{SectionId}/{item.Id}")">@item.Name</NavLink></td>                
+                    <td>(@settings.FindGadgetDefinition(@item.Definition)?.Type) @settings.FindGadgetDefinition(@item.Definition)?.Name</td>
                     <td>@item.Status</td>
                     <td>@item.Value</td>
                     <td>@item.ComplexValue</td>
                     <td>@item.SectionPosition</td>
-                    <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Actions</a> </td>
-                    <td><a href="@($"settings/gadget-delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                    <td><a href="@($"settings/gadget/actions/list/{item.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Actions (@item.Actions.Count)</a> </td>
+                    <td><a href="@($"settings/gadget/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }
         }
         </tbody>
     </table>
 
-    <a role="button" class="btn btn-primary" href="@($"settings/gadget-modify/{SectionId}/{Guid.NewGuid()}")">New Gadget</a>
+    <a role="button" class="btn btn-primary" href="@($"settings/gadget/modify/{SectionId}/{Guid.NewGuid()}")">New Gadget</a>
 
-    <BackButtonComponent BaseReturnUrl="@($"/settings/section-list/{Section?.Parent}")" />
+    <BackButtonComponent BaseReturnUrl="@($"/settings/section/list/{Section?.Parent}")" />
 
 @code {
     [Parameter]

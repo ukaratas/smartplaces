@@ -1,4 +1,4 @@
-@page "/settings-region-list"
+@page "/settings/region/list"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
 
@@ -27,17 +27,17 @@
             @foreach (var regionItem in settings.Regions)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/region-modify/{@regionItem.Id}")">@regionItem.Name</NavLink></td>                
+                    <td><NavLink href="@($"settings/region/modify/{@regionItem.Id}")">@regionItem.Name</NavLink></td>                
                     <td>@regionItem.Type</td> 
-                    <td><a href="@($"settings/section-list/{@regionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Sections(@regionItem.Sections.Count)</a> </td>
-                    <td><a href="@($"settings/region-delete/{@regionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                    <td><a href="@($"settings/section/list/{@regionItem.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Sections(@regionItem.Sections.Count)</a> </td>
+                    <td><a href="@($"settings/region/delete/{@regionItem.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }
         }
         </tbody>
     </table>
 
-   <a role="button" class="btn btn-primary" href="@($"settings/region-modify/{Guid.NewGuid()}")">New Region</a>
+   <a role="button" class="btn btn-primary" href="@($"settings/region/modify/{Guid.NewGuid()}")">New Region</a>
 
    <BackButtonComponent BaseReturnUrl="@($"/")" />
 

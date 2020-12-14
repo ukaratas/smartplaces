@@ -1,4 +1,4 @@
-@page "/settings/section-delete/{RegionId:guid}/{SectionId:guid}"
+@page "/settings/section/delete/{RegionId:guid}/{SectionId:guid}"
 @using sp.iot.core
 
 @inject NavigationManager NavigationManager
@@ -8,7 +8,7 @@
     IsLoaded = "@pageBusinessInitalized"
     IsItemFound = "@isItemFound"
     ItemTypeName = "Section"
-    BaseReturnUrl = "@($"settings/section-list/{RegionId}")"
+    BaseReturnUrl = "@($"settings/section/list/{RegionId}")"
     OnDelete = "@OnDelete">
 
     <div class="form-group row">

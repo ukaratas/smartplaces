@@ -1,4 +1,4 @@
-@page "/settings/gadget-definition-list"
+@page "/settings/gadget/definition/list"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
  
@@ -25,18 +25,18 @@
             @foreach (var item in settings.GadgetDefinitions)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/gadget-definition-modify/{item.Id}")">@item.Name</NavLink></td>                
+                    <td><NavLink href="@($"settings/gadget/definition/modify/{item.Id}")">@item.Name</NavLink></td>                
                     <td>@item.Type</td>
                     <td>@item.Unit</td>
                     <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
-                    <td><a href="@($"settings/gadget-definition-delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                    <td><a href="@($"settings/gadget/definition/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }
         }
         </tbody>
     </table>
 
-    <a role="button" class="btn btn-primary" href="@($"settings/gadget-definition-modify/{Guid.NewGuid()}")">New Gadget Definition</a>
+    <a role="button" class="btn btn-primary" href="@($"settings/gadget/definition/modify/{Guid.NewGuid()}")">New Gadget Definition</a>
 
     <BackButtonComponent BaseReturnUrl="/" />
 

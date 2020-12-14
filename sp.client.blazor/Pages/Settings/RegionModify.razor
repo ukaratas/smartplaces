@@ -1,4 +1,4 @@
-@page "/settings/region-modify/{RegionId:guid}"
+@page "/settings/region/modify/{RegionId:guid}"
 
 @using sp.iot.core
 
@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 
 <ModifyItemComponent Model="@editModel" IsLoaded="@pageBusinessInitalized" ItemTypeName="Region"
-    BaseReturnUrl="@($"settings-region-list")" OnSave="@OnSave" IsNew="@isNew">
+    BaseReturnUrl="@($"settings/region/list")" OnSave="@OnSave" IsNew="@isNew">
 
     <FormTemplate>
         <div class="form-group">

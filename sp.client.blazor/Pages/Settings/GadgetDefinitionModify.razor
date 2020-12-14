@@ -1,10 +1,10 @@
-@page "/settings/gadget-definition-modify/{GadgetDefinitionId:guid}"
+@page "/settings/gadget/definition/modify/{GadgetDefinitionId:guid}"
 @using sp.iot.core
 @inject SettingsClient SettingsClient
 @inject NavigationManager NavigationManager
 
 <ModifyItemComponent Model="@GadgetDefinition" IsLoaded="@pageBusinessInitalized" ItemTypeName="GadgetDefinition"
-    BaseReturnUrl="settings/gadget-definition-list" OnSave="@OnSave" IsNew="@isNew">
+    BaseReturnUrl="settings/gadget/definition/list" OnSave="@OnSave" IsNew="@isNew">
 
     <FormTemplate>
         <div class="form-group">

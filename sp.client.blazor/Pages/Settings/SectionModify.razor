@@ -1,4 +1,4 @@
-@page "/settings/section-modify/{RegionId:guid}/{SectionId:guid}"
+@page "/settings/section/modify/{RegionId:guid}/{SectionId:guid}"
 
 @using sp.iot.core
 
@@ -10,7 +10,7 @@
     Model = "@editModel"
     IsLoaded = "@pageBusinessInitalized"
     ItemTypeName = "Section"
-    BaseReturnUrl = "@($"settings/section-list/{RegionId}")"
+    BaseReturnUrl = "@($"settings/section/list/{RegionId}")"
     OnSave = "@OnSave"
     IsNew = "@isNew"
     >

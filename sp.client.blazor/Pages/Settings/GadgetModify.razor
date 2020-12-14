@@ -1,4 +1,4 @@
-@page "/settings/gadget-modify/{SectionId:guid}/{GadgetId:guid}"
+@page "/settings/gadget/modify/{SectionId:guid}/{GadgetId:guid}"
 
 @using sp.iot.core
 
@@ -10,7 +10,7 @@
     Model = "@Gadget"
     IsLoaded = "@pageBusinessInitalized"
     ItemTypeName = "Gadget"
-    BaseReturnUrl = "@($"settings/gadget-list/{SectionId}")"
+    BaseReturnUrl = "@($"settings/gadget/list/{SectionId}")"
     OnSave = "@OnSave"
     IsNew = "@isNew"
     >
@@ -35,7 +35,7 @@
 
                 @foreach (var item in settings.GadgetDefinitions)
                 {
-                    <option value="@item.Id">@item.Name</option>
+                    <option value="@item.Id">(@item.Type) @item.Name</option>
                 }
 
 

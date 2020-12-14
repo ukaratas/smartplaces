@@ -1,4 +1,4 @@
-@page "/settings/gadget-delete/{GadgetId:guid}"
+@page "/settings/gadget/delete/{GadgetId:guid}"
 @using sp.iot.core
 
 @inject NavigationManager NavigationManager
@@ -8,7 +8,7 @@
     IsLoaded = "@pageBusinessInitalized"
     IsItemFound = "@isItemFound"
     ItemTypeName = "Gadget"
-    BaseReturnUrl = "@($"settings/gadget-list/{Item?.Parent}")"
+    BaseReturnUrl = "@($"settings/gadget/list/{Item?.Parent}")"
     OnDelete = "@OnDelete">
 
     <div class="form-group row">
