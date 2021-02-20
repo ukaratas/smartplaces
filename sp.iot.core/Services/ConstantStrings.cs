@@ -104,8 +104,8 @@ namespace sp.iot.core
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE Gadgets SET Name = @Name,Configuration = @Configuration,Status = @Status,Value = @Value, ComplexValue = @ComplexValue,Section = @Section,SectionPosition = @SectionPosition, Definition = @Definition WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO Gadgets (Id,Name,Configuration,Status,Value,ComplexValue,Section,SectionPosition,Definition) VALUES (@Id,@Name,@Configuration,@Status,@Value,@ComplexValue,@Section,@SectionPosition,@Definition)";
+                    public const string UpdateWithId = "UPDATE Gadgets SET Name = @Name,Configuration = @Configuration,Status = @Status,Value = @Value, ComplexValue = @ComplexValue,Section = @Section,SectionPosition = @SectionPosition, Definition = @Definition, ReadFrequency = @ReadFrequency WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO Gadgets (Id,Name,Configuration,Status,Value,ComplexValue,Section,SectionPosition,Definition, ReadFrequency) VALUES (@Id,@Name,@Configuration,@Status,@Value,@ComplexValue,@Section,@SectionPosition,@Definition,@ReadFrequency)";
                 }
 
                 public static class Update
@@ -130,8 +130,8 @@ namespace sp.iot.core
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE GadgetActions SET 'Order' = @Order, CanExecute = @CanExecute, SourceGadget = @SourceGadget, TargetGadget = @TargetGadget, TargetValue = @TargetValue, TargetComplexValue = @TargetComplexValue WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO GadgetActions (Id,'Order',SourceGadget,CanExecute,TargetGadget,TargetValue,TargetComplexValue) VALUES (@Id, @Order,@SourceGadget,@CanExecute,@TargetGadget,@TargetValue,@TargetComplexValue)";
+                    public const string UpdateWithId = "UPDATE GadgetActions SET 'Order' = @Order, CanExecute = @CanExecute, SourceGadget = @SourceGadget, TargetGadget = @TargetGadget, Execute = @Execute WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO GadgetActions (Id,'Order',SourceGadget,CanExecute,TargetGadget,Execute) VALUES (@Id, @Order,@SourceGadget,@CanExecute,@TargetGadget,@Execute)";
                 }
 
             }

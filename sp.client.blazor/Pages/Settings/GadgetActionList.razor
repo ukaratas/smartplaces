@@ -1,0 +1,97 @@
+@page "/Settings/gadget/action/list/{GadgetId:guid}"
+@using sp.iot.core
+@inject SettingsClient SettingsClient
+ 
+<h1> <b>@Gadget?.Name</b> Gadget Actions</h1>
+
+
+<h2> Gadget is Source</h2>
+
+ <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Source Gadget</th>
+                <th>Target Gadget</th>
+                <th>Order</th>
+                <th>ComplexValue</th>
+                <th></th>
+                 
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var item in Gadget.SourceActions)
+            {
+                <tr>
+                    <td><NavLink href="@($"settings/gadget/action/modify/{GadgetId}/{item.Id}")">@item.Id</NavLink></td>                
+                    <td>(@settings.FindGadgetDefinition(@item.SourceGadget)?.Type) @settings.FindGadgetDefinition(@item.SourceGadget)?.Name</td>
+                    <td>(@settings.FindGadgetDefinition(@item.TargetGadget)?.Type) @settings.FindGadgetDefinition(@item.TargetGadget)?.Name</td>
+                    <td>@item.Order</td>
+                    <td><a href="@($"settings/gadget/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <a role="button" class="btn btn-primary" href="@($"settings/gadget/action/modify/{GadgetId}/{Guid.NewGuid()}")">New Gadget Action</a>
+
+
+    <h2> Gadget is Target</h2>
+        
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Source Gadget</th>
+                <th>Target Gadget</th>
+                <th>Order</th>
+                <th>ComplexValue</th>
+                <th></th>
+                 
+            </tr>
+        </thead>
+        <tbody>
+        @if (settings == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var item in Gadget.SourceActions)
+            {
+                <tr>
+                    <td><NavLink href="@($"settings/gadget/action/modify/{GadgetId}/{item.Id}")">@item.Id</NavLink></td>                
+                    <td>(@settings.FindGadgetDefinition(@item.SourceGadget)?.Type) @settings.FindGadgetDefinition(@item.SourceGadget)?.Name</td>
+                    <td>(@settings.FindGadgetDefinition(@item.TargetGadget)?.Type) @settings.FindGadgetDefinition(@item.TargetGadget)?.Name</td>
+                    <td>@item.Order</td>
+                    
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <BackButtonComponent BaseReturnUrl="@($"/settings/gadget/list/{Gadget?.Parent}")" />
+
+@code {
+    [Parameter]
+    public Guid GadgetId { get; set; }
+
+    public Gadget Gadget { get; set; }
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+        Gadget = settings.FindGadget(GadgetId);
+    }
+
+}

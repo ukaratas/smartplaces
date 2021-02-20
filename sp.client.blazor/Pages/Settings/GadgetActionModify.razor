@@ -1,0 +1,132 @@
+@page "/settings/gadget/action/modify/{GadgetId:guid}/{GadgetActionId:guid}"
+
+@using sp.iot.core
+
+@inject SettingsClient SettingsClient
+@inject NavigationManager NavigationManager
+
+
+<ModifyItemComponent 
+    Model = "@GadgetAction"
+    IsLoaded = "@pageBusinessInitalized"
+    ItemTypeName = "GadgetAction"
+    BaseReturnUrl = "@($"settings/gadget/action/list/{GadgetId}")"
+    OnSave = "@OnSave"
+    IsNew = "@isNew"
+    >
+
+    <FormTemplate>
+        <div class="form-group">        
+            <label for="Id">Id: </label>  
+            <label Id="Id">@GadgetAction.Id</label>       
+        </div>   
+
+        
+        <div class="form-group">        
+            <label for="order">Order: </label>        
+            <input Id="order" Class="form-control" @bind="@GadgetAction.Order"/>        
+        </div>  
+
+        <div class="form-group">        
+            <label for="gadget">Target Gadget: </label>    
+
+             <InputSelect Id="gadget" Class="form-control" @bind-Value="@GadgetAction.TargetGadget">
+                <option value="">Please Select...</option>
+                <option value="NotSet">Undefined...</option>
+
+                @foreach (var regionOpt in settings.Regions)
+                    @foreach (var sectionOpt in regionOpt.Sections)
+                    {
+                        <optgroup label="@regionOpt.Name, @sectionOpt.Name">
+                        @foreach (var gadgetOpt in sectionOpt.Gadgets)
+                        {
+                            <option value="@gadgetOpt.Id">@gadgetOpt.Name</option>
+                        }
+                        </optgroup>
+                    }
+
+            </InputSelect>    
+            
+        </div>  
+
+
+      
+
+
+
+         <div class="form-group">
+            <label for="read-script">CanExecute Script</label>
+            <p>
+                <b>bool CanExecute(GadGetValue OldValue, GadGetValue NewValue)</b><br>
+                <b>{</b>
+                <textarea class="form-control" @bind="@GadgetAction.CanExecute" id="read-script"
+                    rows="10"></textarea>
+                <b>}</b>
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="write-script">Execute Script</label>
+            <p>
+                <b>GadgetValue Execute(GadGetValue oldValue, GadGetValue newValue, GadGetValue targetOldValue)</b><br>
+                <b>{</b>
+                <textarea class="form-control" @bind="@GadgetAction.Execute" id="write-script"
+                    rows="10"></textarea>
+                <b>}</b>
+            </p>
+        </div> 
+
+    </FormTemplate>
+</ModifyItemComponent>
+
+@code {
+
+    [Parameter]
+    public Guid GadgetActionId { get; set; }
+
+
+    [Parameter]
+    public Guid GadgetId { get; set; }
+
+    [Parameter]
+    public GadgetAction GadgetAction { get; set; }
+
+    private bool pageBusinessInitalized = false;
+    private bool isNew = false;
+
+    private Settings settings = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        settings = await SettingsClient.GetAsync();
+
+        GadgetAction = settings.FindGadgetAction(GadgetActionId);
+        
+
+        if (GadgetAction == null)
+        {
+           
+            GadgetAction = new GadgetAction();
+            GadgetAction.Id = GadgetActionId;
+            isNew = true;
+        }
+
+        pageBusinessInitalized = true;
+    }
+
+    private async Task<List<SaveResponseAction>> OnSave()
+    {
+
+        if (isNew)
+        {
+            var Gadget  = settings.FindGadget(GadgetId);
+            Gadget.SourceActions.Add(GadgetAction);
+        }
+
+
+        var result = await SettingsClient.SaveAsync(settings);
+        List<SaveResponseAction> actionItems = result.Actions;
+        return actionItems;
+    }
+
+}

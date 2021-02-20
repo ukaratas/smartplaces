@@ -17,12 +17,12 @@
 
     <FormTemplate>
         <div class="form-group">        
-            <label for="Id">Anahtar: </label>  
+            <label for="Id">Id: </label>  
             <label Id="Id">@Gadget.Id</label>       
         </div>    
 
         <div class="form-group">        
-            <label for="name">Adı: </label>        
+            <label for="name">Name: </label>        
             <InputText Id="name" Class="form-control" @bind-Value="@Gadget.Name"></InputText>        
             <ValidationMessage For="@(() => Gadget.Name)" />    
         </div>  
@@ -75,6 +75,13 @@
             </InputSelect>
             <ValidationMessage For="@(() => Gadget.Status)" />
         </div>
+
+        
+        <div class="form-group">        
+            <label for="read-frequence">Read Frequence as a CRON</label>        
+            <InputText Id="read-frequence" Class="form-control" @bind-Value="@Gadget.ReadFrequency"></InputText>        
+            <ValidationMessage For="@(() => Gadget.ReadFrequency)" />    
+        </div>  
 
     </FormTemplate>
 </ModifyItemComponent>

@@ -118,8 +118,8 @@ namespace sp.iot.core
                             section.Gadgets.ForEach(
                                 gadget =>
                                 {
-
-                                    gadget.Actions.ForEach(
+                                    
+                                    gadget.SourceActions.ForEach(
                                         action =>
                                         {
                                             _database.SaveItem(
@@ -130,16 +130,15 @@ namespace sp.iot.core
                                                 new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Order", Value = action.Order},
                                                     new SaveItemProperty { Name= "SourceGadget", Value = gadget.Id},
-                                                    new SaveItemProperty { Name= "TargetComplexValue", Value = action.TargetComplexValue},
                                                     new SaveItemProperty { Name= "TargetGadget", Value = action.TargetGadget},
-                                                    new SaveItemProperty { Name= "TargetValue", Value = action.TargetValue },
+                                                    new SaveItemProperty { Name= "Execute", Value = action.Execute },
                                                     new SaveItemProperty { Name= "CanExecute", Value = action.CanExecute },
                                                     },
                                                     (log, actionType) => { returnValue.AddAction(string.Format("Gadget Action '{0}' : {1}", action.Order, log), actionType); }
                                                     );
                                         }
                                     );
-
+                                    
 
                                     _database.SaveItem(
                                             gadget.Id,
@@ -155,6 +154,7 @@ namespace sp.iot.core
                                                     new SaveItemProperty { Name= "Section", Value = section.Id },
                                                     new SaveItemProperty { Name= "SectionPosition", Value = gadget.SectionPosition },
                                                     new SaveItemProperty { Name= "Definition", Value = gadget.Definition},
+                                                    new SaveItemProperty { Name= "ReadFrequency", Value = gadget.ReadFrequency},
 
                                             },
                                             (log, actionType) => { returnValue.AddAction(string.Format("Gadget '{0}' : {1}", gadget.Name, log), actionType); }

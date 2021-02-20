@@ -8,7 +8,8 @@ namespace sp.iot.core
     {
         public Gadget()
         {
-            Actions = new List<GadgetAction>();
+            TargetActions = new List<GadgetAction>();
+            SourceActions = new List<GadgetAction>();
         }
 
         public string Name { get; set; }
@@ -25,7 +26,9 @@ namespace sp.iot.core
 
         public Guid Definition { get; set; }
 
-        [JsonPropertyName("actions")]
-        public List<GadgetAction> Actions { get; set; }
+        public string ReadFrequency { get; set; }
+
+        public List<GadgetAction> TargetActions { get; set; }
+        public List<GadgetAction> SourceActions { get; set; }
     }
 }

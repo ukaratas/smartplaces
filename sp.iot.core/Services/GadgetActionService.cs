@@ -18,13 +18,31 @@ namespace sp.iot.core
         }
 
 
-        public List<GadgetAction> GetByGadget(Guid gadgetId)
+        public List<GadgetAction> GetByGadgetSource(Guid gadgetId)
         {
             List<GadgetAction> returnValue = new List<GadgetAction>();
 
             SqliteDataReader reader = _database.ExecuteReader(
                ConstantStrings.SqlQueries.GadgetAction.Get.BySourceGadget,
                new List<SqliteParameter> { new SqliteParameter("SourceGadget", gadgetId) }
+               );
+
+            while (reader.Read())
+            {
+                var action = BindGadgetActionData(reader);
+                returnValue.Add(action);
+            }
+
+            return returnValue;
+        }
+
+          public List<GadgetAction> GetByGadgetTarget(Guid gadgetId)
+        {
+            List<GadgetAction> returnValue = new List<GadgetAction>();
+
+            SqliteDataReader reader = _database.ExecuteReader(
+               ConstantStrings.SqlQueries.GadgetAction.Get.ByTargetGadget,
+               new List<SqliteParameter> { new SqliteParameter("TargetGadget", gadgetId) }
                );
 
             while (reader.Read())
@@ -43,9 +61,9 @@ namespace sp.iot.core
                 Id = reader.GetValueAsGuid("Id"),
                 Order = (int)(long)reader.GetValue(reader.GetOrdinal("Order")),
                 TargetGadget = reader.GetValueAsGuid("TargetGadget"),
-                TargetValue = reader.GetValue(reader.GetOrdinal("TargetValue")).ToString(),
-                TargetComplexValue = reader.GetValue(reader.GetOrdinal("TargetComplexValue")).ToString(),
+                SourceGadget = reader.GetValueAsGuid("SourceGadget"),
                 CanExecute = reader.GetValue(reader.GetOrdinal("CanExecute")).ToString(),
+                Execute = reader.GetValue(reader.GetOrdinal("Execute")).ToString(),
             };
             return returnValue;
         }

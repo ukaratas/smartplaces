@@ -68,6 +68,30 @@ namespace sp.iot.core
         }
 
 
+        public static GadgetAction FindGadgetAction(this Settings settings, Guid gadgetActionId)
+        {
+            foreach (var region in settings.Regions)
+            {
+                foreach (var section in region.Sections)
+                {
+
+                    foreach (var gadget in section.Gadgets)
+                    {
+                        foreach (var gadgetAction in gadget.SourceActions)
+                        {
+                            if (gadgetAction.Id == gadgetActionId)
+                            {
+                                gadgetAction.Parent = gadget.Id;
+                                return gadgetAction;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
         public static GadgetDefinition FindGadgetDefinition(this Settings settings, Guid gadgetDefinitionId)
         {
             foreach (var gadgetDefinition in settings.GadgetDefinitions)

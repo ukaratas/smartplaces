@@ -30,7 +30,6 @@ namespace sp.iot.core
             if (returnValue.CanExecute)
             {
                 returnValue.TargetNewValue = _targetNewValue(runner, action, param);
-                returnValue.TargetNewComplexValue = _targetNewComplexValue(runner, action, param);
             }
             return returnValue;
         }
@@ -51,30 +50,15 @@ namespace sp.iot.core
         private double _targetNewValue(ScriptRunner runner, GadgetAction action, ScriptParameter param)
         {
 
-            if (runner.TargetNewValueScript != action.TargetValue)
+            if (runner.TargetNewValueScript != action.Execute)
             {
-                var script = CSharpScript.Create<double>(action.TargetValue, globalsType: typeof(ScriptParameter));
+                var script = CSharpScript.Create<double>(action.Execute, globalsType: typeof(ScriptParameter));
                 runner.TargetNewValueRunner = script.CreateDelegate();
-                runner.TargetNewValueScript = action.TargetValue;
+                runner.TargetNewValueScript = action.Execute;
             }
 
             var execution = runner.TargetNewValueRunner(param);
             return execution.Result;
-        }
-
-        private string _targetNewComplexValue(ScriptRunner runner, GadgetAction action, ScriptParameter param)
-        {
-
-            if (runner.TargetNewComplexValueScript != action.TargetComplexValue)
-            {
-                var script = CSharpScript.Create<string>(action.TargetComplexValue, globalsType: typeof(ScriptParameter));
-                runner.TargetNewComplexValueRunner = script.CreateDelegate();
-                runner.TargetNewComplexValueScript = action.TargetComplexValue;
-            }
-
-            var execution = runner.TargetNewComplexValueRunner(param);
-            return execution.Result;
-
         }
 
         private ScriptRunner _getRunner(Guid id)

@@ -13,6 +13,7 @@
                 <th>Value</th>
                 <th>ComplexValue</th>
                 <th>SectionPosition</th>
+                <th>Read Frequency</th>
                 <th></th>
                 <th></th>
                  
@@ -34,7 +35,8 @@
                     <td>@item.Value</td>
                     <td>@item.ComplexValue</td>
                     <td>@item.SectionPosition</td>
-                    <td><a href="@($"settings/gadget/actions/list/{item.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Actions (@item.Actions.Count)</a> </td>
+                    <td>@item.ReadFrequency</td>
+                    <td><a href="@($"settings/gadget/action/list/{item.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Actions(@item.SourceActions.Count,@item.TargetActions.Count)</a> </td>
                     <td><a href="@($"settings/gadget/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }

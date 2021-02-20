@@ -47,7 +47,8 @@ namespace sp.iot.core
 
                 if (includeActions)
                 {
-                    gadget.Actions.AddRange(_gadgetActionService.GetByGadget(id));
+                    gadget.SourceActions.AddRange(_gadgetActionService.GetByGadgetSource(id));
+                    gadget.TargetActions.AddRange(_gadgetActionService.GetByGadgetTarget(id));
                 }
             }
             return gadget;
@@ -68,7 +69,8 @@ namespace sp.iot.core
 
                 if (includeActions)
                 {
-                    gadget.Actions.AddRange(_gadgetActionService.GetByGadget(reader.GetValueAsGuid("Id")));
+                    gadget.SourceActions.AddRange(_gadgetActionService.GetByGadgetSource(reader.GetValueAsGuid("Id")));
+                    gadget.TargetActions.AddRange(_gadgetActionService.GetByGadgetTarget(reader.GetValueAsGuid("Id")));
                 }
 
                 returnValue.Add(gadget);
@@ -160,7 +162,7 @@ namespace sp.iot.core
 
             logCallback(string.Format("Gadget {0} is updated with values ({1},{2}).", gadget.Name, value.Value, value.ComplexValue));
 
-            var actions = _gadgetActionService.GetByGadget(id);
+            var actions = _gadgetActionService.GetByGadgetSource(id);
 
             actions.ForEach(action =>
             {
@@ -199,6 +201,7 @@ namespace sp.iot.core
                 ComplexValue = reader.GetValue(reader.GetOrdinal("ComplexValue")).ToString(),
                 SectionPosition = (PositionType)(int)(long)reader.GetValue(reader.GetOrdinal("SectionPosition")),
                 Definition = reader.GetValueAsGuid("Definition"),
+                ReadFrequency = reader.GetValue(reader.GetOrdinal("ReadFrequency")).ToString(),
             };
             return returnValue;
         }
