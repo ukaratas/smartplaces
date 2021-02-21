@@ -15,6 +15,7 @@
                 <th>SectionPosition</th>
                 <th>Read Frequency</th>
                 <th></th>
+                 <th></th>
                 <th></th>
                  
             </tr>
@@ -37,6 +38,7 @@
                     <td>@item.SectionPosition</td>
                     <td>@item.ReadFrequency</td>
                     <td><a href="@($"settings/gadget/action/list/{item.Id}")" class="btn btn-secondary" role="button" aria-pressed="true">Actions(@item.SourceActions.Count,@item.TargetActions.Count)</a> </td>
+                    <td><a href="@($"settings/gadget/modify/{SectionId}/{item.Id}")" class="btn btn-primary" role="button" aria-pressed="true" >Edit</a></td>
                     <td><a href="@($"settings/gadget/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }

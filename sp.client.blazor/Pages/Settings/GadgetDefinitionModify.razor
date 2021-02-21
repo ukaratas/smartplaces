@@ -26,30 +26,11 @@
                 <option value="Switch">Button</option>
                 <option value="Relay">Relay</option>
                 <option value="Sensor">Sensor</option>
-                <option value="Valve">Valve</option>
 
             </InputSelect>
             <ValidationMessage For="@(() => GadgetDefinition.Type)" />
         </div>
-
-
-        <div class="form-group">
-            <label for="name">Unit: </label>
-            <InputSelect Id="name" Class="form-control" @bind-Value="@GadgetDefinition.Unit">
-                <option value="">Please Select...</option>
-                <option value="NotSet">Undefined...</option>
-                <option value="Signal">Signal (Push Button)</option>
-                <option value="OnOff">OnOff</option>
-                <option value="Percentage">Percentage</option>
-                <option value="Celcius">Celcius</option>
-                <option value="milliliter">Milliliter</option>
-                <option value="Gram">Gram</option>
-                <option value="PPM">PPM</option>
-                <option value="HPA">HPA</option>
-
-            </InputSelect>
-            <ValidationMessage For="@(() => GadgetDefinition.Unit)" />
-        </div>
+      
 
         <div class="form-group">
             <label for="read-script">Read Script</label>

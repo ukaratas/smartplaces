@@ -10,11 +10,9 @@
  <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Source Gadget</th>
-                <th>Target Gadget</th>
+                <th>Target Gadged</th>
                 <th>Order</th>
-                <th>ComplexValue</th>
+                <th></th>
                 <th></th>
                  
             </tr>
@@ -29,10 +27,9 @@
             @foreach (var item in Gadget.SourceActions)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/gadget/action/modify/{GadgetId}/{item.Id}")">@item.Id</NavLink></td>                
-                    <td>(@settings.FindGadgetDefinition(@item.SourceGadget)?.Type) @settings.FindGadgetDefinition(@item.SourceGadget)?.Name</td>
-                    <td>(@settings.FindGadgetDefinition(@item.TargetGadget)?.Type) @settings.FindGadgetDefinition(@item.TargetGadget)?.Name</td>
+                    <td>(@settings.FindGadgetDefinition(@settings.FindGadget(item.TargetGadget).Definition)?.Type) @settings.FindGadgetDefinition(@settings.FindGadget(item.TargetGadget).Definition)?.Name</td>
                     <td>@item.Order</td>
+                    <td><a href="@($"settings/gadget/action/modify/{GadgetId}/{item.Id}")" class="btn btn-primary" role="button" aria-pressed="true">Edit</a> </td>
                     <td><a href="@($"settings/gadget/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
             }
@@ -48,13 +45,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
                 <th>Source Gadget</th>
-                <th>Target Gadget</th>
                 <th>Order</th>
-                <th>ComplexValue</th>
-                <th></th>
-                 
             </tr>
         </thead>
         <tbody>
@@ -64,14 +56,11 @@
         }
         else
         {
-            @foreach (var item in Gadget.SourceActions)
+            @foreach (var item in Gadget.TargetActions)
             {
                 <tr>
-                    <td><NavLink href="@($"settings/gadget/action/modify/{GadgetId}/{item.Id}")">@item.Id</NavLink></td>                
-                    <td>(@settings.FindGadgetDefinition(@item.SourceGadget)?.Type) @settings.FindGadgetDefinition(@item.SourceGadget)?.Name</td>
-                    <td>(@settings.FindGadgetDefinition(@item.TargetGadget)?.Type) @settings.FindGadgetDefinition(@item.TargetGadget)?.Name</td>
+                    <td>(@settings.FindGadgetDefinition(@settings.FindGadget(item.SourceGadget).Definition)?.Type) @settings.FindGadgetDefinition(@settings.FindGadget(item.SourceGadget).Definition)?.Name</td>
                     <td>@item.Order</td>
-                    
                 </tr>
             }
         }

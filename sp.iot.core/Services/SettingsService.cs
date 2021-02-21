@@ -79,7 +79,6 @@ namespace sp.iot.core
                                     new List<SaveItemProperty> {
                                                     new SaveItemProperty { Name= "Name", Value = gadgetDefinition.Name},
                                                     new SaveItemProperty { Name= "Type", Value = gadgetDefinition.Type},
-                                                    new SaveItemProperty { Name= "Unit", Value = gadgetDefinition.Unit},
                                                     new SaveItemProperty { Name= "ReadScript", Value = gadgetDefinition.ReadScript},
                                                     new SaveItemProperty { Name= "WriteScript", Value = gadgetDefinition.WriteScript},
 
@@ -466,7 +465,6 @@ namespace sp.iot.core
                 Id = reader.GetValueAsGuid("Id"),
                 Name = reader.GetValue(reader.GetOrdinal("Name")).ToString(),
                 Type = (GadgetType)(int)(long)reader.GetValue(reader.GetOrdinal("Type")),
-                Unit = (UnitType)(int)(long)reader.GetValue(reader.GetOrdinal("Unit")),
                 ReadScript = reader.GetValue(reader.GetOrdinal("ReadScript")).ToString(),
                 WriteScript = reader.GetValue(reader.GetOrdinal("WriteScript")).ToString(),
             };

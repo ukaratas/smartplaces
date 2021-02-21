@@ -10,8 +10,6 @@ namespace sp.iot.core
 
         public GadgetType Type { get; set; }
         
-        public UnitType Unit { get; set; }
-        
         public string ReadScript { get; set; }
         
         public string WriteScript { get; set; }

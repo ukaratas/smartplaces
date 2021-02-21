@@ -48,16 +48,10 @@
             </InputSelect>    
             
         </div>  
-
-
-      
-
-
-
          <div class="form-group">
             <label for="read-script">CanExecute Script</label>
             <p>
-                <b>bool CanExecute(GadGetValue OldValue, GadGetValue NewValue)</b><br>
+                <b>bool CanExecute(GadgetValue OldValue, GadgetValue NewValue)</b><br>
                 <b>{</b>
                 <textarea class="form-control" @bind="@GadgetAction.CanExecute" id="read-script"
                     rows="10"></textarea>
@@ -68,7 +62,7 @@
         <div class="form-group">
             <label for="write-script">Execute Script</label>
             <p>
-                <b>GadgetValue Execute(GadGetValue oldValue, GadGetValue newValue, GadGetValue targetOldValue)</b><br>
+                <b>GadgetValue Execute(GadgetValue oldValue, GadgetValue newValue, GadgetValue targetValue)</b><br>
                 <b>{</b>
                 <textarea class="form-control" @bind="@GadgetAction.Execute" id="write-script"
                     rows="10"></textarea>

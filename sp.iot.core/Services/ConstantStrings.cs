@@ -17,8 +17,8 @@ namespace sp.iot.core
 
                 public static class Save
                 {
-                    public const string UpdateWithId = "UPDATE GadgetDefinitions SET Name = @Name, Type = @Type, Unit= @Unit, ReadScript = @ReadScript, WriteScript = @WriteScript WHERE Id = @Id";
-                    public const string Insert = "INSERT INTO GadgetDefinitions (Id, Name, Type, Unit, ReadScript, WriteScript)VALUES(@Id,@Name,@Type, @Unit, @ReadScript, @WriteScript)";
+                    public const string UpdateWithId = "UPDATE GadgetDefinitions SET Name = @Name, Type = @Type, ReadScript = @ReadScript, WriteScript = @WriteScript WHERE Id = @Id";
+                    public const string Insert = "INSERT INTO GadgetDefinitions (Id, Name, Type, ReadScript, WriteScript)VALUES(@Id,@Name,@Type, @ReadScript, @WriteScript)";
                 }
 
                 public static class Delete

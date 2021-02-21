@@ -9,7 +9,6 @@
             <tr>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Unit</th>
                 <th></th>
                 <th></th>
 
@@ -27,7 +26,6 @@
                 <tr>
                     <td><NavLink href="@($"settings/gadget/definition/modify/{item.Id}")">@item.Name</NavLink></td>                
                     <td>@item.Type</td>
-                    <td>@item.Unit</td>
                     <td><a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Gadgets</a> </td>
                     <td><a href="@($"settings/gadget/definition/delete/{item.Id}")" class="btn btn-light" role="button" aria-pressed="true">Delete</a> </td>
                 </tr>
