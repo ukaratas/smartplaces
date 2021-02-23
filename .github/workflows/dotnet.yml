@@ -1,4 +1,4 @@
-name: .NET
+name: .NET sp.iot.server
 
 on:
   push:
