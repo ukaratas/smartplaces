@@ -6,5 +6,7 @@
 		{
 			"path": "..\\sp.iot.core"
 		}
-	]
+	],
+	"settings": {}
 }
+
